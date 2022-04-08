@@ -4,8 +4,11 @@ import hashlib
 from flask import Flask, request, jsonify
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from pymongo import MongoClient
+from flask_cors import CORS
+
 
 app = Flask(__name__)
+CORS(app)
 jwt = JWTManager(app)
 app.config['JWT_SECRET_KEY'] = 'JanuszPawlacz2137'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=1)
@@ -21,7 +24,7 @@ def hello_world():
     return 'Hello World!'
 
 
-@app.route("/api/v1/users", methods=["POST"])
+@app.route("/api/v1/register", methods=["POST"])
 def register():
     new_user = request.get_json()
     new_user["password"] = hashlib.sha256(new_user["password"].encode("utf-8")).hexdigest()
@@ -42,7 +45,7 @@ def login():
         encrpted_password = hashlib.sha256(login_details['password'].encode("utf-8")).hexdigest()
         if encrpted_password == user_from_db['password']:
             access_token = create_access_token(identity=user_from_db['username'])
-            return jsonify(access_token=access_token), 200
+            return jsonify(token=access_token), 200
 
     return jsonify({'msg': 'The username or password is incorrect'}), 401
 
