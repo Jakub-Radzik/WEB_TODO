@@ -1,9 +1,15 @@
-import React, { FC } from 'react';
+import axios from 'axios';
+import React, { FC, useCallback } from 'react';
 
 type AuthStatus = 'initialising' | 'authenticated' | 'unauthenticated';
 
+type UserType = {
+  username: string;
+};
+
 type AuthContext = {
   status: AuthStatus;
+  user: UserType | null,
   login: (username: string, password: string) => void;
   register: (username: string, password: string) => void;
   logout: () => void;
@@ -11,23 +17,57 @@ type AuthContext = {
 
 const AuthContext = React.createContext<AuthContext>({
   status: 'initialising',
+  user: null,
   login: () => null,
   logout: () => null,
   register: () => null,
 });
 
-type AuthProviderProps = {
+type AuthProps = {
   children: React.ReactNode;
 };
 
-const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
-  const status = 'initialising';
-  const login = () => {};
-  const logout = () => {};
-  const register = () => {};
+type PostLoginData = {
+  username: string;
+  password: string;
+};
+
+type PostLoginResponse = {
+  data: {
+    token: string;
+  };
+};
+
+const AuthProvider: FC<AuthProps> = ({ children }) => {
+  const [status, setStatus] = React.useState<AuthStatus>('initialising');
+  const [user, setUser] = React.useState<UserType | null>(null);
+  const [token, setToken] = React.useState<string | null>(null);
+
+  const login = useCallback((username: string, password: string) => {
+    axios.post<PostLoginData,PostLoginResponse>('http://127.0.0.1:5000/api/v1/login', { username, password }).then((data) => {
+      setToken(data.data.token);
+      setStatus('authenticated');
+      setUser({ username });
+    }).catch((error) => {
+      console.log(error);
+      setStatus('unauthenticated');
+    });
+  }, []);
+
+
+  const logout = () => {
+    setToken(null);
+    setStatus('unauthenticated');
+    setUser(null);
+  };
+  const register = () => {
+    setStatus('unauthenticated');
+    setUser(null);
+
+  };
 
   return (
-    <AuthContext.Provider value={{ status, login, logout, register }}>
+    <AuthContext.Provider value={{ status, user, login, logout, register }}>
       {children}
     </AuthContext.Provider>
   );
