@@ -15,6 +15,7 @@ export const HeaderBox = styled.div<{ horizontal?: string }>`
   display: flex;
   align-items: center;
   justify-content: ${({ horizontal }) => (horizontal ? horizontal : 'center')};
+  padding: 0 20px;
 `;
 
 // flex-start

@@ -12,6 +12,7 @@ const StyledButton = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  width: 100%;
 `;
 
 type ButtonProps = {

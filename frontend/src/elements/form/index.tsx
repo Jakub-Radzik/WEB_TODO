@@ -5,6 +5,8 @@ import { RAJDHANI } from '../../design/fonts';
 const StyledInput = styled.input`
   font-family: ${RAJDHANI};
   font-size: large;
+  width: 100%;
+  height: 50px;
 `;
 
 type InputProps = {

@@ -1,5 +1,5 @@
 import { FC } from 'react';
 
-const Login: FC<{}> = () => {
+const Register: FC<{}> = () => {
   return <div></div>;
 };

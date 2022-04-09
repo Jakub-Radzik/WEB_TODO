@@ -1,5 +1,7 @@
 import axios from 'axios';
 import React, { FC, useCallback } from 'react';
+import { toast } from 'react-toastify';
+import { errorToast, successToast } from '../utils/toasts';
 
 type AuthStatus = 'initialising' | 'authenticated' | 'unauthenticated';
 
@@ -43,24 +45,33 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
   const [user, setUser] = React.useState<UserType | null>(null);
   const [token, setToken] = React.useState<string | null>(null);
 
+  const handleError = (error: string) => {
+    errorToast(error);
+    setStatus('unauthenticated');
+  };
+
   const login = useCallback((username: string, password: string) => {
     axios
       .post<PostLoginData, PostLoginResponse>(
         'http://127.0.0.1:5000/api/v1/login',
         { username, password }
       )
-      .then(data => {
-        setToken(data.data.token);
-        setStatus('authenticated');
-        setUser({ username });
-      })
+      .then(
+        data => {
+          successToast(`You were correctly logged in ${username}`);
+          setToken(data.data.token);
+          setStatus('authenticated');
+          setUser({ username });
+        },
+        error => handleError(error)
+      )
       .catch(error => {
-        console.log(error);
-        setStatus('unauthenticated');
+        handleError(error);
       });
   }, []);
 
   const logout = () => {
+    successToast("You were correctly logged out")
     setToken(null);
     setStatus('unauthenticated');
     setUser(null);
