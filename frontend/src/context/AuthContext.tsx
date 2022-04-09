@@ -9,7 +9,7 @@ type UserType = {
 
 type AuthContext = {
   status: AuthStatus;
-  user: UserType | null,
+  user: UserType | null;
   login: (username: string, password: string) => void;
   register: (username: string, password: string) => void;
   logout: () => void;
@@ -44,16 +44,21 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
   const [token, setToken] = React.useState<string | null>(null);
 
   const login = useCallback((username: string, password: string) => {
-    axios.post<PostLoginData,PostLoginResponse>('http://127.0.0.1:5000/api/v1/login', { username, password }).then((data) => {
-      setToken(data.data.token);
-      setStatus('authenticated');
-      setUser({ username });
-    }).catch((error) => {
-      console.log(error);
-      setStatus('unauthenticated');
-    });
+    axios
+      .post<PostLoginData, PostLoginResponse>(
+        'http://127.0.0.1:5000/api/v1/login',
+        { username, password }
+      )
+      .then(data => {
+        setToken(data.data.token);
+        setStatus('authenticated');
+        setUser({ username });
+      })
+      .catch(error => {
+        console.log(error);
+        setStatus('unauthenticated');
+      });
   }, []);
-
 
   const logout = () => {
     setToken(null);
@@ -63,7 +68,6 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
   const register = () => {
     setStatus('unauthenticated');
     setUser(null);
-
   };
 
   return (

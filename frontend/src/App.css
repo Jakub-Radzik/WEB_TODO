@@ -2,6 +2,13 @@
   text-align: center;
 }
 
+.innerApp {
+  min-height: calc(100vh - 100px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
