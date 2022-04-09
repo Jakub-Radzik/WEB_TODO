@@ -29,6 +29,25 @@ export const Button: FC<ButtonProps> = ({ label, onClick, ...props }) => {
   );
 };
 
+const StyledButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+  font-family: ${RAJDHANI};
+  font-size: x-large;
+`;
+
+export const TertiaryButton: FC<ButtonProps> = ({ label, onClick, ...props }) => {
+  return (
+    <StyledButtonWrapper onClick={onClick} {...props}>
+      {label}
+    </StyledButtonWrapper>
+  );
+};
+
+
 const StyledIconButton = styled.div`
   width: 50px;
   height: 50px;

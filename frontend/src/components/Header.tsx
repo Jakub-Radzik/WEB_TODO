@@ -6,6 +6,8 @@ import { FC } from 'react';
 import { useAuth } from '../context/AuthContext';
 import LogOut from '../assets/logOut.png';
 import { IconButton } from '../elements/button';
+import LogoImg from '../assets/todo.png'
+import { Logo } from '../elements/images';
 
 const Header: FC<{}> = () => {
   const { user, logout } = useAuth();
@@ -14,10 +16,10 @@ const Header: FC<{}> = () => {
     <StyledHeader>
       <HeaderContainer>
         <HeaderBox horizontal="flex-start">
-          <PrimaryText color={WHITE}>LOGO </PrimaryText>
+          <Logo src={LogoImg}/>
         </HeaderBox>
         <HeaderBox>
-          <PrimaryText color={WHITE}>App Name</PrimaryText>
+          <PrimaryText color={WHITE}>SLP_TODO</PrimaryText>
         </HeaderBox>
         <HeaderBox horizontal="flex-end">
           {user && (

@@ -4,11 +4,8 @@ import { useAuth } from '../context/AuthContext';
 import {
   GRAY,
   MAXIMUM_RED_PURPLE,
-  PLATINUM,
-  RICH_BLACK,
-  VERMILION,
 } from '../design/colors';
-import { Button } from '../elements/button';
+import { Button, TertiaryButton } from '../elements/button';
 import { LeftWrapper, LoginContainer, Wrapper } from '../elements/containers';
 import { Input } from '../elements/form';
 import { PrimaryText, Text } from '../elements/text';
@@ -18,7 +15,7 @@ type LoginDataProps = {
   password: string;
 };
 
-const Login: FC<{}> = () => {
+const Login: FC<{switchView: ()=>void}> = ({switchView}) => {
   const { login } = useAuth();
 
   const [loginData, setLoginData] = useState<LoginDataProps>({
@@ -60,6 +57,10 @@ const Login: FC<{}> = () => {
             onClick={() => login(loginData.username, loginData.password)}
           />
         </Wrapper>
+        <Wrapper margin='50px 0 0 0'>
+            <Text color='#000'>Don't have an account ?</Text>
+            <TertiaryButton label={'Register'} onClick={()=>switchView()}/>
+          </Wrapper>
       </LoginView>
     </LoginContainer>
   );

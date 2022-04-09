@@ -4,16 +4,22 @@ import Header from './components/Header';
 import Login from './views/Login';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from './context/AuthContext';
+import Register from './views/Register';
+import { useState } from 'react';
 
 function App() {
   const { user } = useAuth();
+  const [view, setView] = useState<'login' | 'register'>('login');
 
   return (
     <>
       <div className="App">
         <Header />
 
-        <div className="innerApp">{!user && <Login />}</div>
+        <div className="innerApp">
+        {!user && view==='login' && <Login switchView={()=>setView('register')}/>}
+        {!user && view==='register' && <Register switchView={()=>setView('login')} />}
+        </div>
       </div>
       <ToastContainer
         style={{ top: 110 }}
