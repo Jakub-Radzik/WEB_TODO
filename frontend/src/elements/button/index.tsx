@@ -28,3 +28,23 @@ export const Button: FC<ButtonProps> = ({ label, onClick, ...props }) => {
     </StyledButton>
   );
 };
+
+const StyledIconButton = styled.div`
+  width: 50px;
+  height: 50px;
+  > * {
+    width: 50px;
+    height: 50px;
+  }
+`;
+
+export const IconButton: FC<{ icon: string; onClick: () => void }> = ({
+  icon,
+  onClick,
+}) => {
+  return (
+    <StyledIconButton onClick={onClick}>
+      <img src={icon} />
+    </StyledIconButton>
+  );
+};

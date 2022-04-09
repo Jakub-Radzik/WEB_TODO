@@ -71,7 +71,7 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
   }, []);
 
   const logout = () => {
-    successToast("You were correctly logged out")
+    successToast('You were correctly logged out');
     setToken(null);
     setStatus('unauthenticated');
     setUser(null);
