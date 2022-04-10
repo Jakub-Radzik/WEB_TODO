@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { LoginView } from '../components/LoginView';
 import { useAuth } from '../context/AuthContext';
 import {
@@ -6,26 +6,54 @@ import {
   MAXIMUM_RED_PURPLE,
 } from '../design/colors';
 import { Button, TertiaryButton } from '../elements/button';
-import { LeftWrapper, LoginContainer, Wrapper } from '../elements/containers';
+import { LeftWrapper, LoginContainer, Row, Wrapper } from '../elements/containers';
 import { Input } from '../elements/form';
+import Loader from '../elements/loader';
 import { PrimaryText, Text } from '../elements/text';
+import { errorToast } from '../utils/toasts';
 
 type RegisterDataProps = {
+  name: string;
+  surname: string;
+  email: string;
   username: string;
   password: string;
+  repeatPassword: string;
+};
+
+const emptyRegisterData: RegisterDataProps = {
+  name: '',
+  surname: '',
+  email: '',
+  username: '',
+  password: '',
+  repeatPassword: '',
 };
 
 const Register: FC<{switchView: ()=>void}> = ({switchView}) => {
-  const { register } = useAuth();
 
-  const [registerData, setRegisterData] = useState<RegisterDataProps>({
-    username: '',
-    password: '',
-  });
+  const { register, isLoading } = useAuth();
+
+  const [registerData, setRegisterData] = useState<RegisterDataProps>(emptyRegisterData);
+
+  const isValid = useCallback(() => {
+    return registerData.name && registerData.surname && registerData.email && registerData.username && registerData.password && registerData.repeatPassword;
+  },[registerData]);
+
+  const onSubmit = () => {
+    if(registerData.password !== registerData.repeatPassword) {
+      errorToast('Passwords do not match');
+      return;
+    }else{
+      register(registerData.name, registerData.surname, registerData.email, registerData.username, registerData.password);
+      setRegisterData(emptyRegisterData);
+    }
+  };
 
   return (
     <LoginContainer>
       <LoginView>
+          {isLoading && <Loader/>}
         <LeftWrapper>
           <PrimaryText color={MAXIMUM_RED_PURPLE}>Register</PrimaryText>
           <Text color={GRAY} align="left">
@@ -33,27 +61,62 @@ const Register: FC<{switchView: ()=>void}> = ({switchView}) => {
           </Text>
         </LeftWrapper>
         <Wrapper>
+          <Row>
+            <Input
+              placeholder="Name"
+              value={registerData.name}
+              onChange={(value: string) =>
+                setRegisterData({ ...registerData, name: value })
+              }
+              type="text"
+            />
+            <Input
+              placeholder="Surname"
+              value={registerData.surname}
+              onChange={(value: string) =>
+                setRegisterData({ ...registerData, surname: value })
+              }
+              type="text"
+            />
+          </Row>
+          <Input
+            value={registerData.email}
+            onChange={(value: string) =>
+              setRegisterData({ ...registerData, email: value })
+            }
+            placeholder="E-mail"
+            type="email"
+          />
           <Input
             value={registerData.username}
-            setValue={(value: string) =>
+            onChange={(value: string) =>
               setRegisterData({ ...registerData, username: value })
             }
-            placeholder="Username:"
+            placeholder="Username"
             type="text"
           />
           <Input
             value={registerData.password}
-            setValue={(value: string) =>
+            onChange={(value: string) =>
               setRegisterData({ ...registerData, password: value })
             }
-            placeholder="Password:"
+            placeholder="Password"
+            type="password"
+          />
+          <Input
+            value={registerData.repeatPassword}
+            onChange={(value: string) =>
+              setRegisterData({ ...registerData, repeatPassword: value })
+            }
+            placeholder="Repeat password"
             type="password"
           />
         </Wrapper>
         <Wrapper margin="50px 0 0 0">
           <Button
             label={'Create account'}
-            onClick={() => register(registerData.username, registerData.password)}
+            onClick={() => {isValid() && onSubmit()}}
+            disabled={!isValid() || isLoading}
           />
         </Wrapper>
         <Wrapper margin='50px 0 0 0'>

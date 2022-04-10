@@ -1,8 +1,9 @@
 import { FC } from 'react';
 import styled from 'styled-components';
+import { GRAY, LIGHT_GRAY, MAXIMUM_RED_PURPLE, VERMILION, WHITE } from '../../design/colors';
 import { RAJDHANI } from '../../design/fonts';
 
-const StyledButton = styled.div`
+const StyledButton = styled.div<{disabled?: boolean}>`
   font-family: ${RAJDHANI};
   font-size: xx-large;
   border: 1px solid black;
@@ -11,19 +12,23 @@ const StyledButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  cursor: ${disabled => disabled ? 'not-allowed' : 'pointer'};
   width: 100%;
+  border: ${({disabled}) => disabled ? `1px solid ${GRAY}` : `1px solid ${MAXIMUM_RED_PURPLE}`};
+  color: ${({disabled}) => disabled ?  GRAY : WHITE};
+  background-color: ${({disabled}) => disabled ? LIGHT_GRAY : VERMILION};
 `;
 
 type ButtonProps = {
   label: string;
   onClick: () => void;
+  disabled?: boolean;
   [x: string]: any;
 };
 
-export const Button: FC<ButtonProps> = ({ label, onClick, ...props }) => {
+export const Button: FC<ButtonProps> = ({ label, onClick,disabled, ...props }) => {
   return (
-    <StyledButton onClick={onClick} {...props}>
+    <StyledButton onClick={onClick} disabled={disabled} {...props}>
       {label}
     </StyledButton>
   );
@@ -37,6 +42,7 @@ const StyledButtonWrapper = styled.div`
   margin: 20px 0;
   font-family: ${RAJDHANI};
   font-size: x-large;
+  cursor: pointer;
 `;
 
 export const TertiaryButton: FC<ButtonProps> = ({ label, onClick, ...props }) => {

@@ -20,7 +20,7 @@ export const LoginContainer = styled(BaseContainer)`
 export const Wrapper = styled.div<{ margin?: string }>`
   width: 50%;
   > * {
-    margin: ${({ margin }) => (margin ? margin : '10px 0')};
+    margin: ${({ margin }) => (margin ? margin : '5px 0')};
   }
 `;
 
@@ -29,4 +29,17 @@ export const LeftWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+`;
+
+
+export const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin: 0 0 5px 0;
+  >*:not(:last-child) {
+    margin-right: 10px;
+  }
 `;

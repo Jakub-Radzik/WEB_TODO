@@ -27,11 +27,12 @@ def hello_world():
 @app.route("/api/v1/register", methods=["POST"])
 def register():
     new_user = request.get_json()
+    print(new_user)
     new_user["password"] = hashlib.sha256(new_user["password"].encode("utf-8")).hexdigest()
     doc = users_collection.find_one({"username": new_user["username"]})
     if not doc:
         users_collection.insert_one(new_user)
-        return jsonify({'msg': 'User created successfully'}), 201
+        return jsonify({'username': new_user['username']}), 201
     else:
         return jsonify({'msg': 'Username already exists'}), 409
 
@@ -39,13 +40,15 @@ def register():
 @app.route("/api/v1/login", methods=["POST"])
 def login():
     login_details = request.get_json()
-    user_from_db = users_collection.find_one({'username': login_details['username']})
-
+    user_from_db = users_collection.find_one({'username': login_details['login']})
+    if not user_from_db:
+        user_from_db = users_collection.find_one({'email': login_details['login']})
     if user_from_db:
         encrpted_password = hashlib.sha256(login_details['password'].encode("utf-8")).hexdigest()
         if encrpted_password == user_from_db['password']:
-            access_token = create_access_token(identity=user_from_db['username'])
-            return jsonify(token=access_token), 200
+            nickname = user_from_db['username']
+            access_token = create_access_token(identity=nickname)
+            return jsonify(token=access_token, username=nickname), 200
 
     return jsonify({'msg': 'The username or password is incorrect'}), 401
 

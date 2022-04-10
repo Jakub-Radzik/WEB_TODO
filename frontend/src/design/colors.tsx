@@ -4,3 +4,5 @@ export const MAXIMUM_RED_PURPLE = '#A74482';
 export const WHITE = '#FEFCFD';
 export const PLATINUM = '#D8E2DC';
 export const GRAY = '#8b8b8b';
+export const LIGHT_GRAY = '#dacaca';
+export const BLUE = '#5b15ce';

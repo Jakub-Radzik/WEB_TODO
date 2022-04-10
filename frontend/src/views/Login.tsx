@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { LoginView } from '../components/LoginView';
 import { useAuth } from '../context/AuthContext';
 import {
@@ -11,17 +11,21 @@ import { Input } from '../elements/form';
 import { PrimaryText, Text } from '../elements/text';
 
 type LoginDataProps = {
-  username: string;
+  login: string;
   password: string;
 };
 
 const Login: FC<{switchView: ()=>void}> = ({switchView}) => {
-  const { login } = useAuth();
+  const { login, isLoading } = useAuth();
 
   const [loginData, setLoginData] = useState<LoginDataProps>({
-    username: '',
+    login: '',
     password: '',
   });
+
+  const isValid = useCallback(() => {
+    return loginData.login && loginData.password;
+  },[loginData]);
 
   return (
     <LoginContainer>
@@ -35,16 +39,16 @@ const Login: FC<{switchView: ()=>void}> = ({switchView}) => {
         </LeftWrapper>
         <Wrapper>
           <Input
-            value={loginData.username}
-            setValue={(value: string) =>
-              setLoginData({ ...loginData, username: value })
+            value={loginData.login}
+            onChange={(value: string) =>
+              setLoginData({ ...loginData, login: value })
             }
-            placeholder="Username:"
+            placeholder="Username or email:"
             type="text"
           />
           <Input
             value={loginData.password}
-            setValue={(value: string) =>
+            onChange={(value: string) =>
               setLoginData({ ...loginData, password: value })
             }
             placeholder="Password:"
@@ -54,7 +58,8 @@ const Login: FC<{switchView: ()=>void}> = ({switchView}) => {
         <Wrapper margin="50px 0 0 0">
           <Button
             label={'Login'}
-            onClick={() => login(loginData.username, loginData.password)}
+            onClick={() => isValid() && login(loginData.login, loginData.password)}
+            disabled={!isValid() || isLoading}
           />
         </Wrapper>
         <Wrapper margin='50px 0 0 0'>
