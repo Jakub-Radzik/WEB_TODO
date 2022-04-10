@@ -101,6 +101,7 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
     setUser(null);
     setIsLoading(false);
   };
+  
   const register = useCallback((name: string, surname: string, email: string, username: string, password: string) => {
     setIsLoading(true);
     axios.post<PostRegisterData,PostRegisterResponse>('http://127.0.0.1:5000/api/v1/register', {name, surname, email, username, password}).then(

@@ -12,7 +12,7 @@ const StyledButton = styled.div<{disabled?: boolean}>`
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: ${disabled => disabled ? 'not-allowed' : 'pointer'};
+  cursor: 'pointer';
   width: 100%;
   border: ${({disabled}) => disabled ? `1px solid ${GRAY}` : `1px solid ${MAXIMUM_RED_PURPLE}`};
   color: ${({disabled}) => disabled ?  GRAY : WHITE};
