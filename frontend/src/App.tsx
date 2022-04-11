@@ -5,10 +5,11 @@ import Login from './views/Login';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from './context/AuthContext';
 import Register from './views/Register';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import AuthenticatedApp from './views/AuthenticatedApp';
 
 function App() {
-  const { user } = useAuth();
+  const { user, status } = useAuth();
   const [view, setView] = useState<'login' | 'register'>('login');
 
   return (
@@ -16,10 +17,12 @@ function App() {
       <div className="App">
         <Header />
 
-        <div className="innerApp">
+        {status === 'unauthenticated' && <div className="innerApp">
         {!user && view==='login' && <Login switchView={()=>setView('register')}/>}
         {!user && view==='register' && <Register switchView={()=>setView('login')} />}
-        </div>
+        
+        </div>}
+        {status === 'authenticated' && <AuthenticatedApp/>}
       </div>
       <ToastContainer
         style={{ top: 110 }}

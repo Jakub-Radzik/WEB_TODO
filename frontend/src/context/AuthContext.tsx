@@ -14,7 +14,8 @@ type AuthContext = {
   login: (login: string, password: string) => void;
   register: (user:string, surname: string, email:string, username: string, password: string) => void;
   logout: () => void;
-  isLoading: boolean
+  isLoading: boolean;
+  token: string | null;
 };
 
 const AuthContext = React.createContext<AuthContext>({
@@ -23,7 +24,8 @@ const AuthContext = React.createContext<AuthContext>({
   login: () => null,
   logout: () => null,
   register: () => null,
-  isLoading: false
+  isLoading: false,
+  token: null
 });
 
 type AuthProps = {
@@ -59,7 +61,7 @@ type PostRegisterResponse = {
 
 
 const AuthProvider: FC<AuthProps> = ({ children }) => {
-  const [status, setStatus] = React.useState<AuthStatus>('initialising');
+  const [status, setStatus] = React.useState<AuthStatus>('unauthenticated');
   const [user, setUser] = React.useState<UserType | null>(null);
   const [token, setToken] = React.useState<string | null>(null);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -80,7 +82,7 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
       .then(({data}) => {
           successToast(`You were correctly logged in ${data.username}`);
           console.dir(data)
-          setToken(data.token);
+          setToken(`Bearer ${data.token}`);
           setStatus('authenticated');
           setUser({username: data.username});
         },
@@ -118,7 +120,7 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
   },[]);
 
   return (
-    <AuthContext.Provider value={{ status, user, login, logout, register, isLoading }}>
+    <AuthContext.Provider value={{ status, user, login, logout, register, isLoading, token }}>
       {children}
     </AuthContext.Provider>
   );
