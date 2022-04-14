@@ -47,10 +47,26 @@ export const useTask = () => {
     getTasks();
   }, []);
 
+  const duplicateTask = useCallback(async (task_id: string)=>{
+    axios.put(`http://127.0.0.1:5000/api/v1/tasks/${task_id}`,{
+      headers: {
+        Authorization: `${token}`,
+      },
+    }).then(data=>{
+      console.dir(data)
+    }).catch(error => {
+      setError(error.message);
+    })
+    .finally(() => {
+      setIsLoading(false);
+    });
+  },[token])
+
   return {
     tasks,
     isLoading,
     error,
     getTasks,
+    duplicateTask
   };
 };

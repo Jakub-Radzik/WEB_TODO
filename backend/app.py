@@ -1,14 +1,14 @@
 import datetime
 import hashlib
 
+from bson import ObjectId
 from flask import Flask, request, jsonify
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from pymongo import MongoClient
-from flask_cors import CORS
-
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-CORS(app)
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
 jwt = JWTManager(app)
 app.config['JWT_SECRET_KEY'] = 'JanuszPawlacz2137'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=1)
@@ -75,7 +75,7 @@ def tasks():
         tasks_from_db = tasks_collection.find({'user_id': str(user_from_db['_id'])})
         tasks = []
         for task in tasks_from_db:
-            del task['_id']
+            task['_id'] = str(task['_id'])
             tasks.append(task)
         return jsonify({'tasks': tasks}), 200
     else:
@@ -109,6 +109,39 @@ def delete_task(task_id):
 
 
 @app.route("/api/v1/tasks/<task_id>", methods=["PUT"])
+@jwt_required()
+def duplicate_task(task_id):
+    # current_user = get_jwt_identity()
+    # user_from_db = users_collection.find_one({'username': current_user})
+    # if user_from_db:
+    task = tasks_collection.find_one(ObjectId(task_id))
+    del task['_id']
+    tasks_collection.insert_one(task)
+
+    response = jsonify({'msg': 'Task duplicated successfully'})
+    return response, 200
+    # else:
+    #     return jsonify({'msg': 'Profile not found'}), 404
+
+
+@app.route("/api/v1/tasks/<task_id>", methods=["GET"])
+@jwt_required()
+def get_task_by_id(task_id):
+    # current_user = get_jwt_identity()
+    # user_from_db = users_collection.find_one({'username': current_user})
+    # if user_from_db:
+    print(task_id)
+    task = tasks_collection.find_one(ObjectId(task_id))
+    if task:
+        task['_id'] = str(task['_id'])
+        return jsonify({'task': task}), 200
+    else:
+        return jsonify({'msg': 'Task not found'}), 404
+    # else:
+    #     return jsonify({'msg': 'Profile not found'}), 404
+
+
+@app.route("/api/v1/tasks/<task_id>", methods=["PATCH"])
 @jwt_required()
 def update_task(task_id):
     current_user = get_jwt_identity()
