@@ -10,23 +10,23 @@ export const StyledHeader = styled.div`
   background: ${RICH_BLACK};
   display: flex;
   justify-content: center;
-  ::before{
-    content: "";
+  ::before {
+    content: '';
     width: ${sizeRadius};
     height: ${sizeRadius};
     position: absolute;
     left: 0;
-    top:${headerHeight};
+    top: ${headerHeight};
     border-radius: 0 0 ${sizeRadius} 0;
     background: ${RICH_BLACK};
   }
-  ::after{
-    content: "";
+  ::after {
+    content: '';
     width: ${sizeRadius};
     height: ${sizeRadius};
     position: absolute;
     left: 0;
-    top:${headerHeight};
+    top: ${headerHeight};
     border-radius: ${sizeRadius} 0 0 0;
     background: #fff;
   }

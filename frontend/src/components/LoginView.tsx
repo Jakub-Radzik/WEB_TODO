@@ -18,6 +18,6 @@ export const LoginView = styled(View)`
   justify-content: center;
   background: ${WHITE};
   box-shadow: 0 5px 5px 0px ${VERMILION};
-  border-radius: 200px 10px 10px 10px ;
+  border-radius: 200px 10px 10px 10px;
   padding: 20px 0;
 `;

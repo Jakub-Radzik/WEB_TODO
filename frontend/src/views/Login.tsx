@@ -1,10 +1,7 @@
 import { FC, useCallback, useState } from 'react';
 import { LoginView } from '../components/LoginView';
 import { useAuth } from '../context/AuthContext';
-import {
-  GRAY,
-  MAXIMUM_RED_PURPLE,
-} from '../design/colors';
+import { GRAY, MAXIMUM_RED_PURPLE } from '../design/colors';
 import { Button, TertiaryButton } from '../elements/button';
 import { LeftWrapper, LoginContainer, Wrapper } from '../elements/containers';
 import { Input } from '../elements/form';
@@ -15,7 +12,7 @@ type LoginDataProps = {
   password: string;
 };
 
-const Login: FC<{switchView: ()=>void}> = ({switchView}) => {
+const Login: FC<{ switchView: () => void }> = ({ switchView }) => {
   const { login, isLoading } = useAuth();
 
   const [loginData, setLoginData] = useState<LoginDataProps>({
@@ -25,7 +22,7 @@ const Login: FC<{switchView: ()=>void}> = ({switchView}) => {
 
   const isValid = useCallback(() => {
     return loginData.login && loginData.password;
-  },[loginData]);
+  }, [loginData]);
 
   return (
     <LoginContainer>
@@ -58,14 +55,16 @@ const Login: FC<{switchView: ()=>void}> = ({switchView}) => {
         <Wrapper margin="50px 0 0 0">
           <Button
             label={'Login'}
-            onClick={() => isValid() && login(loginData.login, loginData.password)}
+            onClick={() =>
+              isValid() && login(loginData.login, loginData.password)
+            }
             disabled={!isValid() || isLoading}
           />
         </Wrapper>
-        <Wrapper margin='50px 0 0 0'>
-            <Text color='#000'>Don't have an account ?</Text>
-            <TertiaryButton label={'Register'} onClick={()=>switchView()}/>
-          </Wrapper>
+        <Wrapper margin="50px 0 0 0">
+          <Text color="#000">Don't have an account ?</Text>
+          <TertiaryButton label={'Register'} onClick={() => switchView()} />
+        </Wrapper>
       </LoginView>
     </LoginContainer>
   );

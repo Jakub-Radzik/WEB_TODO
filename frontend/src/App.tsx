@@ -17,12 +17,17 @@ function App() {
       <div className="App">
         <Header />
 
-        {status === 'unauthenticated' && <div className="innerApp">
-        {!user && view==='login' && <Login switchView={()=>setView('register')}/>}
-        {!user && view==='register' && <Register switchView={()=>setView('login')} />}
-        
-        </div>}
-        {status === 'authenticated' && <AuthenticatedApp/>}
+        {status === 'unauthenticated' && (
+          <div className="innerApp">
+            {!user && view === 'login' && (
+              <Login switchView={() => setView('register')} />
+            )}
+            {!user && view === 'register' && (
+              <Register switchView={() => setView('login')} />
+            )}
+          </div>
+        )}
+        {status === 'authenticated' && <AuthenticatedApp />}
       </div>
       <ToastContainer
         style={{ top: 110 }}

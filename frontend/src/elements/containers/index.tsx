@@ -31,7 +31,6 @@ export const LeftWrapper = styled.div`
   align-items: flex-start;
 `;
 
-
 export const Row = styled.div`
   display: flex;
   flex-direction: row;
@@ -39,7 +38,7 @@ export const Row = styled.div`
   justify-content: center;
   align-items: center;
   margin: 0 0 5px 0;
-  >*:not(:last-child) {
+  > *:not(:last-child) {
     margin-right: 10px;
   }
 `;

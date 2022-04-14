@@ -1,12 +1,14 @@
 import { FC, useCallback, useState } from 'react';
 import { LoginView } from '../components/LoginView';
 import { useAuth } from '../context/AuthContext';
-import {
-  GRAY,
-  MAXIMUM_RED_PURPLE,
-} from '../design/colors';
+import { GRAY, MAXIMUM_RED_PURPLE } from '../design/colors';
 import { Button, TertiaryButton } from '../elements/button';
-import { LeftWrapper, LoginContainer, Row, Wrapper } from '../elements/containers';
+import {
+  LeftWrapper,
+  LoginContainer,
+  Row,
+  Wrapper,
+} from '../elements/containers';
 import { Input } from '../elements/form';
 import Loader from '../elements/loader';
 import { PrimaryText, Text } from '../elements/text';
@@ -30,22 +32,35 @@ const emptyRegisterData: RegisterDataProps = {
   repeatPassword: '',
 };
 
-const Register: FC<{switchView: ()=>void}> = ({switchView}) => {
-
+const Register: FC<{ switchView: () => void }> = ({ switchView }) => {
   const { register, isLoading } = useAuth();
 
-  const [registerData, setRegisterData] = useState<RegisterDataProps>(emptyRegisterData);
+  const [registerData, setRegisterData] =
+    useState<RegisterDataProps>(emptyRegisterData);
 
   const isValid = useCallback(() => {
-    return registerData.name && registerData.surname && registerData.email && registerData.username && registerData.password && registerData.repeatPassword;
-  },[registerData]);
+    return (
+      registerData.name &&
+      registerData.surname &&
+      registerData.email &&
+      registerData.username &&
+      registerData.password &&
+      registerData.repeatPassword
+    );
+  }, [registerData]);
 
   const onSubmit = () => {
-    if(registerData.password !== registerData.repeatPassword) {
+    if (registerData.password !== registerData.repeatPassword) {
       errorToast('Passwords do not match');
       return;
-    }else{
-      register(registerData.name, registerData.surname, registerData.email, registerData.username, registerData.password);
+    } else {
+      register(
+        registerData.name,
+        registerData.surname,
+        registerData.email,
+        registerData.username,
+        registerData.password
+      );
       setRegisterData(emptyRegisterData);
     }
   };
@@ -53,7 +68,7 @@ const Register: FC<{switchView: ()=>void}> = ({switchView}) => {
   return (
     <LoginContainer>
       <LoginView>
-          {isLoading && <Loader/>}
+        {isLoading && <Loader />}
         <LeftWrapper>
           <PrimaryText color={MAXIMUM_RED_PURPLE}>Register</PrimaryText>
           <Text color={GRAY} align="left">
@@ -115,14 +130,16 @@ const Register: FC<{switchView: ()=>void}> = ({switchView}) => {
         <Wrapper margin="50px 0 0 0">
           <Button
             label={'Create account'}
-            onClick={() => {isValid() && onSubmit()}}
+            onClick={() => {
+              isValid() && onSubmit();
+            }}
             disabled={!isValid() || isLoading}
           />
         </Wrapper>
-        <Wrapper margin='50px 0 0 0'>
-            <Text color='#000'>Already have an account ?</Text>
-            <TertiaryButton label={'Login'} onClick={()=>switchView()}/>
-          </Wrapper>
+        <Wrapper margin="50px 0 0 0">
+          <Text color="#000">Already have an account ?</Text>
+          <TertiaryButton label={'Login'} onClick={() => switchView()} />
+        </Wrapper>
       </LoginView>
     </LoginContainer>
   );
