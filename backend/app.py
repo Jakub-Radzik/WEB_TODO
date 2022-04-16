@@ -1,6 +1,5 @@
 import datetime
 import hashlib
-
 from bson import ObjectId
 from flask import Flask, request, jsonify
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
@@ -9,6 +8,7 @@ from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
+app.config['CORS_HEADERS'] = 'Content-Type'
 jwt = JWTManager(app)
 app.config['JWT_SECRET_KEY'] = 'JanuszPawlacz2137'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=1)
@@ -27,7 +27,6 @@ def hello_world():
 @app.route("/api/v1/register", methods=["POST"])
 def register():
     new_user = request.get_json()
-    print(new_user)
     new_user["password"] = hashlib.sha256(new_user["password"].encode("utf-8")).hexdigest()
     doc = users_collection.find_one({"username": new_user["username"]})
     if not doc:
@@ -70,7 +69,6 @@ def profile():
 def tasks():
     current_user = get_jwt_identity()
     user_from_db = users_collection.find_one({'username': current_user})
-    print(user_from_db['_id'])
     if user_from_db:
         tasks_from_db = tasks_collection.find({'user_id': str(user_from_db['_id'])})
         tasks = []
@@ -102,43 +100,45 @@ def delete_task(task_id):
     current_user = get_jwt_identity()
     user_from_db = users_collection.find_one({'username': current_user})
     if user_from_db:
-        tasks_collection.delete_one({'_id': task_id})
+        tasks_collection.delete_one({'_id': ObjectId(task_id)})
         return jsonify({'msg': 'Task deleted successfully'}), 200
     else:
         return jsonify({'msg': 'Profile not found'}), 404
 
 
-@app.route("/api/v1/tasks/<task_id>", methods=["PUT"])
+# todo: change method to PUT
+@app.route("/api/v1/tasks/duplicate/<task_id>", methods=["GET"])
 @jwt_required()
 def duplicate_task(task_id):
-    # current_user = get_jwt_identity()
-    # user_from_db = users_collection.find_one({'username': current_user})
-    # if user_from_db:
-    task = tasks_collection.find_one(ObjectId(task_id))
-    del task['_id']
-    tasks_collection.insert_one(task)
-
-    response = jsonify({'msg': 'Task duplicated successfully'})
-    return response, 200
-    # else:
-    #     return jsonify({'msg': 'Profile not found'}), 404
-
-
-@app.route("/api/v1/tasks/<task_id>", methods=["GET"])
-@jwt_required()
-def get_task_by_id(task_id):
-    # current_user = get_jwt_identity()
-    # user_from_db = users_collection.find_one({'username': current_user})
-    # if user_from_db:
-    print(task_id)
-    task = tasks_collection.find_one(ObjectId(task_id))
-    if task:
-        task['_id'] = str(task['_id'])
-        return jsonify({'task': task}), 200
+    current_user = get_jwt_identity()
+    user_from_db = users_collection.find_one({'username': current_user})
+    if user_from_db:
+        finded = tasks_collection.find_one({'_id': ObjectId(task_id)})
+        if finded:
+            del finded['_id']
+            tasks_collection.insert_one(finded)
+            return jsonify({'msg': 'Task duplicated successfully'}), 200
+        else:
+            return jsonify({'msg': 'Task not found'}), 404
     else:
-        return jsonify({'msg': 'Task not found'}), 404
-    # else:
-    #     return jsonify({'msg': 'Profile not found'}), 404
+        return jsonify({'msg': 'Profile not found'}), 404
+
+
+# @app.route("/api/v1/tasks/<task_id>", methods=["GET"])
+# @jwt_required()
+# def get_task_by_id(task_id):
+#     # current_user = get_jwt_identity()
+#     # user_from_db = users_collection.find_one({'username': current_user})
+#     # if user_from_db:
+#     print(task_id)
+#     task = tasks_collection.find_one(ObjectId(task_id))
+#     if task:
+#         task['_id'] = str(task['_id'])
+#         return jsonify({'task': task}), 200
+#     else:
+#         return jsonify({'msg': 'Task not found'}), 404
+#     # else:
+#     #     return jsonify({'msg': 'Profile not found'}), 404
 
 
 @app.route("/api/v1/tasks/<task_id>", methods=["PATCH"])

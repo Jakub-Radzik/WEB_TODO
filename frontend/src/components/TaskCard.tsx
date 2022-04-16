@@ -1,16 +1,12 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import styled from 'styled-components';
 import { MAXIMUM_RED_PURPLE } from '../design/colors';
 import { RAJDHANI } from '../design/fonts';
 import { IconButton } from '../elements/button';
-import { Task, useTask } from '../hooks/useTasks';
+import { Task, TasksActions, useTask } from '../hooks/useTasks';
 import Delete from '../assets/delete.png';
 import Duplicate from '../assets/duplicate.png';
 import Edit from '../assets/edit.png';
-
-type TaskCardProps = {
-  task: Task;
-};
 
 const StyledTaskCard = styled.div`
   border: 1px solid black;
@@ -67,12 +63,11 @@ const StyledTasksOperations = styled.div`
   }
 `;
 
+type TaskCardProps = {
+  task: Task;
+};
 
-const TaskCard: FC<TaskCardProps> = ({ task }) => {
-
-    const {duplicateTask} = useTask()
-    console.log(task._id)
-
+const TaskCard: FC<TaskCardProps & TasksActions> = ({ task, duplicateTask, deleteTask }) => {
   return (
     <StyledTaskCard>
       <StyledTaskHeader color={task.color}>
@@ -87,9 +82,7 @@ const TaskCard: FC<TaskCardProps> = ({ task }) => {
             throw new Error('Function not implemented.');
               } }/>
         <IconButton icon={Duplicate} onClick={()=>duplicateTask(task._id)}/>
-        <IconButton icon={Delete} onClick={function (): void {
-            throw new Error('Function not implemented.');
-        } }/>
+        <IconButton icon={Delete} onClick={()=>deleteTask(task._id)}/>
       </StyledTasksOperations>
     </StyledTaskCard>
   );
