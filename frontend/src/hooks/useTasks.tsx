@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { tasks } from '../types/vars';
+import { CreateTaskProps } from '../views/modals/components/CreateTaskModal';
 
 export type TasksActions = {
   duplicateTask: (taskId: string) => void;
@@ -14,6 +15,7 @@ export type Task = {
   content: string;
   completed: boolean;
   color: string;
+  createdAt: string;
 };
 
 type GetTasksResponse = {
@@ -47,6 +49,29 @@ export const useTask = () => {
       });
   }, [token]);
 
+  const createTask = useCallback(async (task: CreateTaskProps) => {
+    setIsLoading(true);
+    setError(null);
+    axios
+      .post<GetTasksResponse>('http://127.0.0.1:5000/api/v1/tasks', task, {
+        headers: {
+          Authorization: `${token}`,
+          'Content-Type': 'application/json'
+        },
+      })
+      .then(({ data }) => {
+        console.log(data)
+      })
+      .then(() => {
+        getTasks();
+      })
+      .catch(error => {
+        setError(error.message);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [token]);
 
   const duplicateTask = useCallback(async (task_id: string)=>{
     setIsLoading(true);
@@ -103,6 +128,7 @@ export const useTask = () => {
     getTasks,
     duplicateTask,
     deleteTask,
+    createTask,
     tasks
   };
 };
