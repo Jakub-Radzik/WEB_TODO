@@ -18,7 +18,7 @@ const StyledButton = styled.div<{ disabled?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: 'pointer';
+  cursor: pointer;
   width: 100%;
   border: ${({ disabled }) =>
     disabled ? `1px solid ${GRAY}` : `1px solid ${MAXIMUM_RED_PURPLE}`};
@@ -72,6 +72,7 @@ export const TertiaryButton: FC<ButtonProps> = ({
 const StyledIconButton = styled.div`
   width: 50px;
   height: 50px;
+  cursor: pointer;
   > * {
     width: 50px;
     height: 50px;

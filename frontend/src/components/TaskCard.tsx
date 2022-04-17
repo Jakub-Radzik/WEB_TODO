@@ -8,7 +8,7 @@ import Delete from '../assets/delete.png';
 import Duplicate from '../assets/duplicate.png';
 import Edit from '../assets/edit.png';
 
-const StyledTaskCard = styled.div`
+export const StyledTaskCard = styled.div`
   border: 1px solid black;
   font-family: ${RAJDHANI};
   margin: 10px;
@@ -27,7 +27,7 @@ const TaskTitle = styled.h1`
   letter-spacing: 1.5px;
 `
 
-const StyledTaskHeader = styled.div<{ color: string }>`
+export const StyledTaskHeader = styled.div<{ color: string }>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -37,7 +37,7 @@ const StyledTaskHeader = styled.div<{ color: string }>`
   border-radius: 25px 25px 0 0;
 `;
 
-const TaskContent = styled.div`
+export const TaskContent = styled.div`
   overflow: scroll;
   width: 100%;
   border-top: 3px solid ${MAXIMUM_RED_PURPLE};

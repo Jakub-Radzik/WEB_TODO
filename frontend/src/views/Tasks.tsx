@@ -10,7 +10,6 @@ const StyledTaskList = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 1px solid black;
   width: 50%;
   padding: 10px;
 `;
