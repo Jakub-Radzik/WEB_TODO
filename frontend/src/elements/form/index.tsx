@@ -23,7 +23,7 @@ const StyledTextArea = styled.textarea`
   border-radius: 5px;
   border: 1px solid ${GRAY};
   resize: none;
-  border:none;
+  border: none;
   outline: none;
   padding: 5px;
 `;
@@ -45,5 +45,11 @@ export const Input: FC<InputProps> = ({ value, onChange, ...props }) => {
 };
 
 export const TextArea: FC<InputProps> = ({ value, onChange, ...props }) => {
-  return <StyledTextArea value={value} onChange={e=> onChange(e.target.value)} {...props}/>
-} 
+  return (
+    <StyledTextArea
+      value={value}
+      onChange={e => onChange(e.target.value)}
+      {...props}
+    />
+  );
+};

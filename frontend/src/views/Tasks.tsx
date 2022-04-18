@@ -16,23 +16,41 @@ const StyledTaskList = styled.div`
   padding: 10px;
 `;
 
-const Tasks: FC<{children?: React.ReactNode}> = ({children}) => {
+const Tasks: FC<{ children?: React.ReactNode }> = ({ children }) => {
   const { isLoading, duplicateTask, deleteTask } = useTask();
-  const reactiveTasks = useReactiveVar(tasks)
+  const reactiveTasks = useReactiveVar(tasks);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modifyTaskId, setModifyTaskId] = useState('');
 
   return (
     <>
-    {isLoading && <Loader />}
-    <CreateTaskModal isOpen={isModalOpen} onRequestClose={()=>setIsModalOpen(false)} taskId={modifyTaskId} title={"Update task"}/>
-    {!isLoading && <StyledTaskList>
-      {children}
-      {reactiveTasks.map((task, index) => {
-        return <TaskCard key={index} task={task} duplicateTask={()=>duplicateTask(task._id)} deleteTask={()=>deleteTask(task._id)} modifyTask={()=>{setIsModalOpen(true); setModifyTaskId(task._id)}}/>;
-      })}
-    </StyledTaskList>}
+      {isLoading && <Loader />}
+      <CreateTaskModal
+        isOpen={isModalOpen}
+        onRequestClose={() => setIsModalOpen(false)}
+        taskId={modifyTaskId}
+        title={'Update task'}
+      />
+      {!isLoading && (
+        <StyledTaskList>
+          {children}
+          {reactiveTasks.map((task, index) => {
+            return (
+              <TaskCard
+                key={index}
+                task={task}
+                duplicateTask={() => duplicateTask(task._id)}
+                deleteTask={() => deleteTask(task._id)}
+                modifyTask={() => {
+                  setIsModalOpen(true);
+                  setModifyTaskId(task._id);
+                }}
+              />
+            );
+          })}
+        </StyledTaskList>
+      )}
     </>
   );
 };

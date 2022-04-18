@@ -18,10 +18,9 @@ const ButtonGlobal = styled.div<{ disabled?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: ${({ disabled }) =>
-    disabled ? `default` : `pointer`};
+  cursor: ${({ disabled }) => (disabled ? `default` : `pointer`)};
   width: 100%;
-`
+`;
 
 const StyledButton = styled(ButtonGlobal)`
   border: ${({ disabled }) =>
@@ -33,7 +32,7 @@ const StyledButton = styled(ButtonGlobal)`
 const StyledButton2 = styled(ButtonGlobal)`
   border: 2px solid ${RICH_BLACK};
   box-shadow: 1px 3px 2px 0 ${MAXIMUM_RED_PURPLE};
-`
+`;
 
 type ButtonProps = {
   label: string;
@@ -67,8 +66,6 @@ export const ButtonOutline: FC<ButtonProps> = ({
     </StyledButton2>
   );
 };
-
-
 
 const StyledButtonWrapper = styled.div`
   display: flex;

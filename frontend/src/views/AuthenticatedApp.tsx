@@ -21,17 +21,23 @@ const SidePanel = styled.div`
   border-radius: 30px;
   padding: 20px;
   margin-left: 30px;
-`
+`;
 
 const AuthenticatedApp = () => {
-
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <App>
-      <CreateTaskModal isOpen={isModalOpen} onRequestClose={()=>setIsModalOpen(false)} title={"Create task"} />
+      <CreateTaskModal
+        isOpen={isModalOpen}
+        onRequestClose={() => setIsModalOpen(false)}
+        title={'Create task'}
+      />
       <Tasks>
-        <ButtonOutline label={'Add new task'} onClick={() => setIsModalOpen(true)}/>
+        <ButtonOutline
+          label={'Add new task'}
+          onClick={() => setIsModalOpen(true)}
+        />
       </Tasks>
     </App>
   );
