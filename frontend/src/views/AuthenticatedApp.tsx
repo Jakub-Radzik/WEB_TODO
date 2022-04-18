@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { RICH_BLACK } from '../design/colors';
-import { Button, ButtonOutline } from '../elements/button';
+// import { RICH_BLACK } from '../design/colors';
+import { ButtonOutline } from '../elements/button';
 import CreateTaskModal from './modals/components/CreateTaskModal';
 import Tasks from './Tasks';
 
@@ -14,14 +14,14 @@ const App = styled.div`
   margin: 100px 0 0 0;
 `;
 
-const SidePanel = styled.div`
-  height: 50vh;
-  width: 300px;
-  background-color: ${RICH_BLACK};
-  border-radius: 30px;
-  padding: 20px;
-  margin-left: 30px;
-`;
+// const SidePanel = styled.div`
+//   height: 50vh;
+//   width: 300px;
+//   background-color: ${RICH_BLACK};
+//   border-radius: 30px;
+//   padding: 20px;
+//   margin-left: 30px;
+// `;
 
 const AuthenticatedApp = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

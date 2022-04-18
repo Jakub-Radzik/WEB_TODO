@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { PLATINUM, VERMILION, WHITE } from '../design/colors';
+import { VERMILION, WHITE } from '../design/colors';
 
 const View = styled.div`
   display: flex;

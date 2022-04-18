@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { MAXIMUM_RED_PURPLE } from '../design/colors';
 import { RAJDHANI } from '../design/fonts';
 import { IconButton } from '../elements/button';
-import { Task, TasksActions, useTask } from '../hooks/useTasks';
+import { Task, TasksActions } from '../hooks/useTasks';
 import Delete from '../assets/delete.png';
 import Duplicate from '../assets/duplicate.png';
 import Edit from '../assets/edit.png';

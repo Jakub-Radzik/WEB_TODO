@@ -55,7 +55,7 @@ const CreateTaskModal: FC<ModalWrapperProps & { taskId?: string }> = ({
     if (taskId) {
       getTask(taskId).then(task => setNewTask(task!));
     }
-  }, [taskId]);
+  }, [taskId, getTask]);
 
   const handleSubmit = () => {
     if (taskId) {

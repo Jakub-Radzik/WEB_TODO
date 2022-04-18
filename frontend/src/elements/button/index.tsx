@@ -106,7 +106,7 @@ export const IconButton: FC<{ icon: string; onClick: () => void }> = ({
 }) => {
   return (
     <StyledIconButton onClick={onClick}>
-      <img src={icon} />
+      <img src={icon} alt="icon" />
     </StyledIconButton>
   );
 };

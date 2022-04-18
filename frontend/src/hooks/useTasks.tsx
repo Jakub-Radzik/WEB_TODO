@@ -103,7 +103,7 @@ export const useTask = () => {
           setIsLoading(false);
         });
     },
-    [token]
+    [token, getTasks]
   );
 
   const updateTask = useCallback(
@@ -131,7 +131,7 @@ export const useTask = () => {
           setIsLoading(false);
         });
     },
-    [token]
+    [token, getTasks]
   );
 
   const duplicateTask = useCallback(
@@ -158,7 +158,7 @@ export const useTask = () => {
           setIsLoading(false);
         });
     },
-    [token]
+    [token, getTasks]
   );
 
   const deleteTask = useCallback(
@@ -185,12 +185,12 @@ export const useTask = () => {
           setIsLoading(false);
         });
     },
-    [token]
+    [token, getTasks]
   );
 
   useEffect(() => {
     getTasks();
-  }, []);
+  }, [getTasks]);
 
   return {
     isLoading,
