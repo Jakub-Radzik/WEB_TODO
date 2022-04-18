@@ -121,7 +121,6 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
       .then(
         ({ data }) => {
           successToast(`You were correctly logged in ${data.username}`);
-          console.dir(data);
           setTokenHandler(`Bearer ${data.token}`);
           setStatus('authenticated');
           setUser({ username: data.username });

@@ -1,9 +1,10 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import ModalWrapper, { ModalWrapperProps } from "..";
 import { StyledTaskCard, StyledTaskHeader, TaskContent } from "../../../components/TaskCard";
 import { Button } from "../../../elements/button";
-import { Input } from "../../../elements/form";
+import { Input, TextArea } from "../../../elements/form";
+import Loader from "../../../elements/loader";
 import { Task, useTask } from "../../../hooks/useTasks";
 
 export type CreateTaskProps = Omit<Task, '_id'>
@@ -38,24 +39,39 @@ const Label = styled.label<{color: string}>`
 `
 
 
-const CreateTaskModal: FC<ModalWrapperProps> = ({isOpen, onRequestClose}) => {
+const CreateTaskModal: FC<ModalWrapperProps & {taskId?: string}> = ({isOpen, onRequestClose, taskId}) => {
 
-    const {createTask} = useTask();
+    const {isLoading, createTask,updateTask, getTask } = useTask();
+    const [newTask , setNewTask] = useState<Omit<Task, '_id'>>(initialState);
 
-    const [newTask , setNewTask] = useState<Omit<Task, '_id'>>(initialState)
+    useEffect(()=>{
+        if(taskId){
+            getTask(taskId).then(task => setNewTask(task!))
+        }
+    },[taskId])
 
     const handleSubmit = () => {
-        createTask({...newTask, createdAt: new Date().toISOString()})
+        if(taskId){
+            updateTask(taskId, {...newTask, updatedAt: new Date().toISOString()})
+            onClose();
+        }else{
+            createTask({...newTask, createdAt: new Date().toISOString()})
+        }
         setNewTask(initialState);
     }
 
-    useEffect(() => {
-        console.dir(newTask)
-    }, [newTask])
-    
+    const isValid = useCallback(() => {
+        return newTask.title && newTask.content && newTask.title.length<100;
+      }, [newTask]);
 
-    return <ModalWrapper isOpen={isOpen} onRequestClose={()=>onRequestClose && onRequestClose()}>
-        <StyledTaskCard>
+    const onClose = () => {
+        setNewTask(initialState);
+        onRequestClose();
+    }
+    
+    return <ModalWrapper isOpen={isOpen} onRequestClose={()=>onClose()}>
+        {isLoading && <Loader/>}
+        {!isLoading && <><StyledTaskCard>
             <StyledCreateTaskHeader color={newTask.color}>
                 <Input placeholder="Task Title" value={newTask.title} onChange={(value)=>setNewTask({...newTask, title: value})} style={headerInputStyles}/>
                 <div>
@@ -63,11 +79,11 @@ const CreateTaskModal: FC<ModalWrapperProps> = ({isOpen, onRequestClose}) => {
                     <input type="color" id="color" name="color" value={newTask.color} onChange={(e) => setNewTask({...newTask, color: e.target.value})} />
                 </div>
             </StyledCreateTaskHeader>
-            <StyledCreateTaskContent>
-                <Input value={newTask.content} onChange={(value: string) => setNewTask({...newTask, content: value})}/>
+            <StyledCreateTaskContent style={{padding:0}}>
+                <TextArea value={newTask.content} onChange={(value: string) => setNewTask({...newTask, content: value})} placeholder={"Start typing..."} style={{height: 200, borderRadius: '0 0 30px 30px'}}/>
             </StyledCreateTaskContent>
         </StyledTaskCard>
-        <Button label={"Create Task"} onClick={()=>handleSubmit()}/>
+        <Button disabled={!isValid()} label={taskId?"Update Task" :"Create Task"} onClick={()=>isValid() && handleSubmit()}/></>}
     </ModalWrapper>
 }
 

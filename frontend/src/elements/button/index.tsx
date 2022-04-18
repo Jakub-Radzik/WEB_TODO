@@ -18,7 +18,8 @@ const StyledButton = styled.div<{ disabled?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  cursor: ${({ disabled }) =>
+    disabled ? `default` : `pointer`};;
   width: 100%;
   border: ${({ disabled }) =>
     disabled ? `1px solid ${GRAY}` : `1px solid ${MAXIMUM_RED_PURPLE}`};

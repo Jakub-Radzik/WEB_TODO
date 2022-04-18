@@ -2,11 +2,13 @@ import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { tasks } from '../types/vars';
+import { errorToast, successToast } from '../utils/toasts';
 import { CreateTaskProps } from '../views/modals/components/CreateTaskModal';
 
 export type TasksActions = {
   duplicateTask: (taskId: string) => void;
   deleteTask: (taskId: string) => void;
+  modifyTask: (taskId: string) => void;
 };
 
 export type Task = {
@@ -16,11 +18,16 @@ export type Task = {
   completed: boolean;
   color: string;
   createdAt: string;
+  updatedAt?: string;
 };
 
 type GetTasksResponse = {
   tasks: Task[];
 };
+
+type GetTaskResponse = {
+  task: Task;
+}
 
 export const useTask = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -49,23 +56,68 @@ export const useTask = () => {
       });
   }, [token]);
 
-  const createTask = useCallback(async (task: CreateTaskProps) => {
+  const getTask = useCallback(async (task_id: string) => {
     setIsLoading(true);
     setError(null);
-    axios
-      .post<GetTasksResponse>('http://127.0.0.1:5000/api/v1/tasks', task, {
+    return axios
+      .get<GetTaskResponse>(`http://127.0.0.1:5000/api/v1/tasks/${task_id}`, {
         headers: {
           Authorization: `${token}`,
           'Content-Type': 'application/json'
         },
       })
       .then(({ data }) => {
-        console.log(data)
+        setIsLoading(false);
+        return data.task;
+      })
+      .catch(error => {
+        setError(error.message);
+      })
+  }, [token]);
+
+  const createTask = useCallback(async (task: CreateTaskProps) => {
+    setIsLoading(true);
+    setError(null);
+    axios
+      .post('http://127.0.0.1:5000/api/v1/tasks', task, {
+        headers: {
+          Authorization: `${token}`,
+          'Content-Type': 'application/json'
+        },
+      })
+      .then(() => {
+        successToast(`Task successfully created`);
       })
       .then(() => {
         getTasks();
       })
       .catch(error => {
+        errorToast(error.message);
+        setError(error.message);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [token]);
+
+  const updateTask = useCallback(async (task_id:string, task: CreateTaskProps) => {
+    setIsLoading(true);
+    setError(null);
+    axios
+      .patch(`http://127.0.0.1:5000/api/v1/tasks/${task_id}`, task, {
+        headers: {
+          Authorization: `${token}`,
+          'Content-Type': 'application/json'
+        },
+      })
+      .then((data) => {
+        successToast(`Task successfully updated`);
+      })
+      .then(() => {
+        getTasks();
+      })
+      .catch(error => {
+        errorToast(error.message);
         setError(error.message);
       })
       .finally(() => {
@@ -81,13 +133,14 @@ export const useTask = () => {
         'Content-Type': 'application/json'
       },
     })
-    .then(data=>{
-      console.dir(data)
+    .then(()=>{
+      successToast(`Task successfully duplicated`);
     })
     .then(() => {
       getTasks();
     })
     .catch(error => {
+      errorToast(error.message);
       setError(error.message);
     })
     .finally(async () => {
@@ -104,13 +157,14 @@ export const useTask = () => {
         'Content-Type': 'application/json'
       },
     })
-    .then(data=>{
-      console.dir(data)
+    .then(()=>{
+      successToast(`Task successfully deleted`);
     })
     .then(() => {
       getTasks();
     })
     .catch(error => {
+      errorToast(error.message);
       setError(error.message);
     })
     .finally(async () => {
@@ -126,9 +180,11 @@ export const useTask = () => {
     isLoading,
     error,
     getTasks,
+    getTask,
     duplicateTask,
     deleteTask,
     createTask,
+    updateTask,
     tasks
   };
 };

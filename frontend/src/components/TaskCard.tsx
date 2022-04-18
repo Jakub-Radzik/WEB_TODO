@@ -28,6 +28,7 @@ const TaskTitle = styled.h1`
 `
 
 export const StyledTaskHeader = styled.div<{ color: string }>`
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -38,7 +39,7 @@ export const StyledTaskHeader = styled.div<{ color: string }>`
 `;
 
 export const TaskContent = styled.div`
-  overflow: scroll;
+  overflow: hidden;
   width: 100%;
   border-top: 3px solid ${MAXIMUM_RED_PURPLE};
   padding: 0 10px;
@@ -67,20 +68,17 @@ type TaskCardProps = {
   task: Task;
 };
 
-const TaskCard: FC<TaskCardProps & TasksActions> = ({ task, duplicateTask, deleteTask }) => {
+const TaskCard: FC<TaskCardProps & TasksActions> = ({ task, duplicateTask, deleteTask, modifyTask }) => {
   return (
     <StyledTaskCard>
       <StyledTaskHeader color={task.color}>
         <TaskTitle>{task.title}</TaskTitle>
       </StyledTaskHeader>
-
       <TaskContent>
         <TaskText>{task.content}</TaskText>
       </TaskContent>
       <StyledTasksOperations>
-        <IconButton icon={Edit} onClick={function (): void {
-            throw new Error('Function not implemented.');
-              } }/>
+        <IconButton icon={Edit} onClick={()=>modifyTask(task._id) }/>
         <IconButton icon={Duplicate} onClick={()=>duplicateTask(task._id)}/>
         <IconButton icon={Delete} onClick={()=>deleteTask(task._id)}/>
       </StyledTasksOperations>

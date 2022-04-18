@@ -11,6 +11,21 @@ const StyledInput = styled.input`
   box-sizing: border-box;
   border-radius: 5px;
   border: 1px solid ${GRAY};
+  outline: none;
+`;
+
+const StyledTextArea = styled.textarea`
+  font-family: ${RAJDHANI};
+  font-size: large;
+  width: 100%;
+  height: 50px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  border: 1px solid ${GRAY};
+  resize: none;
+  border:none;
+  outline: none;
+  padding: 5px;
 `;
 
 type InputProps = {
@@ -28,3 +43,7 @@ export const Input: FC<InputProps> = ({ value, onChange, ...props }) => {
     />
   );
 };
+
+export const TextArea: FC<InputProps> = ({ value, onChange, ...props }) => {
+  return <StyledTextArea value={value} onChange={e=> onChange(e.target.value)} {...props}/>
+} 

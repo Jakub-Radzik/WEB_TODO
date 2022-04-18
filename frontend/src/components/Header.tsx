@@ -11,7 +11,6 @@ import { Logo } from '../elements/images';
 
 const Header: FC<{}> = () => {
   const { user, logout } = useAuth();
-  console.dir(user);
   return (
     <StyledHeader>
       <HeaderContainer>
