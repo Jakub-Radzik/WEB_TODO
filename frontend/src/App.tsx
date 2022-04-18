@@ -1,11 +1,11 @@
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import './App.css';
 import Header from './components/Header';
 import Login from './views/Login';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from './context/AuthContext';
 import Register from './views/Register';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import AuthenticatedApp from './views/AuthenticatedApp';
 
 function App() {
