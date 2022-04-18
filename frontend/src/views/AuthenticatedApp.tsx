@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { RICH_BLACK } from '../design/colors';
-import { Button } from '../elements/button';
+import { Button, ButtonOutline } from '../elements/button';
 import CreateTaskModal from './modals/components/CreateTaskModal';
 import Tasks from './Tasks';
 
@@ -29,11 +29,10 @@ const AuthenticatedApp = () => {
 
   return (
     <App>
-      <CreateTaskModal isOpen={isModalOpen} onRequestClose={()=>setIsModalOpen(false)} />
-      <Tasks/>
-      <SidePanel>
-        <Button label={'Add new task'} onClick={() => setIsModalOpen(true)}/>
-      </SidePanel>
+      <CreateTaskModal isOpen={isModalOpen} onRequestClose={()=>setIsModalOpen(false)} title={"Create task"} />
+      <Tasks>
+        <ButtonOutline label={'Add new task'} onClick={() => setIsModalOpen(true)}/>
+      </Tasks>
     </App>
   );
 };

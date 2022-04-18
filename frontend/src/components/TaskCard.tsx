@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import styled from 'styled-components';
 import { MAXIMUM_RED_PURPLE } from '../design/colors';
 import { RAJDHANI } from '../design/fonts';
@@ -21,16 +21,17 @@ export const StyledTaskCard = styled.div`
   width: 100%;
   border-radius: 30px;
   border: 3px solid ${MAXIMUM_RED_PURPLE};
-  box-shadow: 0px 5px 10px 0px ${MAXIMUM_RED_PURPLE};
+  box-shadow: 1px 3px 2px 0 ${MAXIMUM_RED_PURPLE};
 `;
 
-const TaskTitle = styled.h1`
+export const TaskTitle = styled.h1`
   text-transform: uppercase;
   font-size: 25px;
   letter-spacing: 1.5px;
 `
 
 export const StyledTaskHeader = styled.div<{ color: string }>`
+  position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;

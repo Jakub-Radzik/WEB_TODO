@@ -4,28 +4,36 @@ import {
   GRAY,
   LIGHT_GRAY,
   MAXIMUM_RED_PURPLE,
+  RICH_BLACK,
   VERMILION,
   WHITE,
 } from '../../design/colors';
 import { RAJDHANI } from '../../design/fonts';
 
-const StyledButton = styled.div<{ disabled?: boolean }>`
+const ButtonGlobal = styled.div<{ disabled?: boolean }>`
   font-family: ${RAJDHANI};
   font-size: xx-large;
-  border: 1px solid black;
   border-radius: 30px;
   height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: ${({ disabled }) =>
-    disabled ? `default` : `pointer`};;
+    disabled ? `default` : `pointer`};
   width: 100%;
+`
+
+const StyledButton = styled(ButtonGlobal)`
   border: ${({ disabled }) =>
     disabled ? `1px solid ${GRAY}` : `1px solid ${MAXIMUM_RED_PURPLE}`};
   color: ${({ disabled }) => (disabled ? GRAY : WHITE)};
   background-color: ${({ disabled }) => (disabled ? LIGHT_GRAY : VERMILION)};
 `;
+
+const StyledButton2 = styled(ButtonGlobal)`
+  border: 2px solid ${RICH_BLACK};
+  box-shadow: 1px 3px 2px 0 ${MAXIMUM_RED_PURPLE};
+`
 
 type ButtonProps = {
   label: string;
@@ -46,6 +54,21 @@ export const Button: FC<ButtonProps> = ({
     </StyledButton>
   );
 };
+
+export const ButtonOutline: FC<ButtonProps> = ({
+  label,
+  onClick,
+  disabled,
+  ...props
+}) => {
+  return (
+    <StyledButton2 onClick={onClick} disabled={disabled} {...props}>
+      {label}
+    </StyledButton2>
+  );
+};
+
+
 
 const StyledButtonWrapper = styled.div`
   display: flex;
