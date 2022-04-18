@@ -39,7 +39,7 @@ const Label = styled.label<{color: string}>`
 `
 
 
-const CreateTaskModal: FC<ModalWrapperProps & {taskId?: string}> = ({isOpen, onRequestClose, taskId}) => {
+const CreateTaskModal: FC<ModalWrapperProps & {taskId?: string}> = ({isOpen, onRequestClose, taskId, title}) => {
 
     const {isLoading, createTask,updateTask, getTask } = useTask();
     const [newTask , setNewTask] = useState<Omit<Task, '_id'>>(initialState);
@@ -53,23 +53,18 @@ const CreateTaskModal: FC<ModalWrapperProps & {taskId?: string}> = ({isOpen, onR
     const handleSubmit = () => {
         if(taskId){
             updateTask(taskId, {...newTask, updatedAt: new Date().toISOString()})
-            onClose();
+            onRequestClose();
         }else{
             createTask({...newTask, createdAt: new Date().toISOString()})
+            setNewTask(initialState);
         }
-        setNewTask(initialState);
     }
 
     const isValid = useCallback(() => {
         return newTask.title && newTask.content && newTask.title.length<100;
       }, [newTask]);
 
-    const onClose = () => {
-        setNewTask(initialState);
-        onRequestClose();
-    }
-    
-    return <ModalWrapper isOpen={isOpen} onRequestClose={()=>onClose()}>
+    return <ModalWrapper isOpen={isOpen} onRequestClose={()=>onRequestClose()} title={title}>
         {isLoading && <Loader/>}
         {!isLoading && <><StyledTaskCard>
             <StyledCreateTaskHeader color={newTask.color}>

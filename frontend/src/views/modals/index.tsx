@@ -2,12 +2,14 @@ import React, { FC } from 'react';
 import Modal from 'react-modal';
 import styled from 'styled-components';
 import Close from '../../assets/close.png';
+import { TaskTitle } from '../../components/TaskCard';
 import { IconButton } from '../../elements/button';
 
 export type ModalWrapperProps = {
     children?: React.ReactNode;
     isOpen: boolean;
     onRequestClose: ()=>void;
+    title: string
 }
 
 const customStyles = {
@@ -30,7 +32,7 @@ const ModalHeader = styled.div`
     border-radius: 30px 30px 0 0;
     padding: 20px;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     box-sizing: border-box;
     border-bottom: 1px solid black;
 `
@@ -46,9 +48,10 @@ const ModalContent = styled.div`
     padding: 20px 10px;
 `
 
-const ModalWrapper:FC<ModalWrapperProps> = ({children, isOpen, onRequestClose}) => {
+const ModalWrapper:FC<ModalWrapperProps> = ({children, isOpen, title, onRequestClose}) => {
     return <Modal isOpen={isOpen} style={customStyles} shouldCloseOnOverlayClick={false}>
         <ModalHeader>
+            <TaskTitle>{title}</TaskTitle>
             <IconButton icon={Close} onClick={()=> onRequestClose()}/></ModalHeader>
         <ModalContent>
             {children}
