@@ -11,7 +11,7 @@ cors = CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['CORS_HEADERS'] = 'Content-Type'
 jwt = JWTManager(app)
 app.config['JWT_SECRET_KEY'] = 'JanuszPawlacz2137'
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=1)
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=2)
 
 client = MongoClient('mongodb+srv://admin:admin@cluster0.ab4vr.mongodb.net/slp_todo?retryWrites=true&w=majority')
 db = client["slp_todo"]
@@ -124,21 +124,21 @@ def duplicate_task(task_id):
         return jsonify({'msg': 'Profile not found'}), 404
 
 
-# @app.route("/api/v1/tasks/<task_id>", methods=["GET"])
-# @jwt_required()
-# def get_task_by_id(task_id):
-#     # current_user = get_jwt_identity()
-#     # user_from_db = users_collection.find_one({'username': current_user})
-#     # if user_from_db:
-#     print(task_id)
-#     task = tasks_collection.find_one(ObjectId(task_id))
-#     if task:
-#         task['_id'] = str(task['_id'])
-#         return jsonify({'task': task}), 200
-#     else:
-#         return jsonify({'msg': 'Task not found'}), 404
-#     # else:
-#     #     return jsonify({'msg': 'Profile not found'}), 404
+@app.route("/api/v1/tasks/<task_id>", methods=["GET"])
+@jwt_required()
+def get_task_by_id(task_id):
+    current_user = get_jwt_identity()
+    user_from_db = users_collection.find_one({'username': current_user})
+    if user_from_db:
+        task = tasks_collection.find_one(ObjectId(task_id))
+        if task:
+            del task['_id']
+            del task['user_id']
+            return jsonify({'task': task}), 200
+        else:
+            return jsonify({'msg': 'Task not found'}), 404
+    else:
+        return jsonify({'msg': 'Profile not found'}), 404
 
 
 @app.route("/api/v1/tasks/<task_id>", methods=["PATCH"])
@@ -148,7 +148,8 @@ def update_task(task_id):
     user_from_db = users_collection.find_one({'username': current_user})
     if user_from_db:
         updated_task = request.get_json()
-        tasks_collection.update_one({'_id': task_id}, {'$set': updated_task})
+        print(updated_task)
+        tasks_collection.update_one({'_id': ObjectId(task_id)}, {'$set': updated_task})
         return jsonify({'msg': 'Task updated successfully'}), 200
     else:
         return jsonify({'msg': 'Profile not found'}), 404
