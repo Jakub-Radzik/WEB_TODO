@@ -7,6 +7,9 @@ import { Task, TasksActions, useTask } from '../hooks/useTasks';
 import Delete from '../assets/delete.png';
 import Duplicate from '../assets/duplicate.png';
 import Edit from '../assets/edit.png';
+import moment from 'moment';
+import ReactTooltip from 'react-tooltip';
+import Information from '../assets/information.png'
 
 export const StyledTaskCard = styled.div`
   border: 1px solid black;
@@ -64,15 +67,36 @@ const StyledTasksOperations = styled.div`
   }
 `;
 
+const Info = styled.img`
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 30px;
+  background-color: rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 100%;
+`
+
+
 type TaskCardProps = {
   task: Task;
 };
 
 const TaskCard: FC<TaskCardProps & TasksActions> = ({ task, duplicateTask, deleteTask, modifyTask }) => {
+
+  const tooltipInfo = () => {
+    if(task.updatedAt){
+      return `Created at: ${moment(task.createdAt).format("DD/MM/YYYY HH:mm")} Last modification: ${moment(task.updatedAt).format("DD/MM/YYYY HH:mm")}`
+    }
+    return `Created at: ${moment(task.createdAt).format("DD/MM/YYYY HH:mm")}`;
+  }
+
   return (
     <StyledTaskCard>
+      <ReactTooltip type='info' backgroundColor={MAXIMUM_RED_PURPLE}/>
       <StyledTaskHeader color={task.color}>
         <TaskTitle>{task.title}</TaskTitle>
+          <Info src={Information} alt="info"  data-tip={tooltipInfo()}/>
       </StyledTaskHeader>
       <TaskContent>
         <TaskText>{task.content}</TaskText>
