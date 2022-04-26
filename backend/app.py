@@ -10,7 +10,7 @@ app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['CORS_HEADERS'] = 'Content-Type'
 jwt = JWTManager(app)
-app.config['JWT_SECRET_KEY'] = 'JanuszPawlacz2137'
+app.config['JWT_SECRET_KEY'] = '5369656D696E736B69546F4A6562616E794377656C4B757277794E6965436863655A6E61634C4D414F'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=2)
 
 app.register_blueprint(users)
