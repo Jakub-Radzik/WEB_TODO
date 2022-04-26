@@ -1,5 +1,10 @@
-# Scripting-Languages-Project
+# SLP_TODO
 # Todo App React-Flask-Mongo
+
+### SLP like Scripting-Languages-Project
+Unfortunately my university is backward and I cant use reactJS. 
+I keep this project because I enjoyed doing it.
+Second version is made by using Flask with render templates aproach - It does not makes me smile :(
 
 ## frontend
 <img src="https://github.com/radzikoska123/radzikoska123/blob/main/icons/react.png" alt="react" width="30"/> ReactJS
