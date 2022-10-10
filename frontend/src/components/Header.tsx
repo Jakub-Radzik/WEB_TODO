@@ -18,7 +18,7 @@ const Header: FC<{}> = () => {
           <Logo src={LogoImg} />
         </HeaderBox>
         <HeaderBox>
-          <PrimaryText color={WHITE}>SLP_TODO</PrimaryText>
+          <PrimaryText color={WHITE}>WEB_TODO</PrimaryText>
         </HeaderBox>
         <HeaderBox horizontal="flex-end">
           {user?.username && (
