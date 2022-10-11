@@ -1,9 +1,9 @@
 import { buildSchema } from "graphql";
 
-var schema = buildSchema(`
+export const schema = buildSchema(`
     type Query {
         message: String
+        what: String
+        roll: [Int]
     }
 `);
-
-module.exports = schema;

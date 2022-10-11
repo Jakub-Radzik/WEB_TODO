@@ -1,9 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.schema = void 0;
 const graphql_1 = require("graphql");
-var schema = (0, graphql_1.buildSchema)(`
+exports.schema = (0, graphql_1.buildSchema)(`
     type Query {
         message: String
+        what: String
+        roll: [Int]
     }
 `);
-module.exports = schema;
