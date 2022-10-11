@@ -5,6 +5,10 @@ const schemas = {
     username: String,
     password: String,
   },
+  tasks: {
+    title: String,
+    description: String,
+  }
 };
 
 const createModels = () => {
