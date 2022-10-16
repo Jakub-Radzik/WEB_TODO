@@ -12,6 +12,6 @@ export const getUserTasks = (userId: string) => {
 }
 
 export const createTask = (task: TaskInput) => {
-    console.log('createTask', task)
-    return taskService.createTask(task)
+  console.log('createTask', task)
+  return taskService.createTask(task)
 }

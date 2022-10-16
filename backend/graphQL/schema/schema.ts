@@ -46,15 +46,14 @@ const mutationType = new GraphQLObjectType({
     createTask: {
       type: taskType,
       args: {
-        task: { type: taskInput},
+        task: { type: taskInput },
       },
       resolve: (_, { task }) => createTask(task),
     },
   },
-});
+})
 
 export const betterSchema = new GraphQLSchema({
   query: queryType,
   mutation: mutationType,
 })
-

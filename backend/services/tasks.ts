@@ -29,14 +29,14 @@ const taskService = {
   getUserTasks: (userId: string) => {
     return tasks.filter(task => task.userId === userId)
   },
-createTask: (task: TaskInput) => {
+  createTask: (task: TaskInput) => {
     const newTask = {
-        ...task,
-        id: (tasks.length + 1).toString(),
+      ...task,
+      id: (tasks.length + 1).toString(),
     }
-    tasks.push(newTask);
-    return newTask;
-}
+    tasks.push(newTask)
+    return newTask
+  },
 }
 
 export default taskService
