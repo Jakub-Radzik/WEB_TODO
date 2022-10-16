@@ -4,8 +4,8 @@ import {
   GraphQLSchema,
   GraphQLString,
 } from 'graphql'
-import { getTask, getUserTasks } from '../resolvers/tasks'
-import { taskType } from '../types/task'
+import { createTask, getTask, getUserTasks } from '../resolvers/tasks'
+import { taskInput, taskType } from '../types/task'
 import { userType } from '../types/user'
 
 const queryType = new GraphQLObjectType({
@@ -40,6 +40,21 @@ const queryType = new GraphQLObjectType({
   },
 })
 
+const mutationType = new GraphQLObjectType({
+  name: 'Mutation',
+  fields: {
+    createTask: {
+      type: taskType,
+      args: {
+        task: { type: taskInput},
+      },
+      resolve: (_, { task }) => createTask(task),
+    },
+  },
+});
+
 export const betterSchema = new GraphQLSchema({
   query: queryType,
+  mutation: mutationType,
 })
+

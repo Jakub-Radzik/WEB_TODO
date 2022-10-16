@@ -1,4 +1,4 @@
-import { Task } from '../graphQL/types/task'
+import { Task, TaskInput } from '../graphQL/types/task'
 
 // fake DB remove it !!!!!
 const tasks: Task[] = [
@@ -29,6 +29,14 @@ const taskService = {
   getUserTasks: (userId: string) => {
     return tasks.filter(task => task.userId === userId)
   },
+createTask: (task: TaskInput) => {
+    const newTask = {
+        ...task,
+        id: (tasks.length + 1).toString(),
+    }
+    tasks.push(newTask);
+    return newTask;
+}
 }
 
 export default taskService

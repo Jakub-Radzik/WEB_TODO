@@ -1,4 +1,4 @@
-import { GraphQLBoolean, GraphQLObjectType, GraphQLString } from 'graphql'
+import { GraphQLBoolean, GraphQLInputObjectType, GraphQLObjectType, GraphQLString } from 'graphql'
 
 export const taskType = new GraphQLObjectType({
   name: 'Task',
@@ -10,9 +10,20 @@ export const taskType = new GraphQLObjectType({
   },
 })
 
+export const taskInput = new GraphQLInputObjectType({
+  name: 'TaskInput',
+  fields: {
+    name: { type: GraphQLString },
+    done: { type: GraphQLBoolean },
+    userId: { type: GraphQLString },
+  }
+})
+
 export type Task = {
   id: string
   name: string
   done: boolean
   userId: string
 }
+
+export type TaskInput = Omit<Task, 'id'>;
