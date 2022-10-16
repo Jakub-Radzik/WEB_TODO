@@ -1,37 +1,9 @@
-import { buildSchema, GraphQLObjectType, GraphQLSchema, GraphQLString } from "graphql";
+import { GraphQLList, GraphQLObjectType, GraphQLSchema, GraphQLString } from "graphql";
+import { getTask, getUserTasks } from "../resolvers/tasks";
+import { taskType } from "../types/task";
+import { userType } from "../types/user";
 
-export const schema = buildSchema(`
-    type Task {
-        _id: String!
-        name: String
-    }
-
-    type Query {
-        message: String
-        what: String
-        roll: [Int]
-        getTask(id: String!): Task
-        getUserTasks(userId: String!): [Task]
-    }
-`);
-
-const userType = new GraphQLObjectType({
-    name: 'User',
-    fields: {
-      id: { type: GraphQLString },
-      name: { type: GraphQLString },
-    }
-  });
-
-const taskType = new GraphQLObjectType({
-    name: 'Task',
-    fields: {
-      id: { type: GraphQLString },
-      name: { type: GraphQLString },
-    }
-  });
-
-const query = new GraphQLObjectType({
+const queryType = new GraphQLObjectType({
     name: 'Query',
     fields: {
       user: {
@@ -51,16 +23,18 @@ const query = new GraphQLObjectType({
         args: {
           taskId: { type: GraphQLString }
         },
-        resolve: (_, {taskId}) => {
-          return {
-            id: "1",
-            name: "Jakub"
-          }
-        }
-      },
+        resolve: (_, {taskId}) => getTask(taskId),
+    },
+    userTasks: {
+        type: new GraphQLList(taskType) ,
+        args: {
+          userId: { type: GraphQLString }
+        },
+        resolve: (_, {userId}) => getUserTasks(userId),
     }
+  }
   });
 
   export const betterSchema = new GraphQLSchema({
-    query: query,
+    query: queryType,
   })
