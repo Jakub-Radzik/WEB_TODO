@@ -1,14 +1,14 @@
-const { connect } = require('mongoose');
-const { MONGO_URI } = require('../config/config');
-const { createModels, models } = require('./schema');
+const { connect } = require('mongoose')
+const { MONGO_URI } = require('../config/config')
+const { createModels, models } = require('./schema')
 
-main().catch(err => console.log(err));
+main().catch(err => console.log(err))
 
 async function main() {
-  console.log('Connecting to MongoDB...');
-  await connect(MONGO_URI);
-  createModels();
-  console.log(`Connected to ${MONGO_URI}`);
+  console.log('Connecting to MongoDB...')
+  await connect(MONGO_URI)
+  createModels()
+  console.log(`Connected to ${MONGO_URI}`)
 }
 
 // EXAMPLE USAGE:
