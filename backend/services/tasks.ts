@@ -1,11 +1,17 @@
 import { Task, TaskInput } from '../graphQL/types/task'
 import { TaskModel } from '../utils/Mongo/connection'
 
-// fake DB remove it !!!!!
+type TaskService = {
+  getTask: (taskId: string) => Promise<Task | null>,
+  getUserTasks: (userId: string) => Promise<Task[] | []>,
+  createTask: (task: TaskInput) => Promise<Task | null>,
+  updateTask: (taskId: string, task: TaskInput) => Promise<Task | null>,
+  deleteTask: (taskId: string) => Promise<Task | null>
+}
 
-const taskService = {
-  getTask: async (id: string) => {
-    return await TaskModel.findById(id)
+const taskService: TaskService = {
+  getTask: async (taskId: string) => {
+    return await TaskModel.findById(taskId)
   },
   getUserTasks: async (userId: string) => {
     return await TaskModel.find({ userId })
