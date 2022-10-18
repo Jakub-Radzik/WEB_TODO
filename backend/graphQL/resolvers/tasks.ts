@@ -7,7 +7,6 @@ export const getTask = (id: string) => {
 }
 
 export const getUserTasks = (userId: string) => {
-  console.log('getUsers', userId)
   return taskService.getUserTasks(userId)
 }
 

@@ -4,11 +4,12 @@ import {
   GraphQLObjectType,
   GraphQLString,
 } from 'graphql'
+import { Types, Document } from 'mongoose'
 
 export const taskType = new GraphQLObjectType({
   name: 'Task',
   fields: {
-    id: { type: GraphQLString },
+    _id: { type: GraphQLString },
     name: { type: GraphQLString },
     done: { type: GraphQLBoolean },
     userId: { type: GraphQLString },
@@ -24,11 +25,10 @@ export const taskInput = new GraphQLInputObjectType({
   },
 })
 
-export type Task = {
-  id: string
-  name: string
-  done: boolean
-  userId: string
+export interface Task extends Document {
+  name: string;
+  done: boolean;
+  userId: string;
 }
 
-export type TaskInput = Omit<Task, 'id'>
+export type TaskInput = Omit<Task, '_id'>

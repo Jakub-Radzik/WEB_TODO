@@ -1,42 +1,22 @@
 import { Task, TaskInput } from '../graphQL/types/task'
+import { TaskModel } from '../utils/Mongo/connection'
 
 // fake DB remove it !!!!!
-const tasks: Task[] = [
-  {
-    id: '1',
-    name: 'task 1',
-    done: false,
-    userId: '1',
-  },
-  {
-    id: '2',
-    name: 'task 1',
-    done: false,
-    userId: '1',
-  },
-  {
-    id: '3',
-    name: 'task 1',
-    done: false,
-    userId: '1',
-  },
-]
 
 const taskService = {
-  getTask: (id: string) => {
-    return tasks.find(task => task.id === id)
+  getTask: async (id: string) => {
+    return await TaskModel.findById(id)
   },
-  getUserTasks: (userId: string) => {
-    return tasks.filter(task => task.userId === userId)
+  getUserTasks: async (userId: string) => {
+    return await TaskModel.find({userId});
   },
-  createTask: (task: TaskInput) => {
-    const newTask = {
-      ...task,
-      id: (tasks.length + 1).toString(),
-    }
-    tasks.push(newTask)
-    return newTask
+  createTask: async (task: TaskInput) => {
+    return await TaskModel.create({...task});
   },
+  updateTask: async (id: string, task: Partial<TaskInput>) => {
+    // update after DB creation
+    return await TaskModel.updateOne({_id: id}, task)
+  }
 }
 
 export default taskService
