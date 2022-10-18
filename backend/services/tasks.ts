@@ -8,15 +8,17 @@ const taskService = {
     return await TaskModel.findById(id)
   },
   getUserTasks: async (userId: string) => {
-    return await TaskModel.find({userId});
+    return await TaskModel.find({ userId })
   },
   createTask: async (task: TaskInput) => {
-    return await TaskModel.create({...task});
+    return await TaskModel.create({ ...task })
   },
-  updateTask: async (id: string, task: Partial<TaskInput>) => {
-    // update after DB creation
-    return await TaskModel.updateOne({_id: id}, task)
-  }
+  updateTask: async (taskId: string, task: Partial<TaskInput>) => {
+    return await TaskModel.findByIdAndUpdate(taskId, task)
+  },
+  deleteTask: async (taskId: string) => {
+    return await TaskModel.findByIdAndRemove(taskId)
+  },
 }
 
 export default taskService

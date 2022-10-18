@@ -4,7 +4,13 @@ import {
   GraphQLSchema,
   GraphQLString,
 } from 'graphql'
-import { createTask, getTask, getUserTasks } from '../resolvers/tasks'
+import {
+  createTask,
+  deleteTask,
+  getTask,
+  getUserTasks,
+  updateTask,
+} from '../resolvers/tasks'
 import { taskInput, taskType } from '../types/task'
 import { userType } from '../types/user'
 
@@ -49,6 +55,21 @@ const mutationType = new GraphQLObjectType({
         task: { type: taskInput },
       },
       resolve: (_, { task }) => createTask(task),
+    },
+    updateTask: {
+      type: taskType,
+      args: {
+        taskId: { type: GraphQLString },
+        task: { type: taskInput },
+      },
+      resolve: (_, { taskId, task }) => updateTask(taskId, task),
+    },
+    deleteTask: {
+      type: taskType,
+      args: {
+        taskId: { type: GraphQLString },
+      },
+      resolve: (_, { taskId }) => deleteTask(taskId),
     },
   },
 })

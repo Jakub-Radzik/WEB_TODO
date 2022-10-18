@@ -26,9 +26,9 @@ export const taskInput = new GraphQLInputObjectType({
 })
 
 export interface Task extends Document {
-  name: string;
-  done: boolean;
-  userId: string;
+  name: string
+  done: boolean
+  userId: string
 }
 
 export type TaskInput = Omit<Task, '_id'>

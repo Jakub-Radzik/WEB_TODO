@@ -2,7 +2,6 @@ import taskService from '../../services/tasks'
 import { TaskInput } from '../types/task'
 
 export const getTask = (id: string) => {
-  console.log('getTask', id)
   return taskService.getTask(id)
 }
 
@@ -11,6 +10,13 @@ export const getUserTasks = (userId: string) => {
 }
 
 export const createTask = (task: TaskInput) => {
-  console.log('createTask', task)
   return taskService.createTask(task)
+}
+
+export const updateTask = (taskId: string, task: TaskInput) => {
+  return taskService.updateTask(taskId, task)
+}
+
+export const deleteTask = (taskId: string) => {
+  return taskService.deleteTask(taskId)
 }
