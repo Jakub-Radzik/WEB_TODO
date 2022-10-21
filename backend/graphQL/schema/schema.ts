@@ -12,7 +12,7 @@ import {
   updateTask,
 } from '../resolvers/tasks'
 import { getUser, login, register } from '../resolvers/users'
-import { taskType } from '../types/task'
+import { taskInput, taskType } from '../types/task'
 import { loginInput, loginResponseType, registerInput, userType } from '../types/user'
 
 const queryType = new GraphQLObjectType({

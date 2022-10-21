@@ -20,14 +20,14 @@ const userService: UserService = {
         if(user.password !== password) {
             throw new Error('Wrong password');
         }
-        // generate token
+
+
         return {
             token : 'token',
             user
         }
     },
     register: async (input: RegisterInput) => {
-        console.log(input);
         const { firstName, lastName, login, email, password, repeatPassword } = input;
         if(password !== repeatPassword) {
             throw new Error('Passwords do not match');
