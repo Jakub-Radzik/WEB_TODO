@@ -3,7 +3,8 @@ import jwt from 'jsonwebtoken'
 import { TOKEN_SECRET } from '../config/config'
 
 export const generateAccessToken = (username: string) => {
-  return jwt.sign(username, TOKEN_SECRET, { expiresIn: '7d' })
+  //TODO: EXPIRES IN 7 DAYS
+  return jwt.sign(username, TOKEN_SECRET)
 }
 
 export const authenticateToken = (
