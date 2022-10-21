@@ -11,8 +11,9 @@ import {
   getUserTasks,
   updateTask,
 } from '../resolvers/tasks'
-import { taskInput, taskType } from '../types/task'
-import { userType } from '../types/user'
+import { getUser, login, register } from '../resolvers/users'
+import { taskType } from '../types/task'
+import { loginInput, loginResponseType, registerInput, userType } from '../types/user'
 
 const queryType = new GraphQLObjectType({
   name: 'Query',
@@ -22,12 +23,7 @@ const queryType = new GraphQLObjectType({
       args: {
         userId: { type: GraphQLString },
       },
-      resolve: (_, { userId }) => {
-        return {
-          id: '1',
-          name: 'Jakub',
-        }
-      },
+      resolve: (_, { userId }) => getUser(userId),
     },
     task: {
       type: taskType,
@@ -71,6 +67,20 @@ const mutationType = new GraphQLObjectType({
       },
       resolve: (_, { taskId }) => deleteTask(taskId),
     },
+    login: {
+      type: loginResponseType,
+      args: {
+        loginInput: { type: loginInput },
+      },
+      resolve: (_, {loginInput}) => login(loginInput),
+    },
+    register: {
+      type: userType,
+      args: {
+        registerInput: { type: registerInput },
+      },
+      resolve: (_, {registerInput}) => register(registerInput),
+    }
   },
 })
 
