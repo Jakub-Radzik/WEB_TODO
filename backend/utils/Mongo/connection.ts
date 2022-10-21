@@ -1,7 +1,6 @@
 import { Schema, model, connect } from 'mongoose'
-import { Task } from '../../graphQL/types/task'
-import { User } from '../../graphQL/types/user'
-import { MONGO_URI } from '../config/config'
+import { Task, User } from '../../graphQL'
+import { MONGO_URI } from '../../utils'
 
 const taskSchema = new Schema<Task>({
   name: { type: String, required: true },

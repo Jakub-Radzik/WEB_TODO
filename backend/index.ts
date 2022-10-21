@@ -1,8 +1,7 @@
 import express, { Express, Request, Response } from 'express'
-import { PORT } from './utils/config/config'
 import { graphqlHTTP } from 'express-graphql'
-import { betterSchema } from './graphQL/schema/schema'
-import { mainDB } from './utils/Mongo/connection'
+import { betterSchema } from './graphQL'
+import { mainDB, PORT } from './utils'
 
 const app: Express = express()
 const port = PORT

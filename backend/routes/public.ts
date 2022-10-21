@@ -1,6 +1,5 @@
 import express, { Express, Request, Response } from 'express'
 import moment from 'moment'
-import { generateAccessToken } from '../utils/JWT/jwt'
 const router = express.Router()
 
 router.use((req, res, next) => {
