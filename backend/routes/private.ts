@@ -5,7 +5,7 @@ import { authenticateToken } from '../utils/JWT/jwt'
 // JWT
 router.use('/', (req: Request, res: Response, next) => {
   console.log("request")
-  authenticateToken(req, res, next),
+  authenticateToken(req, res, next)
 }
 )
 

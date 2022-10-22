@@ -4,6 +4,7 @@ import {
   GraphQLSchema,
   GraphQLString,
 } from 'graphql'
+import { getAuthUrl, getGoogleTokens } from '../resolvers/google'
 import {
   createTask,
   deleteTask,
@@ -12,6 +13,7 @@ import {
   updateTask,
 } from '../resolvers/tasks'
 import { getUser, login, register } from '../resolvers/users'
+import { credentialsType } from '../types/google'
 import { taskInput, taskType } from '../types/task'
 import { loginInput, loginResponseType, registerInput, userType } from '../types/user'
 
@@ -38,6 +40,17 @@ const queryType = new GraphQLObjectType({
         userId: { type: GraphQLString },
       },
       resolve: (_, { userId }) => getUserTasks(userId),
+    },
+    googleAuthUrl: {
+      type: GraphQLString,
+      resolve: () => getAuthUrl(),
+    },
+    googleTokens: {
+      type: credentialsType,
+      args: {
+        code : { type: GraphQLString },
+      },
+      resolve: (_, { code }) => getGoogleTokens(code),
     },
   },
 })

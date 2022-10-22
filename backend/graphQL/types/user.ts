@@ -14,6 +14,7 @@ export const userType = new GraphQLObjectType({
     login: { type: GraphQLString },
     password: { type: GraphQLString },
     email: { type: GraphQLString },
+    calendarId: { type: GraphQLString}
   },
 })
 
@@ -61,6 +62,7 @@ export interface User extends Document {
   login: string
   password: string
   email: string
+  calendarId?: string
 }
 
 export interface LoginResponse {

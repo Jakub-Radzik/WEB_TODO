@@ -1,5 +1,5 @@
 import userService from "../../services/users"
-import { LoginInput, RegisterInput, UserInput } from "../types/user"
+import { LoginInput, RegisterInput } from "../types/user"
 
 export const login = async (input: LoginInput) => {
     return userService.login(input);
