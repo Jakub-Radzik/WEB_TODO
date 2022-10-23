@@ -6,6 +6,7 @@ import { Button, TertiaryButton } from '../elements/button';
 import { LeftWrapper, LoginContainer, Wrapper } from '../elements/containers';
 import { Input } from '../elements/form';
 import { PrimaryText, Text } from '../elements/text';
+import { useConection } from '../hooks/useConnection';
 
 type LoginDataProps = {
   login: string;
