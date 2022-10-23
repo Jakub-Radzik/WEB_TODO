@@ -2,9 +2,12 @@ import express, { Express, Request, Response } from 'express'
 import { graphqlHTTP } from 'express-graphql'
 import { betterSchema } from './graphQL'
 import { mainDB, PORT } from './utils'
+import cors from 'cors';
 
 const app: Express = express()
 const port = PORT
+
+app.use( cors() );
 
 app.use(
   '/graphql',
