@@ -1,6 +1,11 @@
 export interface Task {
   _id: string;
-  name: string;
-  done: boolean;
   userId: string;
+  title: string;
+  content: string;
+  completed: boolean;
+  color: string;
+  fontColor: string;
+  createdAt: string;
+  updatedAt?: string;
 }

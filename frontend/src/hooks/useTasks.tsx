@@ -1,6 +1,8 @@
+import { useLazyQuery, useQuery } from '@apollo/client';
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { GetTaskVariables, GetUserTasksResponse, GetUserTasksVariables, GET_USER_TASKS } from '../graphQL/queries/tasks';
 import { tasks } from '../types/vars';
 import { errorToast, successToast } from '../utils/toasts';
 import { CreateTaskProps } from '../views/modals/components/CreateTaskModal';
@@ -35,18 +37,18 @@ export const useTask = () => {
 
   const { token } = useAuth();
 
+  const [refetchUserTasks] = useLazyQuery<GetUserTasksResponse>(GET_USER_TASKS);
+
   const getTasks = useCallback(async () => {
     setIsLoading(true);
     setError(null);
-    axios
-      .get<GetTasksResponse>('http://127.0.0.1:5000/api/v1/tasks', {
-        headers: {
-          Authorization: `${token}`,
-          'Content-Type': 'application/json',
-        },
-      })
+
+    refetchUserTasks()
       .then(({ data }) => {
-        tasks(data.tasks);
+        if(data) {
+          console.log(data)
+          tasks(data.userTasks);
+        }
       })
       .catch(error => {
         setError(error.message);

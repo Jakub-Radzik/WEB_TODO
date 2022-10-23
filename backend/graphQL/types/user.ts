@@ -25,6 +25,8 @@ export const loginResponseType = new GraphQLObjectType({
   }
 });
 
+export const registerResponseType = loginResponseType;
+
 export const loginInput = new GraphQLInputObjectType({
   name: 'LoginInput',
   fields: {

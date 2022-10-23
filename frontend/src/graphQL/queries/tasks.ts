@@ -16,9 +16,17 @@ export interface GetUserTasksResponse {
 
 // Query
 export const GET_USER_TASKS = gql`
-  query getAllTasks($userId: String!) {
-    userTasks(userId: $userId) {
+  query getAllTasks{
+    userTasks{
       _id
+      content
+      title
+      color
+      fontColor
+      createdAt
+      updatedAt
+      completed
+      userId
     }
   }
 `;
