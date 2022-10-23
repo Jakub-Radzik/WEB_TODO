@@ -9,15 +9,17 @@ import {
 import { Button } from '../../../elements/button';
 import { Input, TextArea } from '../../../elements/form';
 import Loader from '../../../elements/loader';
-import { Task, useTask } from '../../../hooks/useTasks';
+import { Task } from '../../../graphQL/types/tasks';
+import { useTask } from '../../../hooks/useTasks';
 
-export type CreateTaskProps = Omit<Task, '_id'>;
+export type CreateTaskProps = Omit<Omit<Task, '_id'>, 'userId'>;
 
 const initialState = {
   title: '',
   content: '',
   completed: false,
   color: '#000',
+  fontColor: '#fff',
   createdAt: '',
 };
 
@@ -49,7 +51,7 @@ const CreateTaskModal: FC<ModalWrapperProps & { taskId?: string }> = ({
   title,
 }) => {
   const { isLoading, createTask, updateTask, getTask } = useTask();
-  const [newTask, setNewTask] = useState<Omit<Task, '_id'>>(initialState);
+  const [newTask, setNewTask] = useState<CreateTaskProps>(initialState);
 
   useEffect(() => {
     if (taskId) {

@@ -49,8 +49,13 @@ export const GET_TASK = gql`
   query getTask($taskId: String!) {
     task(taskId: $taskId) {
       _id
-      name
-      done
+      content
+      title
+      color
+      fontColor
+      createdAt
+      updatedAt
+      completed
       userId
     }
   }

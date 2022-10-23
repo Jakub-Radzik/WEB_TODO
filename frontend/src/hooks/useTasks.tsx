@@ -1,8 +1,9 @@
-import { useLazyQuery, useQuery } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { GetTaskVariables, GetUserTasksResponse, GetUserTasksVariables, GET_USER_TASKS } from '../graphQL/queries/tasks';
+import { CreateTaskResponse, CreateTaskVariables, CREATE_TASK } from '../graphQL/mutations/tasks';
+import { GetTaskVariables, GetUserTasksResponse, GET_TASK, GET_USER_TASKS } from '../graphQL/queries/tasks';
 import { tasks } from '../types/vars';
 import { errorToast, successToast } from '../utils/toasts';
 import { CreateTaskProps } from '../views/modals/components/CreateTaskModal';
@@ -23,10 +24,6 @@ export type Task = {
   updatedAt?: string;
 };
 
-type GetTasksResponse = {
-  tasks: Task[];
-};
-
 type GetTaskResponse = {
   task: Task;
 };
@@ -34,10 +31,12 @@ type GetTaskResponse = {
 export const useTask = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
 
   const { token } = useAuth();
 
   const [refetchUserTasks] = useLazyQuery<GetUserTasksResponse>(GET_USER_TASKS);
+  const [refetchTask] = useLazyQuery<GetTaskResponse, GetTaskVariables>(GET_TASK);
 
   const getTasks = useCallback(async () => {
     setIsLoading(true);
@@ -46,7 +45,6 @@ export const useTask = () => {
     refetchUserTasks()
       .then(({ data }) => {
         if(data) {
-          console.log(data)
           tasks(data.userTasks);
         }
       })
@@ -59,38 +57,41 @@ export const useTask = () => {
   }, [token]);
 
   const getTask = useCallback(
-    async (task_id: string) => {
+    async (taskId: string) => {
       setIsLoading(true);
       setError(null);
-      return axios
-        .get<GetTaskResponse>(`http://127.0.0.1:5000/api/v1/tasks/${task_id}`, {
-          headers: {
-            Authorization: `${token}`,
-            'Content-Type': 'application/json',
-          },
-        })
+      refetchTask({variables: {taskId: taskId}})
         .then(({ data }) => {
-          setIsLoading(false);
-          return data.task;
+          if(data) {
+            return data.task;
+          }
+          return null;
         })
         .catch(error => {
           setError(error.message);
+        }).finally(() => {
+          setIsLoading(false);
         });
     },
     [token]
   );
 
+
+  const [refetchCreateTask] = useMutation<CreateTaskResponse, CreateTaskVariables>(CREATE_TASK);
+
   const createTask = useCallback(
     async (task: CreateTaskProps) => {
+
+      console.log(task)
+      console.log(user)
       setIsLoading(true);
       setError(null);
-      axios
-        .post('http://127.0.0.1:5000/api/v1/tasks', task, {
-          headers: {
-            Authorization: `${token}`,
-            'Content-Type': 'application/json',
-          },
-        })
+      refetchCreateTask({variables: {
+        input:{
+          ...task,
+          userId: user?._id!,
+        }
+      }})
         .then(() => {
           successToast(`Task successfully created`);
         })

@@ -1,4 +1,4 @@
-import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
+import {  useMutation } from '@apollo/client';
 import React, { FC, useCallback, useEffect } from 'react';
 import {
   LOGIN,
@@ -8,17 +8,14 @@ import {
   RegisterResponse,
   RegisterVariables,
 } from '../graphQL/mutations/user';
+import { User } from '../graphQL/types/user';
 import { errorToast, successToast } from '../utils/toasts';
 
 type AuthStatus = 'initialising' | 'authenticated' | 'unauthenticated';
 
-type UserType = {
-  username: string;
-};
-
 type AuthContext = {
   status: AuthStatus;
-  user: UserType | null;
+  user: User | null;
   login: (login: string, password: string) => void;
   register: (
     user: string,
@@ -51,7 +48,15 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
   const [status, setStatus] = React.useState<AuthStatus>(
     localStorage.getItem('token') ? 'authenticated' : 'unauthenticated'
   );
-  const [user, setUser] = React.useState<UserType | null>(null);
+
+  //TODO: use Persistant hook 
+  const findUser = () => {
+    const user = localStorage.getItem('user');
+    if (user) return JSON.parse(user);
+    return null;
+  }
+
+  const [user, setUser] = React.useState<User | null>(findUser());
   const [token, setToken] = React.useState<string | null>(
     localStorage.getItem('token') || null
   );
@@ -82,8 +87,8 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
           successToast(`You were correctly logged in ${user.email}`);
           setTokenHandler(data.login.token);
           setStatus('authenticated');
-          console.log(user)
-          setUser({ username: user.login! });
+          setUser(user);
+          localStorage.setItem('user', JSON.stringify(user));
         }
       },
       error => handleError(error)
@@ -101,6 +106,7 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
     successToast('You were correctly logged out');
     setToken(null);
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     setStatus('unauthenticated');
     setUser(null);
     setIsLoading(false);
@@ -130,7 +136,8 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
               );
               setTokenHandler(token);
               setStatus('authenticated');
-              setUser({ username: user.login });
+              localStorage.setItem('user', JSON.stringify(user));
+              setUser(user);
             }
           },
           error => handleError(error)
