@@ -59,6 +59,7 @@ const ModalWrapper: FC<ModalWrapperProps> = ({
       isOpen={isOpen}
       style={customStyles}
       shouldCloseOnOverlayClick={false}
+      ariaHideApp={false}
     >
       <ModalHeader>
         <TaskTitle>{title}</TaskTitle>
