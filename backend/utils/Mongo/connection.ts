@@ -27,7 +27,10 @@ export const UserModel = model<User>('User', userSchema)
 mainDB().catch(err => console.log(err))
 
 export async function mainDB() {
-  console.log('Connecting to MongoDB...')
-  connect(MONGO_URI!)
-  console.log(`Connected to ${MONGO_URI}`)
+  if(MONGO_URI){
+    console.log('Connecting to MongoDB...')
+    console.log(MONGO_URI)
+    connect(MONGO_URI)
+    console.log(`Connected to ${MONGO_URI}`)
+  }
 }

@@ -1,5 +1,6 @@
 import { Types } from 'mongoose'
 import { Task, TaskInput } from '../graphQL/types/task'
+import { NOW } from '../utils'
 import { TaskModel } from '../utils/Mongo/connection'
 
 type TaskService = {
@@ -16,12 +17,14 @@ const taskService: TaskService = {
     return await TaskModel.findById(taskId)
   },
   getUserTasks: async (userId: string) => {
-    return await TaskModel.find({ userId })
+    return await TaskModel.find({ userId }).sort({ createdAt: -1 })
   },
   createTask: async (task: TaskInput) => {
+    task.createdAt  = NOW();
     return await TaskModel.create({ ...task })
   },
   updateTask: async (taskId: string, task: Partial<TaskInput>) => {
+    task.updatedAt = NOW();
     return await TaskModel.findByIdAndUpdate(taskId, task)
   },
   deleteTask: async (taskId: string) => {
@@ -32,7 +35,7 @@ const taskService: TaskService = {
     if(!task) return null;
     return await TaskModel.create({ ...task.toObject(),
        _id: new Types.ObjectId() ,
-       createdAt: new Date().toISOString(),
+       createdAt: NOW(),
        completed: false,
       });
   }
