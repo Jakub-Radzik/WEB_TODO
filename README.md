@@ -15,3 +15,6 @@
 ## database
 
 <img src="https://github.com/radzikoska123/radzikoska123/blob/main/icons/mongodb.png" alt="mongo" width="30"/> MongoDB
+
+GRAPHQL
+I use native way of implementation ( a lot of code ) - define Typescript Types and Graphql separate

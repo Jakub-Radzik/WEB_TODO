@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useState,useEffect } from 'react';
 import { LoginView } from '../components/LoginView';
 import { useAuth } from '../context/AuthContext';
 import { GRAY, MAXIMUM_RED_PURPLE } from '../design/colors';
@@ -33,7 +33,7 @@ const emptyRegisterData: RegisterDataProps = {
 };
 
 const Register: FC<{ switchView: () => void }> = ({ switchView }) => {
-  const { register, isLoading } = useAuth();
+  const { register, isLoading, status } = useAuth();
 
   const [registerData, setRegisterData] =
     useState<RegisterDataProps>(emptyRegisterData);
@@ -59,9 +59,9 @@ const Register: FC<{ switchView: () => void }> = ({ switchView }) => {
         registerData.surname,
         registerData.email,
         registerData.username,
-        registerData.password
-      );
-      setRegisterData(emptyRegisterData);
+        registerData.password,
+        registerData.repeatPassword
+      )
     }
   };
 

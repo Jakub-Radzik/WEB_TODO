@@ -21,9 +21,9 @@ const Header: FC<{}> = () => {
           <PrimaryText color={WHITE}>WEB_TODO</PrimaryText>
         </HeaderBox>
         <HeaderBox horizontal="flex-end">
-          {user?.username && (
+          {user && (
             <>
-              <PrimaryText color={WHITE}>Welcome {user?.username}</PrimaryText>
+              <PrimaryText color={WHITE}>Welcome {user?.login}</PrimaryText>
               <IconButton
                 icon={LogOut}
                 onClick={() => {

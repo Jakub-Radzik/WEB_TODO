@@ -3,13 +3,14 @@ import styled from 'styled-components';
 import { MAXIMUM_RED_PURPLE } from '../design/colors';
 import { RAJDHANI } from '../design/fonts';
 import { IconButton } from '../elements/button';
-import { Task, TasksActions } from '../hooks/useTasks';
+import { TasksActions } from '../hooks/useTasks';
 import Delete from '../assets/delete.png';
 import Duplicate from '../assets/duplicate.png';
 import Edit from '../assets/edit.png';
 import moment from 'moment';
 import ReactTooltip from 'react-tooltip';
 import Information from '../assets/information.png';
+import { Task } from '../graphQL/types/tasks';
 
 export const StyledTaskCard = styled.div`
   border: 1px solid black;
