@@ -17,3 +17,17 @@ export interface TaskInput {
   color: string;
   fontColor: string;
 } 
+
+export interface CreateTaskInput {
+  title: string;
+  content: string;
+  color: string;
+  fontColor: string;
+}
+
+export interface UpdateTaskInput {
+  title: string;
+  content: string;
+  color: string;
+  fontColor: string;
+}

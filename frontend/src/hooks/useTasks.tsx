@@ -2,9 +2,9 @@ import { useLazyQuery, useMutation } from '@apollo/client';
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { CreateTaskResponse, CreateTaskVariables, CREATE_TASK, DeleteTaskResponse, DeleteTaskVariables, DELETE_TASK, DuplicateTaskResponse, DuplicateTaskVariables, DUPLICATE_TASK } from '../graphQL/mutations/tasks';
+import { CreateTaskResponse, CreateTaskVariables, CREATE_TASK, DeleteTaskResponse, DeleteTaskVariables, DELETE_TASK, DuplicateTaskResponse, DuplicateTaskVariables, DUPLICATE_TASK, UpdateTaskResponse, UpdateTaskVariables, UPDATE_TASK } from '../graphQL/mutations/tasks';
 import { GetTaskVariables, GetUserTasksResponse, GET_TASK, GET_USER_TASKS } from '../graphQL/queries/tasks';
-import { TaskInput } from '../graphQL/types/tasks';
+import { CreateTaskInput, UpdateTaskInput } from '../graphQL/types/tasks';
 import { tasks } from '../types/vars';
 import { errorToast, successToast } from '../utils/toasts';
 
@@ -14,12 +14,15 @@ export type TasksActions = {
   modifyTask: (taskId: string) => void;
 };
 
+// REMOVE THIS TYPE BELOW
 export type Task = {
   _id: string;
+  userId: string;
   title: string;
   content: string;
   completed: boolean;
   color: string;
+  fontColor: string;
   createdAt: string;
   updatedAt?: string;
 };
@@ -70,10 +73,9 @@ export const useTask = () => {
         .catch(error => {
           setError(error.message);
         })
-        
-        // .finally(() => {
-        //   setIsLoading(false);
-        // });
+        .finally(() => {
+          setIsLoading(false);
+        });
     },
     [token]
   );
@@ -82,13 +84,15 @@ export const useTask = () => {
   const [refetchCreateTask] = useMutation<CreateTaskResponse, CreateTaskVariables>(CREATE_TASK);
 
   const createTask = useCallback(
-    async (task: TaskInput) => {
+    async (task: CreateTaskInput) => {
       setIsLoading(true);
       setError(null);
+      console.log(user?._id)
       refetchCreateTask({variables: {
         input:{
           ...task,
           userId: user?._id!,
+          completed: false,
           createdAt: new Date().toISOString(),
         }
       }})
@@ -109,17 +113,19 @@ export const useTask = () => {
     [token, getTasks]
   );
 
+
+  const [refetchUpdateTask] = useMutation<UpdateTaskResponse, UpdateTaskVariables>(UPDATE_TASK);
   const updateTask = useCallback(
-    async (task_id: string, task: Task) => {
+    async (taskId: string, task: UpdateTaskInput) => {
       setIsLoading(true);
       setError(null);
-      axios
-        .patch(`http://127.0.0.1:5000/api/v1/tasks/${task_id}`, task, {
-          headers: {
-            Authorization: `${token}`,
-            'Content-Type': 'application/json',
-          },
-        })
+      refetchUpdateTask({variables: {
+          taskId: taskId,
+          input: {
+            ...task,
+            updatedAt: new Date().toISOString(),
+          }
+        }})
         .then(() => {
           successToast(`Task successfully updated`);
         })
