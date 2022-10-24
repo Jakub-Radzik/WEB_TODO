@@ -9,3 +9,11 @@ export interface Task {
   createdAt: string;
   updatedAt?: string;
 }
+
+export interface TaskInput {
+  title: string;
+  content: string;
+  completed: boolean;
+  color: string;
+  fontColor: string;
+} 

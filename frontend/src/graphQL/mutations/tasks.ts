@@ -48,3 +48,83 @@ export const CREATE_TASK = gql`
     }
     }
 `;
+
+// -----------------------------------
+//             Duplicate Task Mutation
+// -----------------------------------
+// Variables
+export interface DuplicateTaskVariables {
+  taskId: string
+}
+
+// Response
+export interface DuplicateTaskResponse{
+    task: {
+        _id: string
+        content: string
+        title: string
+        color: string
+        fontColor: string
+        createdAt: string
+        updatedAt: string
+        completed: boolean
+        userId: string
+  };
+}
+
+// Mutation
+export const DUPLICATE_TASK = gql`
+    mutation duplicateTask($taskId: String){
+      duplicateTask(taskId: $taskId){
+        _id
+        content
+        title
+        color
+        fontColor
+        createdAt
+        updatedAt
+        completed
+        userId
+    }
+    }
+`;
+
+// -----------------------------------
+//                Delete Task Mutation
+// -----------------------------------
+// Variables
+export interface DeleteTaskVariables {
+  taskId: string
+}
+
+// Response
+export interface DeleteTaskResponse{
+    deleteTask: {
+        _id: string
+        content: string
+        title: string
+        color: string
+        fontColor: string
+        createdAt: string
+        updatedAt: string
+        completed: boolean
+        userId: string
+  };
+}
+
+// Mutation
+export const DELETE_TASK = gql`
+    mutation deleteTask($taskId: String){
+      deleteTask(taskId: $taskId){
+        _id
+        content
+        title
+        color
+        fontColor
+        createdAt
+        updatedAt
+        completed
+        userId
+    }
+    }
+`;
