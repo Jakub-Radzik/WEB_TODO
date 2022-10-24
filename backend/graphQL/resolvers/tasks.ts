@@ -26,3 +26,7 @@ export const updateTask = (taskId: string, task: TaskInput) => {
 export const deleteTask = (taskId: string) => {
   return taskService.deleteTask(taskId)
 }
+
+export const duplicateTask = (taskId: string) => {
+  return taskService.duplicateTask(taskId)
+}

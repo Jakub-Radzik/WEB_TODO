@@ -1,3 +1,4 @@
+import { Types } from 'mongoose'
 import { Task, TaskInput } from '../graphQL/types/task'
 import { TaskModel } from '../utils/Mongo/connection'
 
@@ -7,6 +8,7 @@ type TaskService = {
   createTask: (task: TaskInput) => Promise<Task | null>,
   updateTask: (taskId: string, task: TaskInput) => Promise<Task | null>,
   deleteTask: (taskId: string) => Promise<Task | null>
+  duplicateTask: (taskId: string) => Promise<Task | null>
 }
 
 const taskService: TaskService = {
@@ -25,6 +27,15 @@ const taskService: TaskService = {
   deleteTask: async (taskId: string) => {
     return await TaskModel.findByIdAndRemove(taskId)
   },
+  duplicateTask: async (taskId: string) => {
+    const task = await TaskModel.findById(taskId);
+    if(!task) return null;
+    return await TaskModel.create({ ...task.toObject(),
+       _id: new Types.ObjectId() ,
+       createdAt: new Date().toISOString(),
+       completed: false,
+      });
+  }
 }
 
-export default taskService
+export default taskService;

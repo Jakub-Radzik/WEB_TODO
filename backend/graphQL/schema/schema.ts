@@ -7,6 +7,7 @@ import {
 import {
   createTask,
   deleteTask,
+  duplicateTask,
   getTask,
   getUserTasks,
   updateTask,
@@ -65,6 +66,13 @@ const mutationType = new GraphQLObjectType({
         taskId: { type: GraphQLString },
       },
       resolve: (_, { taskId }) => deleteTask(taskId),
+    },
+    duplicateTask: {
+      type: taskType,
+      args: {
+        taskId: {type: GraphQLString},
+      },
+      resolve: (_, {taskId}) => duplicateTask(taskId),
     },
     login: {
       type: loginResponseType,
