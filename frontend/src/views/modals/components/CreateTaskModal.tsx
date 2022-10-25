@@ -4,7 +4,7 @@ import Loader from '../../../elements/loader';
 import { useTask } from '../../../hooks/useTasks';
 import { useForm } from "react-hook-form";
 import { TaskInput } from '../../../graphQL/types/tasks';
-import { Input, StyledInput, StyledTextArea } from '../../../elements/form';
+import { Input, StyledInput, StyledLabel, StyledTextArea } from '../../../elements/form';
 import TaskCard, { StyledTaskCard, StyledTaskHeader, TaskContent } from '../../../components/TaskCard';
 
 
@@ -53,9 +53,11 @@ const CreateTaskModal: FC<ModalWrapperProps & { taskId?: string }> = ({
       onRequestClose={() => onRequestClose()}
       title={title}
     >
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <StyledTaskCard>
-        <StyledTaskHeader color={colors.color}>
+    <form onSubmit={handleSubmit(onSubmit)} style={{ width:'100%'}}>
+      <StyledTaskCard style={{margin: 0}}>
+        <StyledTaskHeader color={colors.color} style={{
+          flexDirection: 'row'
+        }}>
         <StyledInput
           {...register("title")}
           placeholder="Title"
@@ -66,7 +68,8 @@ const CreateTaskModal: FC<ModalWrapperProps & { taskId?: string }> = ({
             color: colors.fontColor
           }}
         />
-        <input type="color" {...register("color")} onChange={(v)=>setColors({...colors, color:v.target.value})}/>
+        <StyledLabel htmlFor="color">Color:</StyledLabel>
+        <StyledInput type="color" {...register("color")} onChange={(v)=>setColors({...colors, color:v.target.value})}/>
         </StyledTaskHeader>
         <TaskContent>
           <StyledTextArea

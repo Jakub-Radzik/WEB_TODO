@@ -14,6 +14,11 @@ export const StyledInput = styled.input`
   outline: none;
 `;
 
+export const StyledLabel = styled.label`
+  font-family: ${RAJDHANI};
+  font-size: large;
+`
+
 export const StyledTextArea = styled.textarea`
   font-family: ${RAJDHANI};
   font-size: large;
