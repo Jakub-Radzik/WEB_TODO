@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { GRAY } from '../../design/colors';
 import { RAJDHANI } from '../../design/fonts';
 
-const StyledInput = styled.input`
+export const StyledInput = styled.input`
   font-family: ${RAJDHANI};
   font-size: large;
   width: 100%;
@@ -14,7 +14,12 @@ const StyledInput = styled.input`
   outline: none;
 `;
 
-const StyledTextArea = styled.textarea`
+export const StyledLabel = styled.label`
+  font-family: ${RAJDHANI};
+  font-size: large;
+`
+
+export const StyledTextArea = styled.textarea`
   font-family: ${RAJDHANI};
   font-size: large;
   width: 100%;

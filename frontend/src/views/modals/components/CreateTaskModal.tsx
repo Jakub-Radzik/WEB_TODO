@@ -1,9 +1,11 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import ModalWrapper, { ModalWrapperProps } from '..';
 import Loader from '../../../elements/loader';
 import { useTask } from '../../../hooks/useTasks';
 import { useForm } from "react-hook-form";
 import { TaskInput } from '../../../graphQL/types/tasks';
+import { Input, StyledInput, StyledLabel, StyledTextArea } from '../../../elements/form';
+import TaskCard, { StyledTaskCard, StyledTaskHeader, TaskContent } from '../../../components/TaskCard';
 
 
 const CreateTaskModal: FC<ModalWrapperProps & { taskId?: string }> = ({
@@ -13,7 +15,7 @@ const CreateTaskModal: FC<ModalWrapperProps & { taskId?: string }> = ({
   title,
 }) => {
   const { isLoading, createTask, updateTask, getTask } = useTask();
-  const { register,setValue, handleSubmit, watch, formState: { errors } } = useForm<TaskInput>();
+  const { register,setValue,getValues, handleSubmit, watch, formState: { errors } } = useForm<TaskInput>();
   
   const onSubmit = (data: TaskInput) => {
     if(taskId){
@@ -27,6 +29,10 @@ const CreateTaskModal: FC<ModalWrapperProps & { taskId?: string }> = ({
     if(taskId){
       getTask(taskId).then(task=>{
         if(task){
+          setColors({
+            color: task.color,
+            fontColor: task.fontColor
+          })
           setValue("title", task.title)
           setValue("content", task.content)
           setValue("color", task.color)
@@ -36,6 +42,10 @@ const CreateTaskModal: FC<ModalWrapperProps & { taskId?: string }> = ({
     }
   }, [taskId])
   
+  const [colors, setColors] = useState({
+    color:'#fff',
+    fontColor: '#000'
+  })
 
   return (
     <ModalWrapper
@@ -43,11 +53,34 @@ const CreateTaskModal: FC<ModalWrapperProps & { taskId?: string }> = ({
       onRequestClose={() => onRequestClose()}
       title={title}
     >
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input type="text" {...register("title")}/>
-        <input type="text" {...register("content")}/>
-        <input type="color" {...register("color")}/>
-        <input type="color" {...register("fontColor")}/>
+    <form onSubmit={handleSubmit(onSubmit)} style={{ width:'100%'}}>
+      <StyledTaskCard style={{margin: 0}}>
+        <StyledTaskHeader color={colors.color} style={{
+          flexDirection: 'row'
+        }}>
+        <StyledInput
+          {...register("title")}
+          placeholder="Title"
+          type="text"          
+          style={{
+            background: '#ffffff3f',
+            margin: 10,
+            color: colors.fontColor
+          }}
+        />
+        <StyledLabel htmlFor="color">Color:</StyledLabel>
+        <StyledInput type="color" {...register("color")} onChange={(v)=>setColors({...colors, color:v.target.value})}/>
+        </StyledTaskHeader>
+        <TaskContent>
+          <StyledTextArea
+            {...register("content")}
+            placeholder="Content"
+            />
+        </TaskContent>
+      </StyledTaskCard>
+
+        
+        <input type="color" {...register("fontColor")} onChange={(v)=>setColors({...colors, fontColor:v.target.value})}/>
         <input type="submit" value="SUBMIT"/>
       </form>
       {isLoading && <Loader />}

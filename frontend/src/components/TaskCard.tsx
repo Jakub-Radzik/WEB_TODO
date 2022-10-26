@@ -104,7 +104,7 @@ const TaskCard: FC<TaskCardProps & TasksActions> = ({
     <StyledTaskCard>
       <ReactTooltip type="info" backgroundColor={MAXIMUM_RED_PURPLE} />
       <StyledTaskHeader color={task.color}>
-        <TaskTitle>{task.title}</TaskTitle>
+        <TaskTitle style={{color: task.fontColor}}>{task.title}</TaskTitle>
         <Info src={Information} alt="info" data-tip={tooltipInfo()} />
       </StyledTaskHeader>
       <TaskContent>
