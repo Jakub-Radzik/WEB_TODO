@@ -25,7 +25,7 @@ oauth2Client.on('tokens', (tokens) => {
 
 type GoogleService = {
     getAuthUrl: () => Promise<string>,
-    getTokens: (code: string, jwt: string) => Promise<any>,
+    getTokens: (code: string, jwt: string) => Promise<GoogleAuthResponse>,
     loginWithGoogle: (code: string) => void,
     registerWithGoogle: (userInfo: GaxiosResponse<oauth2_v2.Schema$Userinfo>) => void,
     creteCalendar: () => void,
@@ -88,59 +88,8 @@ const googleService: GoogleService =  {
                     }
                 }
             }
-        }else{
-            throw Error("Error while fetching Google user information")
         }
-
-        //     //user is not logged to the app
-        //     //but have google account
-        //     //login or register
-        //     if(google_userInfo.data.email){
-        //         const app_user = await userService.getUserByGmail(google_userInfo.data.email);
-        //         if(app_user){
-        //             //login
-        //             return {
-        //                 token: jwt,
-        //                 user: app_user,
-        //             }
-        //         }else{
-        //             //register
-        //                 googleService.registerWithGoogle(google_userInfo);
-        //             //create user
-
-        //             // return {
-        //             //     token: jwt,
-        //             //     user: app_user,
-        //             // }
-        //         }
-
-            // }
-
-    
-
-        // }
-        // save tokens to db
-
-
-        // const userInfo = await oauth2.userinfo.get();
-
-        // console.log(userInfo.data.email);
-
-        // // get user from db
-        // const userFromReq = await userService.getUserByToken('eyJhbGciOiJIUzI1NiJ9.cmFkemlrb2w.Gztnvbss3hOELBLOKFOcB59SVmlysWx6v9JjfRKjHVM');
-        // console.log(userFromReq?.id);
-        // const gmail = userFromReq?.googleEmail;
-
-        // if(gmail != userInfo.data.email){
-        //     throw new Error('Other Google Account is connected to App Account');
-        // }
-
-
-        return {
-            tokens,
-            token: "a",
-            user: null
-        };
+        throw Error("Error while fetching Google user information")
     },
     loginWithGoogle: async(code: string) => {
         // login with google
