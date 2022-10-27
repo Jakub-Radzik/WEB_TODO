@@ -1,5 +1,6 @@
 import {  useMutation } from '@apollo/client';
 import React, { FC, useCallback, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   LOGIN,
   LoginResponse,
@@ -10,6 +11,7 @@ import {
 } from '../graphQL/mutations/user';
 import { User } from '../graphQL/types/user';
 import { errorToast, successToast } from '../utils/toasts';
+import PATH from '../utils/router/paths';
 
 type AuthStatus = 'initialising' | 'authenticated' | 'unauthenticated';
 
@@ -61,6 +63,7 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
     localStorage.getItem('token') || null
   );
   const [isLoading, setIsLoading] = React.useState(false);
+  const navigate = useNavigate();
 
   const handleError = (error: string) => {
     errorToast(error);
@@ -87,6 +90,7 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
           successToast(`You were correctly logged in ${user.email}`);
           setTokenHandler(data.login.token);
           setStatus('authenticated');
+          navigate(PATH.APP);
           setUser(user);
           localStorage.setItem('user', JSON.stringify(user));
         }
@@ -109,6 +113,7 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
     localStorage.removeItem('user');
     setStatus('unauthenticated');
     setUser(null);
+    navigate(PATH.LOGIN);
     setIsLoading(false);
   };
 

@@ -1,4 +1,6 @@
 import { FC, useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { GoogleButton } from '../components/GoogleButton';
 import { LoginView } from '../components/LoginView';
 import { useAuth } from '../context/AuthContext';
 import { GRAY, MAXIMUM_RED_PURPLE } from '../design/colors';
@@ -6,14 +8,14 @@ import { Button, TertiaryButton } from '../elements/button';
 import { LeftWrapper, LoginContainer, Wrapper } from '../elements/containers';
 import { Input } from '../elements/form';
 import { PrimaryText, Text } from '../elements/text';
-import { useConection } from '../hooks/useConnection';
+import PATH from '../utils/router/paths';
 
 type LoginDataProps = {
   login: string;
   password: string;
 };
 
-const Login: FC<{ switchView: () => void }> = ({ switchView }) => {
+const Login = () => {
   const { login, isLoading } = useAuth();
 
   const [loginData, setLoginData] = useState<LoginDataProps>({
@@ -21,6 +23,8 @@ const Login: FC<{ switchView: () => void }> = ({ switchView }) => {
     password: '',
   });
 
+  const navigate = useNavigate();
+  
   const isValid = useCallback(() => {
     return loginData.login && loginData.password;
   }, [loginData]);
@@ -61,10 +65,11 @@ const Login: FC<{ switchView: () => void }> = ({ switchView }) => {
             }
             disabled={!isValid() || isLoading}
           />
+          <GoogleButton/>
         </Wrapper>
         <Wrapper margin="50px 0 0 0">
           <Text color="#000">Don't have an account ?</Text>
-          <TertiaryButton label={'Register'} onClick={() => switchView()} />
+          <TertiaryButton label={'Register'} onClick={() => navigate(PATH.REGISTER)} />
         </Wrapper>
       </LoginView>
     </LoginContainer>

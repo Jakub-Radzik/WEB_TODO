@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { AuthProvider } from './AuthContext';
 import { ApolloProvider, ApolloClient, InMemoryCache, HttpLink, ApolloLink, concat } from '@apollo/client';
 import { API_URL } from '../config/config';
+import { BrowserRouter } from 'react-router-dom';
 
 const httpLink = new HttpLink({ uri: API_URL });
 
@@ -23,7 +24,9 @@ export const apolloClient = new ApolloClient({
 const AppProviders: FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <ApolloProvider client={apolloClient}>
+      <BrowserRouter>
       <AuthProvider>{children}</AuthProvider>
+      </BrowserRouter>
     </ApolloProvider>
   );
 };

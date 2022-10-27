@@ -22,14 +22,14 @@ const ButtonGlobal = styled.div<{ disabled?: boolean }>`
   width: 100%;
 `;
 
-const StyledButton = styled(ButtonGlobal)`
+export const StyledButton = styled(ButtonGlobal)`
   border: ${({ disabled }) =>
     disabled ? `1px solid ${GRAY}` : `1px solid ${MAXIMUM_RED_PURPLE}`};
   color: ${({ disabled }) => (disabled ? GRAY : WHITE)};
   background-color: ${({ disabled }) => (disabled ? LIGHT_GRAY : VERMILION)};
 `;
 
-const StyledButton2 = styled(ButtonGlobal)`
+export const StyledButton2 = styled(ButtonGlobal)`
   border: 2px solid ${RICH_BLACK};
   box-shadow: 1px 3px 2px 0 ${MAXIMUM_RED_PURPLE};
 `;

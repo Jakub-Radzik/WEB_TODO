@@ -1,4 +1,5 @@
 import { FC, useCallback, useState,useEffect } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { LoginView } from '../components/LoginView';
 import { useAuth } from '../context/AuthContext';
 import { GRAY, MAXIMUM_RED_PURPLE } from '../design/colors';
@@ -13,6 +14,7 @@ import { Input } from '../elements/form';
 import Loader from '../elements/loader';
 import { PrimaryText, Text } from '../elements/text';
 import { errorToast } from '../utils/toasts';
+import PATH from '../utils/router/paths';
 
 type RegisterDataProps = {
   name: string;
@@ -32,11 +34,14 @@ const emptyRegisterData: RegisterDataProps = {
   repeatPassword: '',
 };
 
-const Register: FC<{ switchView: () => void }> = ({ switchView }) => {
-  const { register, isLoading, status } = useAuth();
+const Register = () => {
+  const { register, isLoading } = useAuth();
 
   const [registerData, setRegisterData] =
     useState<RegisterDataProps>(emptyRegisterData);
+
+
+  const navigate = useNavigate();
 
   const isValid = useCallback(() => {
     return (
@@ -138,7 +143,7 @@ const Register: FC<{ switchView: () => void }> = ({ switchView }) => {
         </Wrapper>
         <Wrapper margin="50px 0 0 0">
           <Text color="#000">Already have an account ?</Text>
-          <TertiaryButton label={'Login'} onClick={() => switchView()} />
+            <TertiaryButton label={'Login'} onClick={()=>{navigate(PATH.LOGIN)}} />
         </Wrapper>
       </LoginView>
     </LoginContainer>
