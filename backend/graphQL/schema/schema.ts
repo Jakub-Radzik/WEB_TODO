@@ -14,7 +14,7 @@ import {
   updateTask,
 } from '../resolvers/tasks'
 import { getUser, login, register } from '../resolvers/users'
-import { credentialsType } from '../types/google'
+import { credentialsType, googleAuthResponseType } from '../types/google'
 import { taskInput, taskType } from '../types/task'
 import { loginInput, loginResponseType, registerInput, registerResponseType, userType } from '../types/user'
 
@@ -46,15 +46,13 @@ const queryType = new GraphQLObjectType({
       resolve: () => getAuthUrl(),
     },
     googleTokens: {
-      type: credentialsType,
+      type: googleAuthResponseType,
       args: {
         code : { type: GraphQLString },
       },
       resolve: (_, { code }, context: {
         [key: string]: string;
-      }) => {
-        console.log("hej")
-        return getGoogleTokens(code, context)},
+      }) => getGoogleTokens(code, context)
     },
   },
 })

@@ -29,8 +29,18 @@ export interface GoogleTokensVariables {
 // Response
 export interface GoogleTokensResponse {
   googleTokens: {
-    access_token: string;
-    refresh_token: string;
+    tokens:{
+      access_token: string;
+      refresh_token: string;
+    },
+    token: string,
+    user: {
+      _id: string
+      firstName: string
+      lastName: string
+      login: string
+      email: string
+    }
   };
 }
 
@@ -38,7 +48,18 @@ export interface GoogleTokensResponse {
 export const GET_GOOGLE_TOKENS = gql`
   query googleTokens($code: String!){
     googleTokens(code: $code){
-        access_token
+        tokens {
+          access_token
+          refresh_token
+        }
+        token
+        user {
+          _id
+          firstName
+          lastName
+          login
+          email
+        }
     }
   }
 `;

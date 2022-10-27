@@ -30,6 +30,7 @@ type AuthContext = {
   logout: () => void;
   isLoading: boolean;
   token: string | null;
+  setUserHandler: (user: User) => void;
 };
 
 const AuthContext = React.createContext<AuthContext>({
@@ -40,6 +41,7 @@ const AuthContext = React.createContext<AuthContext>({
   register: () => null,
   isLoading: false,
   token: null,
+  setUserHandler: () => null,
 });
 
 type AuthProps = {
@@ -59,6 +61,12 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
   }
 
   const [user, setUser] = React.useState<User | null>(findUser());
+
+  const setUserHandler = (user: User) => {
+    setUser(user);
+    localStorage.setItem('user', JSON.stringify(user));
+  }
+
   const [token, setToken] = React.useState<string | null>(
     localStorage.getItem('token') || null
   );
@@ -76,8 +84,10 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
   };
 
   useEffect(()=>{
+    console.log("s")
     console.log(user)
-  },[user])
+    console.log(token)
+  },[user, token])
 
   const [refetchLogin] = useMutation<LoginResponse, LoginVariables>(LOGIN);
 
@@ -159,7 +169,7 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ status, user, login, logout, register, isLoading, token }}
+      value={{ status, user, login, logout, register, isLoading, token, setUserHandler }}
     >
       {children}
     </AuthContext.Provider>

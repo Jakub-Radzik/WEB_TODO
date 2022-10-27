@@ -55,7 +55,6 @@ app.get('/list', async (req: Request, res: Response) => {
   }
 
   const cal = google.calendar({version: 'v3', auth: oauth2Client});
-
   const calList = await cal.calendarList.list();
   let appCal;
   appCal = calList.data.items?.filter(calendar => calendar.id === 'WEB_TODO')[0];

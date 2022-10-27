@@ -8,7 +8,7 @@ export const GoogleButton = () => {
     const {data} = useQuery<GoogleAuthUrlResponse,GoogleAuthUrlVariables>(GET_GOOGLE_AUTH_URL);
 
     const onClickHandler = () => {
-        window.open(data?.googleAuthUrl);
+        window.open(data?.googleAuthUrl,"_self");
     }
 
     return <StyledButton2 style={{fontSize: 20}} onClick={onClickHandler}>

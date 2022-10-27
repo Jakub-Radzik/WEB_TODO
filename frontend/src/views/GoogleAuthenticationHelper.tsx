@@ -6,11 +6,13 @@ import { PrimaryText } from "../elements/text"
 import { GET_GOOGLE_TOKENS, GoogleTokensResponse, GoogleTokensVariables } from "../graphQL/queries/google"
 import { errorToast, successToast } from "../utils/toasts"
 import PATH from "../utils/router/paths";
+import { useAuth } from "../context/AuthContext"
 
 export const GoogleAuthenticationHelper = () => {
 
     const [refetchTokens] = useLazyQuery<GoogleTokensResponse,GoogleTokensVariables>(GET_GOOGLE_TOKENS);
     const navigate = useNavigate();
+    const { setUserHandler } = useAuth();
 
     useEffect(()=>{
         const urlParams = new URLSearchParams(window.location.search);
@@ -18,11 +20,20 @@ export const GoogleAuthenticationHelper = () => {
         if(code){
             refetchTokens({variables:{code: code}}).then((res)=>{
                 console.log();
-                if(res.data?.googleTokens){
-                    localStorage.setItem('accessToken', res.data.googleTokens.access_token);
-                    localStorage.setItem('refreshToken', res.data.googleTokens.refresh_token);
-                    navigate(PATH.HOME);
+                if(res.data){
+                    const {access_token, refresh_token} = res.data.googleTokens.tokens;
+                    const {token} = res.data.googleTokens;
+                    const {user} = res.data.googleTokens;
+
+                    localStorage.setItem('access_token', access_token);
+                    localStorage.setItem('refresh_token', refresh_token);
+                    localStorage.setItem('token', token);
+                    setUserHandler(user);
+
                     successToast('Authentication Successful');
+                    setTimeout(()=>{
+                        successToast(`Welcome ${user.login}`);
+                    },500)
                     setTimeout(()=>navigate(PATH.APP), 1000)
                 }else{
                     throw new Error('No tokens received');
