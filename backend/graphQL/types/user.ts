@@ -65,6 +65,7 @@ export interface User extends Document {
   password: string
   email: string
   calendarId?: string
+  googleEmail?: string
 }
 
 export interface LoginResponse {

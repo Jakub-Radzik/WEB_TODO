@@ -19,7 +19,8 @@ const userSchema = new Schema<User>({
   login: { type: String, required: true },
   password: { type: String, required: true },
   email: { type: String, required: true },
-  calendarId: {type: String, required: false}
+  calendarId: {type: String, required: false},
+  googleEmail: {type: String, required: false}
 })
 
 export const TaskModel = model<Task>('Task', taskSchema)
