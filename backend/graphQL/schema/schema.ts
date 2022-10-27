@@ -50,7 +50,11 @@ const queryType = new GraphQLObjectType({
       args: {
         code : { type: GraphQLString },
       },
-      resolve: (_, { code }) => getGoogleTokens(code),
+      resolve: (_, { code }, context: {
+        [key: string]: string;
+      }) => {
+        console.log("hej")
+        return getGoogleTokens(code, context)},
     },
   },
 })

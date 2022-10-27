@@ -4,6 +4,8 @@ export const getAuthUrl = () => {
     return googleService.getAuthUrl();
 }
 
-export const getGoogleTokens = (code: string) => {
-    return googleService.getTokens(code);
+export const getGoogleTokens = (code: string, context: {
+    [key: string]: string;
+  } ) => {
+    return googleService.getTokens(code, context.authorization);
 }
