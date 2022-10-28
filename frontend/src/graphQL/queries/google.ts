@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client';
+import { GoogleEvent } from '../types/event';
 
 // -----------------------------------
 //        Query to get google auth url
@@ -61,5 +62,55 @@ export const GET_GOOGLE_TOKENS = gql`
           email
         }
     }
+  }
+`;
+
+// -----------------------------------
+//         Query to get calendar tasks
+// -----------------------------------
+// Variables
+export interface GetCalendarTasksVariables {
+  input: {
+    access_token: string
+    // refresh_token: string
+  };
+}
+
+// Response
+export interface GetCalendarTasksResponse {
+  getTasksFromCalendar: GoogleEvent[]
+}
+
+// Query
+export const GET_CALENDAR_TASKS = gql`
+  query getCalendarTasks($input: GoogleTokensInput){
+    getTasksFromCalendar(tokens:$input){
+      id
+      kind
+      status
+      htmlLink
+      created
+      updated
+      summary
+      hangoutLink
+      creator {
+        email
+      }
+      organizer{
+        email
+        displayName
+        self
+      }
+      start {
+        date
+        dateTime
+        timeZone
+      }
+      end{
+        date
+        dateTime
+        timeZone
+      } 
+      }
   }
 `;

@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLString } from "graphql";
+import { GraphQLInputObjectType, GraphQLObjectType, GraphQLString } from "graphql";
 import { User, userType } from "../types/user";
 
 export const credentialsType = new GraphQLObjectType({
@@ -34,3 +34,18 @@ export interface GoogleAuthResponse {
   user: User
   tokens: Credentials
 }
+
+export const GoogleTokensInputType = new GraphQLInputObjectType({
+  name: 'GoogleTokensInput',
+  fields: {
+    access_token: { type: GraphQLString },
+    // refresh_token: { type: GraphQLString },
+  }
+});
+
+export interface GoogleTokensInput {
+  access_token: string
+  // refresh_token: string
+}
+
+

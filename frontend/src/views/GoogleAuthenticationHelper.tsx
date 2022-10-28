@@ -19,7 +19,7 @@ export const GoogleAuthenticationHelper = () => {
         const code = urlParams.get('code');
         if(code){
             refetchTokens({variables:{code: code}}).then((res)=>{
-                console.log();
+                console.log(res);
                 if(res.data){
                     const {access_token, refresh_token} = res.data.googleTokens.tokens;
                     const {token} = res.data.googleTokens;

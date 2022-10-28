@@ -11,7 +11,6 @@ export const getUserTasks = async (context: {
 }) => {
   // TODO: MOVE IT TO SERVICES
   const user = await userService.getUserByToken(context.authorization);
-  console.log(user)
   return taskService.getUserTasks(user?.id);
 }
 
