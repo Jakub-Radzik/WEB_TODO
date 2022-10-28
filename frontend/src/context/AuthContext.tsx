@@ -121,6 +121,9 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
     setToken(null);
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('refresh_token');
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('calendar');
     setStatus('unauthenticated');
     setUser(null);
     navigate(PATH.LOGIN);

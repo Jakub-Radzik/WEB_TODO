@@ -92,6 +92,7 @@ export const GET_CALENDAR_TASKS = gql`
       created
       updated
       summary
+      description
       hangoutLink
       creator {
         email

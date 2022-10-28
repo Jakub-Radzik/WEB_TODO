@@ -6,6 +6,7 @@ export interface GoogleEvent {
     created: string;
     updated: string;
     summary: string;
+    description?: string;
     hangoutLink?: string;
     creator: {
       email: string

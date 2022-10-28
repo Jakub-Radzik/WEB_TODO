@@ -37,6 +37,7 @@ export const googleEventType = new GraphQLObjectType({
         created: { type: GraphQLString },
         updated: { type: GraphQLString },
         summary: { type: GraphQLString },
+        description: { type: GraphQLString },
         creator: { type: eventCreatorType},
         organizer: { type: eventOrganizerType},
         start: { type: eventTimeType},

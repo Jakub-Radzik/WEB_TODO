@@ -1,11 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
-// import { RICH_BLACK } from '../design/colors';
 import { ButtonOutline } from '../elements/button';
-import { useCalendar } from '../hooks/useCalendar';
 import Events from './Events';
-import CreateTaskModal from './modals/components/CreateTaskModal';
-import Tasks from './Tasks';
+import { Tasks } from './Tasks';
 
 const App = styled.div`
   display: flex;
@@ -17,25 +14,18 @@ const App = styled.div`
 `;
 
 const AuthenticatedApp = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const {events} = useCalendar();
 
-  useEffect(()=>{console.log(events)},[events])
+  const [showTasks, setShowTasks] = useState(true);
+  const toggleView = () => setShowTasks(!showTasks);
+
 
   return (
     <App>
-      <CreateTaskModal
-        isOpen={isModalOpen}
-        onRequestClose={() => setIsModalOpen(false)}
-        title={'Create task'}
-      />
-      <Events events={events}/>
-      <Tasks>
-        <ButtonOutline
-          label={'Add new task'}
-          onClick={() => setIsModalOpen(true)}
-        />
-      </Tasks>
+      <div>
+        <ButtonOutline label={`Go to: ${showTasks?'Events':'Tasks'}`} onClick={toggleView}/> 
+      </div>
+      {showTasks && <Tasks/>}
+      {!showTasks && <Events/>}
     </App>
   );
 };
