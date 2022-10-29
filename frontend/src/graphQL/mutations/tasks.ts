@@ -171,3 +171,43 @@ export const DELETE_TASK = gql`
     }
     }
 `;
+
+// -----------------------------------
+//       Toggle Complete Task Mutation
+// -----------------------------------
+// Variables
+export interface ToggleCompletedVariables {
+  taskId: string
+}
+
+// Response
+export interface ToggleCompletedResponse{
+  toggleCompleted: {
+        _id: string
+        content: string
+        title: string
+        color: string
+        fontColor: string
+        createdAt: string
+        updatedAt: string
+        completed: boolean
+        userId: string
+  };
+}
+
+// Mutation
+export const TOGGLE_COMPLETED = gql`
+    mutation toggleCompleted($taskId: String){
+      toggleCompleted(taskId: $taskId){
+        _id
+        content
+        title
+        color
+        fontColor
+        createdAt
+        updatedAt
+        completed
+        userId
+    }
+    }
+`;

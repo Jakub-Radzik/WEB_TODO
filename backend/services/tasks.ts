@@ -11,6 +11,7 @@ type TaskService = {
   updateTask: (taskId: string, taskInput: TaskInput) => Promise<Task | null>,
   deleteTask: (taskId: string) => Promise<Task | null>
   duplicateTask: (taskId: string) => Promise<Task | null>
+  toggleCompleted: (taskId: string) => Promise<Task | null>
 }
 
 const taskService: TaskService = {
@@ -41,6 +42,11 @@ const taskService: TaskService = {
        createdAt: NOW(),
        completed: false,
       });
+  },
+  toggleCompleted: async (taskId: string) => {
+    const task = await TaskModel.findById(taskId);
+    if(!task) return null;
+    return await TaskModel.findByIdAndUpdate(taskId, { completed: !task.completed })
   }
 }
 

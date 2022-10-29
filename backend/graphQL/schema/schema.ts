@@ -11,6 +11,7 @@ import {
   duplicateTask,
   getTask,
   getUserTasks,
+  toggleCompleted,
   updateTask,
 } from '../resolvers/tasks'
 import { getUser, login, register } from '../resolvers/users'
@@ -84,6 +85,13 @@ const mutationType = new GraphQLObjectType({
         task: { type: taskInput },
       },
       resolve: (_, { taskId, task }) => updateTask(taskId, task),
+    },
+    toggleCompleted: {
+      type: taskType,
+      args: {
+        taskId: { type: GraphQLString },
+      },
+      resolve: (_, { taskId }) => toggleCompleted(taskId),
     },
     deleteTask: {
       type: taskType,

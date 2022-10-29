@@ -30,3 +30,7 @@ export const deleteTask = (taskId: string) => {
 export const duplicateTask = (taskId: string) => {
   return taskService.duplicateTask(taskId)
 }
+
+export const toggleCompleted = (taskId: string) => {
+  return taskService.toggleCompleted(taskId)
+}

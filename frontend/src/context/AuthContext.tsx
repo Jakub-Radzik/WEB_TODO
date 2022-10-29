@@ -83,12 +83,6 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
     localStorage.setItem('token', token);
   };
 
-  useEffect(()=>{
-    console.log("s")
-    console.log(user)
-    console.log(token)
-  },[user, token])
-
   const [refetchLogin] = useMutation<LoginResponse, LoginVariables>(LOGIN);
 
   const login = useCallback((login: string, password: string) => {
@@ -145,7 +139,6 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
 
       refetchRegister({ variables: { input: { firstName:name, lastName:surname, email, login:username, password, repeatPassword } } }).then(
           ({ data }) => {
-            console.log(data);
             if(data){
               const {user, token} = data.register;
               successToast(`You were correctly logged in ${user.email}`);

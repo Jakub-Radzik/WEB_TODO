@@ -17,7 +17,7 @@ const StyledTaskList = styled.div`
 `;
 
 const TaskList: FC<{ children?: React.ReactNode }> = ({ children }) => {
-  const { isLoading, duplicateTask, deleteTask } = useTask();
+  const { isLoading, duplicateTask, deleteTask,toggleCompleted } = useTask();
   const reactiveTasks = useReactiveVar(tasks);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -46,6 +46,9 @@ const TaskList: FC<{ children?: React.ReactNode }> = ({ children }) => {
                   setIsModalOpen(true);
                   setModifyTaskId(task._id);
                 }}
+                toggleCompleted={() => {
+                  toggleCompleted(task._id);
+                }}  
               />
             );
           })}

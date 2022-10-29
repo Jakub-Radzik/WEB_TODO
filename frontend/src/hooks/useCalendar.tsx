@@ -39,7 +39,6 @@ export const useCalendar = () => {
         const calendar = localStorage.getItem('calendar');
 
         if(calendar && access_token){
-            console.log(access_token)
             refetchCalendarTasks({variables:{
                 input:{
                     access_token

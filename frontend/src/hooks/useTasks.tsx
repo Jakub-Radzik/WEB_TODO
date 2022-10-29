@@ -1,8 +1,7 @@
 import { useLazyQuery, useMutation } from '@apollo/client';
-import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { CreateTaskResponse, CreateTaskVariables, CREATE_TASK, DeleteTaskResponse, DeleteTaskVariables, DELETE_TASK, DuplicateTaskResponse, DuplicateTaskVariables, DUPLICATE_TASK, UpdateTaskResponse, UpdateTaskVariables, UPDATE_TASK } from '../graphQL/mutations/tasks';
+import { CreateTaskResponse, CreateTaskVariables, CREATE_TASK, DeleteTaskResponse, DeleteTaskVariables, DELETE_TASK, DuplicateTaskResponse, DuplicateTaskVariables, DUPLICATE_TASK, ToggleCompletedResponse, ToggleCompletedVariables, TOGGLE_COMPLETED, UpdateTaskResponse, UpdateTaskVariables, UPDATE_TASK } from '../graphQL/mutations/tasks';
 import { GetTaskVariables, GetUserTasksResponse, GET_TASK, GET_USER_TASKS } from '../graphQL/queries/tasks';
 import { CreateTaskInput, UpdateTaskInput } from '../graphQL/types/tasks';
 import { tasks } from '../types/vars';
@@ -12,9 +11,9 @@ export type TasksActions = {
   duplicateTask: (taskId: string) => void;
   deleteTask: (taskId: string) => void;
   modifyTask: (taskId: string) => void;
+  toggleCompleted: () => void;
 };
 
-// REMOVE THIS TYPE BELOW
 export type Task = {
   _id: string;
   userId: string;
@@ -87,7 +86,6 @@ export const useTask = () => {
     async (task: CreateTaskInput) => {
       setIsLoading(true);
       setError(null);
-      console.log(user?._id)
       refetchCreateTask({variables: {
         input: task
       }})
@@ -178,6 +176,14 @@ export const useTask = () => {
     [token, getTasks]
   );
 
+  const [refetchToggleCompleted] = useMutation<ToggleCompletedResponse, ToggleCompletedVariables>(TOGGLE_COMPLETED);
+  const toggleCompleted = useCallback(
+    async (taskId: string) => {
+      refetchToggleCompleted({variables:{
+        taskId
+      }});
+    },[token]);
+
   useEffect(() => {
     getTasks();
   }, [getTasks]);
@@ -191,6 +197,7 @@ export const useTask = () => {
     deleteTask,
     createTask,
     updateTask,
+    toggleCompleted,
     tasks,
   };
 };

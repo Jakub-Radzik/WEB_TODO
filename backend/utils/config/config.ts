@@ -14,4 +14,3 @@ export const GOOGLE_CONFIG = {
     redirect: REDIRECT_URL,
 };
 
-console.log(GOOGLE_CONFIG)
