@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { RICH_BLACK } from '../../design/colors';
 
-const sizeRadius = '200px';
 const headerHeight = '100px';
 
 export const StyledHeader = styled.div`
@@ -10,26 +9,7 @@ export const StyledHeader = styled.div`
   background: ${RICH_BLACK};
   display: flex;
   justify-content: center;
-  ::before {
-    content: '';
-    width: ${sizeRadius};
-    height: ${sizeRadius};
-    position: absolute;
-    left: 0;
-    top: ${headerHeight};
-    border-radius: 0 0 ${sizeRadius} 0;
-    background: ${RICH_BLACK};
-  }
-  ::after {
-    content: '';
-    width: ${sizeRadius};
-    height: ${sizeRadius};
-    position: absolute;
-    left: 0;
-    top: ${headerHeight};
-    border-radius: ${sizeRadius} 0 0 0;
-    background: #fff;
-  }
+  box-shadow: 0 0 10px 0 ${RICH_BLACK};
 `;
 
 export const HeaderBox = styled.div<{ horizontal?: string }>`
@@ -40,5 +20,3 @@ export const HeaderBox = styled.div<{ horizontal?: string }>`
   justify-content: ${({ horizontal }) => (horizontal ? horizontal : 'center')};
   padding: 0 20px;
 `;
-
-// flex-start

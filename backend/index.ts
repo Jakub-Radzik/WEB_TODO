@@ -7,8 +7,11 @@ import cors from 'cors';
 const app: Express = express()
 
 const loggingMiddleware = (req: Request, res: Response, next: any) => {
-  console.log(req.headers.authorization);
-  next()
+  const token =req.headers.authorization;
+  // if(!token) return res.status(401).send('Unauthorized');
+  // const user = userService.getUserByToken(token);
+  // if(!user) return res.status(401).send('Unauthorized');
+  next();
 };
 
 app.use( cors() );
@@ -23,7 +26,7 @@ app.use(
   })(req, res),
 );
 
-app.get('/', (req: Request, res: Response) => {
+app.get('/', (_, res: Response) => {
   res.send('super + TypeScript Server')
 })
 

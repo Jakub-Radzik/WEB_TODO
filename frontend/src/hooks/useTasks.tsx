@@ -54,7 +54,6 @@ type GetTaskResponse = {
 export const useTask = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { user } = useAuth();
 
   const { token } = useAuth();
 
