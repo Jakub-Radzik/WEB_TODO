@@ -1,4 +1,4 @@
-import {calendar_v3, google, oauth2_v2} from 'googleapis';
+import {calendar_v3, google} from 'googleapis';
 import { generateAccessToken, GOOGLE_CONFIG, UserModel } from '../utils';
 import userService from "../services/users"
 import { Credentials, GoogleAuthResponse } from '../graphQL/types/google';
