@@ -1,58 +1,24 @@
-import React, { FC, useState } from 'react';
-import { useReactiveVar } from 'react-reactive-var';
-import styled from 'styled-components';
-import TaskCard from '../components/TaskCard';
-import Loader from '../elements/loader';
-import { useTask } from '../hooks/useTasks';
-import { tasks } from '../types/vars';
+import { useState } from 'react';
+import TaskList from '../components/TaskList';
+import { ButtonOutline } from '../elements/button';
 import CreateTaskModal from './modals/components/CreateTaskModal';
 
-const StyledTaskList = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 50%;
-  padding: 10px;
-`;
-
-const Tasks: FC<{ children?: React.ReactNode }> = ({ children }) => {
-  const { isLoading, duplicateTask, deleteTask } = useTask();
-  const reactiveTasks = useReactiveVar(tasks);
-
+export const Tasks = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modifyTaskId, setModifyTaskId] = useState('');
 
   return (
     <>
-      {isLoading && <Loader />}
       <CreateTaskModal
         isOpen={isModalOpen}
         onRequestClose={() => setIsModalOpen(false)}
-        taskId={modifyTaskId}
-        title={'Update task'}
+        title={'Create task'}
       />
-      {!isLoading && (
-        <StyledTaskList>
-          {children}
-          {reactiveTasks.map((task, index) => {
-            return (
-              <TaskCard
-                key={index}
-                task={task}
-                duplicateTask={() => duplicateTask(task._id)}
-                deleteTask={() => deleteTask(task._id)}
-                modifyTask={() => {
-                  setIsModalOpen(true);
-                  setModifyTaskId(task._id);
-                }}
-              />
-            );
-          })}
-        </StyledTaskList>
-      )}
+      <TaskList>
+        <ButtonOutline
+          label={'Add new task'}
+          onClick={() => setIsModalOpen(true)}
+        />
+      </TaskList>
     </>
   );
 };
-
-export default Tasks;

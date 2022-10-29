@@ -4,15 +4,19 @@ import {
   GraphQLSchema,
   GraphQLString,
 } from 'graphql'
+import { checkGoogleCalendar, getAuthUrl, getGoogleTokens, getTasksFromCalendar } from '../resolvers/google'
 import {
   createTask,
   deleteTask,
   duplicateTask,
   getTask,
   getUserTasks,
+  toggleCompleted,
   updateTask,
 } from '../resolvers/tasks'
 import { getUser, login, register } from '../resolvers/users'
+import { googleEventType } from '../types/events'
+import { googleAuthResponseType, GoogleTokensInputType } from '../types/google'
 import { taskInput, taskType } from '../types/task'
 import { loginInput, loginResponseType, registerInput, registerResponseType, userType } from '../types/user'
 
@@ -39,6 +43,26 @@ const queryType = new GraphQLObjectType({
         [key: string]: string;
       }) => getUserTasks(context),
     },
+    googleAuthUrl: {
+      type: GraphQLString,
+      resolve: () => getAuthUrl(),
+    },
+    googleTokens: {
+      type: googleAuthResponseType,
+      args: {
+        code : { type: GraphQLString },
+      },
+      resolve: (_, { code }) => getGoogleTokens(code)
+    },
+    getTasksFromCalendar: {
+      type: new GraphQLList(googleEventType),
+      args: {
+        tokens: { type: GoogleTokensInputType },
+      },
+      resolve: (_, {tokens}, context: {
+        [key: string]: string;
+      }) => getTasksFromCalendar(tokens, context)
+    }
   },
 })
 
@@ -50,7 +74,9 @@ const mutationType = new GraphQLObjectType({
       args: {
         task: { type: taskInput },
       },
-      resolve: (_, { task }) => createTask(task),
+      resolve: (_, { task }, context: {
+        [key: string]: string;
+      }) => createTask(task, context),
     },
     updateTask: {
       type: taskType,
@@ -59,6 +85,13 @@ const mutationType = new GraphQLObjectType({
         task: { type: taskInput },
       },
       resolve: (_, { taskId, task }) => updateTask(taskId, task),
+    },
+    toggleCompleted: {
+      type: taskType,
+      args: {
+        taskId: { type: GraphQLString },
+      },
+      resolve: (_, { taskId }) => toggleCompleted(taskId),
     },
     deleteTask: {
       type: taskType,
@@ -87,7 +120,16 @@ const mutationType = new GraphQLObjectType({
         registerInput: { type: registerInput },
       },
       resolve: (_, {registerInput}) => register(registerInput),
-    }
+    },
+    checkGoogleCalendar: {
+      type: GraphQLString,
+      args: {
+        tokens: { type: GoogleTokensInputType },
+      },
+      resolve: (_, {tokens}, context: {
+        [key: string]: string;
+      }) => checkGoogleCalendar(tokens, context)
+    },
   },
 })
 

@@ -28,10 +28,6 @@ export const taskInput = new GraphQLInputObjectType({
     content: { type: GraphQLString },
     color: { type: GraphQLString },
     fontColor: { type: GraphQLString },
-    completed: { type: GraphQLBoolean },
-    userId: { type: GraphQLString },
-    createdAt: { type: GraphQLString },
-    updatedAt: { type: GraphQLString },
   },
 })
 
@@ -46,4 +42,9 @@ export interface Task extends Document {
   updatedAt: string
 }
 
-export type TaskInput = Omit<Task, '_id'>
+export interface TaskInput {
+  title: string
+  color: string
+  fontColor: string
+  content: string
+}

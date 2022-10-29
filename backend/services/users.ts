@@ -8,7 +8,8 @@ type UserService = {
     login: (input: LoginInput) => Promise<LoginResponse | null>,
     register: (input: RegisterInput) => Promise<LoginResponse | null>,
     getUser: (userId: string) => Promise<User | null>,
-    getUserByToken: (token: string) => Promise<User | null>
+    getUserByToken: (token: string) => Promise<User | null>,
+    getUserByGmail: (gmail: string) => Promise<User | null>,
 }
 
 const userService: UserService = {
@@ -70,6 +71,9 @@ const userService: UserService = {
             throw new Error('Invalid token');
         }
         return UserModel.findOne({login: decoded});
+    },
+    getUserByGmail: async (gmail: string) => {
+        return UserModel.findOne({googleEmail: gmail});
     }
 }
 
