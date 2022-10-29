@@ -99,9 +99,7 @@ export const useTask = () => {
         .then(() => {
           successToast(`Task successfully created`);
         })
-        .then(() => {
-          getTasks();
-        })
+        .then(() => window.location.reload())
         .catch(error => {
           errorToast(error.message);
           setError(error.message);
@@ -127,11 +125,12 @@ export const useTask = () => {
           }
         }})
         .then(() => {
-          successToast(`Task successfully updated`);
-        })
-        .then(() => {
           getTasks();
         })
+        .then(()=> window.location.reload())
+        // .then(() => {
+        //   successToast(`Task successfully updated`);
+        // })
         .catch(error => {
           errorToast(error.message);
           setError(error.message);
