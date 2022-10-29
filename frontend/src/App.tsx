@@ -9,18 +9,20 @@ import { Route, Routes, Navigate } from 'react-router-dom';
 import { GoogleAuthenticationHelper } from './views/GoogleAuthenticationHelper';
 import PATH from './utils/router/paths';
 function App() {
-
   return (
     <>
       <div className="App">
         <Header />
-      <Routes>
-        <Route path={PATH.HOME} element={<Navigate to={PATH.LOGIN} />} />
-        <Route path={PATH.LOGIN} element={<Login/>} />
-        <Route path={PATH.REGISTER} element={<Register/>} />
-        <Route path={PATH.APP} element={<AuthenticatedApp />} />
-        <Route path={PATH.GOOGLE_AUTH} element={<GoogleAuthenticationHelper />} />
-      </Routes>
+        <Routes>
+          <Route path={PATH.HOME} element={<Navigate to={PATH.LOGIN} />} />
+          <Route path={PATH.LOGIN} element={<Login />} />
+          <Route path={PATH.REGISTER} element={<Register />} />
+          <Route path={PATH.APP} element={<AuthenticatedApp />} />
+          <Route
+            path={PATH.GOOGLE_AUTH}
+            element={<GoogleAuthenticationHelper />}
+          />
+        </Routes>
       </div>
       <ToastContainer
         style={{ top: 110 }}

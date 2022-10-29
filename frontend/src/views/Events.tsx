@@ -14,16 +14,16 @@ const StyledTaskList = styled.div`
 `;
 
 const Events = () => {
-    const {events} = useCalendar();
+  const { events } = useCalendar();
 
   return (
     <>
       {!events && <Loader />}
       {events && (
         <StyledTaskList>
-            <PrimaryText color='#000'>Google Events</PrimaryText>
+          <PrimaryText color="#000">Google Events</PrimaryText>
           {events.map((event, index) => {
-            return (<Event event={event} key={index}/>)
+            return <Event event={event} key={index} />;
           })}
         </StyledTaskList>
       )}

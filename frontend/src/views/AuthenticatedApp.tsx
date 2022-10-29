@@ -14,18 +14,19 @@ const App = styled.div`
 `;
 
 const AuthenticatedApp = () => {
-
   const [showTasks, setShowTasks] = useState(true);
   const toggleView = () => setShowTasks(!showTasks);
-
 
   return (
     <App>
       <div>
-        <ButtonOutline label={`Go to: ${showTasks?'Events':'Tasks'}`} onClick={toggleView}/> 
+        <ButtonOutline
+          label={`Go to: ${showTasks ? 'Events' : 'Tasks'}`}
+          onClick={toggleView}
+        />
       </div>
-      {showTasks && <Tasks/>}
-      {!showTasks && <Events/>}
+      {showTasks && <Tasks />}
+      {!showTasks && <Events />}
     </App>
   );
 };

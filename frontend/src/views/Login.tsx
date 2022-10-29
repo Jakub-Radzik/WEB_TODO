@@ -24,7 +24,7 @@ const Login = () => {
   });
 
   const navigate = useNavigate();
-  
+
   const isValid = useCallback(() => {
     return loginData.login && loginData.password;
   }, [loginData]);
@@ -65,11 +65,14 @@ const Login = () => {
             }
             disabled={!isValid() || isLoading}
           />
-          <GoogleButton/>
+          <GoogleButton />
         </Wrapper>
         <Wrapper margin="50px 0 0 0">
           <Text color="#000">Don't have an account ?</Text>
-          <TertiaryButton label={'Register'} onClick={() => navigate(PATH.REGISTER)} />
+          <TertiaryButton
+            label={'Register'}
+            onClick={() => navigate(PATH.REGISTER)}
+          />
         </Wrapper>
       </LoginView>
     </LoginContainer>

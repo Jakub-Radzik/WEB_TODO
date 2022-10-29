@@ -16,8 +16,8 @@ export interface GetUserTasksResponse {
 
 // Query
 export const GET_USER_TASKS = gql`
-  query getAllTasks{
-    userTasks{
+  query getAllTasks {
+    userTasks {
       _id
       content
       title

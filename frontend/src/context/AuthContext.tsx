@@ -1,4 +1,4 @@
-import {  useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import React, { FC, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -53,19 +53,19 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
     localStorage.getItem('token') ? 'authenticated' : 'unauthenticated'
   );
 
-  //TODO: use Persistant hook 
+  //TODO: use Persistant hook
   const findUser = () => {
     const user = localStorage.getItem('user');
     if (user) return JSON.parse(user);
     return null;
-  }
+  };
 
   const [user, setUser] = React.useState<User | null>(findUser());
 
   const setUserHandler = (user: User) => {
     setUser(user);
     localStorage.setItem('user', JSON.stringify(user));
-  }
+  };
 
   const [token, setToken] = React.useState<string | null>(
     localStorage.getItem('token') || null
@@ -87,26 +87,27 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
 
   const login = useCallback((login: string, password: string) => {
     setIsLoading(true);
-    refetchLogin({ variables: { input: { login, password } } }).then(
-      ({data}) => {
-        if(data){
-          const user = data.login.user;
-          successToast(`You were correctly logged in ${user.email}`);
-          setTokenHandler(data.login.token);
-          setStatus('authenticated');
-          navigate(PATH.APP);
-          setUser(user);
-          localStorage.setItem('user', JSON.stringify(user));
-        }
-      },
-      error => handleError(error)
-    )
-    .catch(error => {
-      handleError(error);
-    })
-    .finally(() => {
-      setIsLoading(false);
-    });
+    refetchLogin({ variables: { input: { login, password } } })
+      .then(
+        ({ data }) => {
+          if (data) {
+            const user = data.login.user;
+            successToast(`You were correctly logged in ${user.email}`);
+            setTokenHandler(data.login.token);
+            setStatus('authenticated');
+            navigate(PATH.APP);
+            setUser(user);
+            localStorage.setItem('user', JSON.stringify(user));
+          }
+        },
+        error => handleError(error)
+      )
+      .catch(error => {
+        handleError(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
 
   const logout = () => {
@@ -124,8 +125,10 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
     setIsLoading(false);
   };
 
-  const [refetchRegister] = useMutation<RegisterResponse, RegisterVariables>(REGISTER);
-  
+  const [refetchRegister] = useMutation<RegisterResponse, RegisterVariables>(
+    REGISTER
+  );
+
   const register = useCallback(
     (
       name: string,
@@ -137,14 +140,24 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
     ) => {
       setIsLoading(true);
 
-      refetchRegister({ variables: { input: { firstName:name, lastName:surname, email, login:username, password, repeatPassword } } }).then(
+      refetchRegister({
+        variables: {
+          input: {
+            firstName: name,
+            lastName: surname,
+            email,
+            login: username,
+            password,
+            repeatPassword,
+          },
+        },
+      })
+        .then(
           ({ data }) => {
-            if(data){
-              const {user, token} = data.register;
+            if (data) {
+              const { user, token } = data.register;
               successToast(`You were correctly logged in ${user.email}`);
-              successToast(
-                `You were correctly registered ${user.login}.`
-              );
+              successToast(`You were correctly registered ${user.login}.`);
               setTokenHandler(token);
               setStatus('authenticated');
               localStorage.setItem('user', JSON.stringify(user));
@@ -165,7 +178,16 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ status, user, login, logout, register, isLoading, token, setUserHandler }}
+      value={{
+        status,
+        user,
+        login,
+        logout,
+        register,
+        isLoading,
+        token,
+        setUserHandler,
+      }}
     >
       {children}
     </AuthContext.Provider>

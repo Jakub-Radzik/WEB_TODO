@@ -5,9 +5,9 @@ const APP = '/app';
 const GOOGLE_AUTH = 'gauth';
 
 export default {
-    LOGIN,
-    REGISTER,
-    HOME,
-    APP,
-    GOOGLE_AUTH,
+  LOGIN,
+  REGISTER,
+  HOME,
+  APP,
+  GOOGLE_AUTH,
 };

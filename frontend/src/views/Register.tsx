@@ -1,4 +1,4 @@
-import { FC, useCallback, useState,useEffect } from 'react';
+import { FC, useCallback, useState, useEffect } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { LoginView } from '../components/LoginView';
 import { useAuth } from '../context/AuthContext';
@@ -40,7 +40,6 @@ const Register = () => {
   const [registerData, setRegisterData] =
     useState<RegisterDataProps>(emptyRegisterData);
 
-
   const navigate = useNavigate();
 
   const isValid = useCallback(() => {
@@ -66,7 +65,7 @@ const Register = () => {
         registerData.username,
         registerData.password,
         registerData.repeatPassword
-      )
+      );
     }
   };
 
@@ -143,7 +142,12 @@ const Register = () => {
         </Wrapper>
         <Wrapper margin="50px 0 0 0">
           <Text color="#000">Already have an account ?</Text>
-            <TertiaryButton label={'Login'} onClick={()=>{navigate(PATH.LOGIN)}} />
+          <TertiaryButton
+            label={'Login'}
+            onClick={() => {
+              navigate(PATH.LOGIN);
+            }}
+          />
         </Wrapper>
       </LoginView>
     </LoginContainer>

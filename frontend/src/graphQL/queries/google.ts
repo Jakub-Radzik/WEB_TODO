@@ -14,7 +14,7 @@ export interface GoogleAuthUrlResponse {
 
 // Query
 export const GET_GOOGLE_AUTH_URL = gql`
-  query googleAuthUrl{
+  query googleAuthUrl {
     googleAuthUrl
   }
 `;
@@ -30,37 +30,37 @@ export interface GoogleTokensVariables {
 // Response
 export interface GoogleTokensResponse {
   googleTokens: {
-    tokens:{
+    tokens: {
       access_token: string;
       refresh_token: string;
-    },
-    token: string,
+    };
+    token: string;
     user: {
-      _id: string
-      firstName: string
-      lastName: string
-      login: string
-      email: string
-    }
+      _id: string;
+      firstName: string;
+      lastName: string;
+      login: string;
+      email: string;
+    };
   };
 }
 
 // Query
 export const GET_GOOGLE_TOKENS = gql`
-  query googleTokens($code: String!){
-    googleTokens(code: $code){
-        tokens {
-          access_token
-          refresh_token
-        }
-        token
-        user {
-          _id
-          firstName
-          lastName
-          login
-          email
-        }
+  query googleTokens($code: String!) {
+    googleTokens(code: $code) {
+      tokens {
+        access_token
+        refresh_token
+      }
+      token
+      user {
+        _id
+        firstName
+        lastName
+        login
+        email
+      }
     }
   }
 `;
@@ -71,20 +71,20 @@ export const GET_GOOGLE_TOKENS = gql`
 // Variables
 export interface GetCalendarTasksVariables {
   input: {
-    access_token: string
+    access_token: string;
     // refresh_token: string
   };
 }
 
 // Response
 export interface GetCalendarTasksResponse {
-  getTasksFromCalendar: GoogleEvent[]
+  getTasksFromCalendar: GoogleEvent[];
 }
 
 // Query
 export const GET_CALENDAR_TASKS = gql`
-  query getCalendarTasks($input: GoogleTokensInput){
-    getTasksFromCalendar(tokens:$input){
+  query getCalendarTasks($input: GoogleTokensInput) {
+    getTasksFromCalendar(tokens: $input) {
       id
       kind
       status
@@ -97,7 +97,7 @@ export const GET_CALENDAR_TASKS = gql`
       creator {
         email
       }
-      organizer{
+      organizer {
         email
         displayName
         self
@@ -107,11 +107,11 @@ export const GET_CALENDAR_TASKS = gql`
         dateTime
         timeZone
       }
-      end{
+      end {
         date
         dateTime
         timeZone
-      } 
       }
+    }
   }
 `;

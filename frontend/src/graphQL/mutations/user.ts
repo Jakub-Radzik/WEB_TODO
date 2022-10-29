@@ -16,13 +16,13 @@ export interface LoginResponse {
   login: {
     token: string;
     user: {
-    _id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    login: string;
+      _id: string;
+      firstName: string;
+      lastName: string;
+      email: string;
+      login: string;
+    };
   };
-  }
 }
 
 // Mutation
@@ -61,27 +61,27 @@ export interface RegisterResponse {
   register: {
     token: string;
     user: {
-    _id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    login: string;
+      _id: string;
+      firstName: string;
+      lastName: string;
+      email: string;
+      login: string;
+    };
   };
-  }
 }
 
 // Mutation
 export const REGISTER = gql`
-mutation Register($input: RegisterInput){
-  register(registerInput: $input){
-    token
-    user {
-      _id
-      firstName
-      lastName
-      email
-      login
+  mutation Register($input: RegisterInput) {
+    register(registerInput: $input) {
+      token
+      user {
+        _id
+        firstName
+        lastName
+        email
+        login
+      }
+    }
   }
-}
-}
 `;

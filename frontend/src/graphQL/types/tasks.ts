@@ -16,7 +16,7 @@ export interface TaskInput {
   completed: boolean;
   color: string;
   fontColor: string;
-} 
+}
 
 export interface CreateTaskInput {
   title: string;

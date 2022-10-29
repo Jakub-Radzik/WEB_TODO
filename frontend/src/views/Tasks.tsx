@@ -1,13 +1,14 @@
-import { useState } from "react";
-import TaskList from "../components/TaskList";
-import { ButtonOutline } from "../elements/button";
-import CreateTaskModal from "./modals/components/CreateTaskModal";
+import { useState } from 'react';
+import TaskList from '../components/TaskList';
+import { ButtonOutline } from '../elements/button';
+import CreateTaskModal from './modals/components/CreateTaskModal';
 
 export const Tasks = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-  
-    return (<>
-    <CreateTaskModal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  return (
+    <>
+      <CreateTaskModal
         isOpen={isModalOpen}
         onRequestClose={() => setIsModalOpen(false)}
         title={'Create task'}
@@ -18,7 +19,6 @@ export const Tasks = () => {
           onClick={() => setIsModalOpen(true)}
         />
       </TaskList>
-      </>
-    );
-}
-
+    </>
+  );
+};

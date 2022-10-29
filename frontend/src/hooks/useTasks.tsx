@@ -1,8 +1,29 @@
 import { useLazyQuery, useMutation } from '@apollo/client';
 import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { CreateTaskResponse, CreateTaskVariables, CREATE_TASK, DeleteTaskResponse, DeleteTaskVariables, DELETE_TASK, DuplicateTaskResponse, DuplicateTaskVariables, DUPLICATE_TASK, ToggleCompletedResponse, ToggleCompletedVariables, TOGGLE_COMPLETED, UpdateTaskResponse, UpdateTaskVariables, UPDATE_TASK } from '../graphQL/mutations/tasks';
-import { GetTaskVariables, GetUserTasksResponse, GET_TASK, GET_USER_TASKS } from '../graphQL/queries/tasks';
+import {
+  CreateTaskResponse,
+  CreateTaskVariables,
+  CREATE_TASK,
+  DeleteTaskResponse,
+  DeleteTaskVariables,
+  DELETE_TASK,
+  DuplicateTaskResponse,
+  DuplicateTaskVariables,
+  DUPLICATE_TASK,
+  ToggleCompletedResponse,
+  ToggleCompletedVariables,
+  TOGGLE_COMPLETED,
+  UpdateTaskResponse,
+  UpdateTaskVariables,
+  UPDATE_TASK,
+} from '../graphQL/mutations/tasks';
+import {
+  GetTaskVariables,
+  GetUserTasksResponse,
+  GET_TASK,
+  GET_USER_TASKS,
+} from '../graphQL/queries/tasks';
 import { CreateTaskInput, UpdateTaskInput } from '../graphQL/types/tasks';
 import { tasks } from '../types/vars';
 import { errorToast, successToast } from '../utils/toasts';
@@ -38,7 +59,9 @@ export const useTask = () => {
   const { token } = useAuth();
 
   const [refetchUserTasks] = useLazyQuery<GetUserTasksResponse>(GET_USER_TASKS);
-  const [refetchTask] = useLazyQuery<GetTaskResponse, GetTaskVariables>(GET_TASK);
+  const [refetchTask] = useLazyQuery<GetTaskResponse, GetTaskVariables>(
+    GET_TASK
+  );
 
   const getTasks = useCallback(async () => {
     setIsLoading(true);
@@ -46,7 +69,7 @@ export const useTask = () => {
 
     refetchUserTasks()
       .then(({ data }) => {
-        if(data) {
+        if (data) {
           tasks(data.userTasks);
         }
       })
@@ -62,9 +85,9 @@ export const useTask = () => {
     async (taskId: string) => {
       setIsLoading(true);
       setError(null);
-      return refetchTask({variables: {taskId: taskId}})
+      return refetchTask({ variables: { taskId: taskId } })
         .then(({ data }) => {
-          if(data) {
+          if (data) {
             return data.task;
           }
           return null;
@@ -79,16 +102,20 @@ export const useTask = () => {
     [token]
   );
 
-
-  const [refetchCreateTask] = useMutation<CreateTaskResponse, CreateTaskVariables>(CREATE_TASK);
+  const [refetchCreateTask] = useMutation<
+    CreateTaskResponse,
+    CreateTaskVariables
+  >(CREATE_TASK);
 
   const createTask = useCallback(
     async (task: CreateTaskInput) => {
       setIsLoading(true);
       setError(null);
-      refetchCreateTask({variables: {
-        input: task
-      }})
+      refetchCreateTask({
+        variables: {
+          input: task,
+        },
+      })
         .then(() => {
           successToast(`Task successfully created`);
         })
@@ -104,20 +131,24 @@ export const useTask = () => {
     [token, getTasks]
   );
 
-
-  const [refetchUpdateTask] = useMutation<UpdateTaskResponse, UpdateTaskVariables>(UPDATE_TASK);
+  const [refetchUpdateTask] = useMutation<
+    UpdateTaskResponse,
+    UpdateTaskVariables
+  >(UPDATE_TASK);
   const updateTask = useCallback(
     async (taskId: string, task: UpdateTaskInput) => {
       setIsLoading(true);
       setError(null);
-      refetchUpdateTask({variables: {
+      refetchUpdateTask({
+        variables: {
           taskId: taskId,
-          input: task
-        }})
+          input: task,
+        },
+      })
         .then(() => {
           getTasks();
         })
-        .then(()=> window.location.reload())
+        .then(() => window.location.reload())
         // .then(() => {
         //   successToast(`Task successfully updated`);
         // })
@@ -132,11 +163,14 @@ export const useTask = () => {
     [token, getTasks]
   );
 
-  const [refetchDuplicateTask] = useMutation<DuplicateTaskResponse, DuplicateTaskVariables>(DUPLICATE_TASK);
+  const [refetchDuplicateTask] = useMutation<
+    DuplicateTaskResponse,
+    DuplicateTaskVariables
+  >(DUPLICATE_TASK);
   const duplicateTask = useCallback(
     async (taskId: string) => {
       setIsLoading(true);
-        refetchDuplicateTask({variables:{taskId}})
+      refetchDuplicateTask({ variables: { taskId } })
         .then(() => {
           successToast(`Task successfully duplicated`);
         })
@@ -154,11 +188,14 @@ export const useTask = () => {
     [token, getTasks]
   );
 
-  const [refetchDeleteTask] = useMutation<DeleteTaskResponse, DeleteTaskVariables>(DELETE_TASK);
+  const [refetchDeleteTask] = useMutation<
+    DeleteTaskResponse,
+    DeleteTaskVariables
+  >(DELETE_TASK);
   const deleteTask = useCallback(
     async (taskId: string) => {
       setIsLoading(true);
-      refetchDeleteTask({variables:{taskId}})
+      refetchDeleteTask({ variables: { taskId } })
         .then(() => {
           successToast(`Task successfully deleted`);
         })
@@ -176,13 +213,20 @@ export const useTask = () => {
     [token, getTasks]
   );
 
-  const [refetchToggleCompleted] = useMutation<ToggleCompletedResponse, ToggleCompletedVariables>(TOGGLE_COMPLETED);
+  const [refetchToggleCompleted] = useMutation<
+    ToggleCompletedResponse,
+    ToggleCompletedVariables
+  >(TOGGLE_COMPLETED);
   const toggleCompleted = useCallback(
     async (taskId: string) => {
-      refetchToggleCompleted({variables:{
-        taskId
-      }});
-    },[token]);
+      refetchToggleCompleted({
+        variables: {
+          taskId,
+        },
+      });
+    },
+    [token]
+  );
 
   useEffect(() => {
     getTasks();

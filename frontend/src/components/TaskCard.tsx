@@ -111,54 +111,91 @@ const TaskCard: FC<TaskCardProps & TasksActions> = ({
     setTimeout(() => {
       setDisabled(false);
     }, 500);
-  }
+  };
 
   return (
     <StyledTaskCard>
       <ReactTooltip type="info" backgroundColor={MAXIMUM_RED_PURPLE} />
-      <StyledTaskHeader color={task.color} style={{flexDirection:'row', justifyContent: 'flex-start', paddingLeft:10, boxSizing:'border-box'}}>
-        <input type="checkbox" name="completed" id="completed" style={{marginRight: 10}} checked={completed} onChange={completeHandler} disabled={disabled} />
-        <TaskTitle style={{color: task.fontColor}}>{task.title}</TaskTitle>
+      <StyledTaskHeader
+        color={task.color}
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          paddingLeft: 10,
+          boxSizing: 'border-box',
+        }}
+      >
+        <input
+          type="checkbox"
+          name="completed"
+          id="completed"
+          style={{ marginRight: 10 }}
+          checked={completed}
+          onChange={completeHandler}
+          disabled={disabled}
+        />
+        <TaskTitle style={{ color: task.fontColor }}>{task.title}</TaskTitle>
         <Info src={Information} alt="info" data-tip={tooltipInfo()} />
       </StyledTaskHeader>
 
       {completed ? (
-        <div style={{width:'100%', position:'relative'}}>
-          <div style={{position: 'absolute', zIndex:1, left:0, right:0, display:'flex', flexDirection:'column', alignItems:'center'}}>
-            <PrimaryText color={task.fontColor} style={{margin:'20px 0 0 0'}}>Task is done</PrimaryText>
+        <div style={{ width: '100%', position: 'relative' }}>
+          <div
+            style={{
+              position: 'absolute',
+              zIndex: 1,
+              left: 0,
+              right: 0,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <PrimaryText
+              color={task.fontColor}
+              style={{ margin: '20px 0 0 0' }}
+            >
+              Task is done
+            </PrimaryText>
             <IconButton icon={Delete} onClick={() => deleteTask(task._id)} />
           </div>
-          <div style={{
-            width: '100%',
-            filter: 'blur(5px)',
-            backgroundColor: task.color,
-            opacity: 0.5,
-            borderRadius: '0 0 30px 30px'
-          }}>
+          <div
+            style={{
+              width: '100%',
+              filter: 'blur(5px)',
+              backgroundColor: task.color,
+              opacity: 0.5,
+              borderRadius: '0 0 30px 30px',
+            }}
+          >
+            <TaskContent>
+              <TaskText>{task.content}</TaskText>
+            </TaskContent>
+            <StyledTasksOperations>
+              <IconButton icon={Edit} onClick={() => modifyTask(task._id)} />
+              <IconButton
+                icon={Duplicate}
+                onClick={() => duplicateTask(task._id)}
+              />
+              <IconButton icon={Delete} onClick={() => deleteTask(task._id)} />
+            </StyledTasksOperations>
+          </div>
+        </div>
+      ) : (
+        <>
           <TaskContent>
             <TaskText>{task.content}</TaskText>
           </TaskContent>
           <StyledTasksOperations>
             <IconButton icon={Edit} onClick={() => modifyTask(task._id)} />
-            <IconButton icon={Duplicate} onClick={() => duplicateTask(task._id)} />
+            <IconButton
+              icon={Duplicate}
+              onClick={() => duplicateTask(task._id)}
+            />
             <IconButton icon={Delete} onClick={() => deleteTask(task._id)} />
           </StyledTasksOperations>
-          </div>
-        </div>
-      ) : (
-        <>
-      <TaskContent>
-        <TaskText>{task.content}</TaskText>
-      </TaskContent>
-      <StyledTasksOperations>
-        <IconButton icon={Edit} onClick={() => modifyTask(task._id)} />
-        <IconButton icon={Duplicate} onClick={() => duplicateTask(task._id)} />
-        <IconButton icon={Delete} onClick={() => deleteTask(task._id)} />
-      </StyledTasksOperations>
-      </>
+        </>
       )}
-
-
     </StyledTaskCard>
   );
 };
