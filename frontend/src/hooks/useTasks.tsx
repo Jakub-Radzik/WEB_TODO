@@ -89,12 +89,7 @@ export const useTask = () => {
       setError(null);
       console.log(user?._id)
       refetchCreateTask({variables: {
-        input:{
-          ...task,
-          userId: user?._id!,
-          completed: false,
-          createdAt: new Date().toISOString(),
-        }
+        input: task
       }})
         .then(() => {
           successToast(`Task successfully created`);
@@ -119,10 +114,7 @@ export const useTask = () => {
       setError(null);
       refetchUpdateTask({variables: {
           taskId: taskId,
-          input: {
-            ...task,
-            updatedAt: new Date().toISOString(),
-          }
+          input: task
         }})
         .then(() => {
           getTasks();

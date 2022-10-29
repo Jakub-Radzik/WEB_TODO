@@ -10,10 +10,6 @@ export interface CreateTaskVariables {
     title: string
     color: string
     fontColor: string
-    createdAt: string
-    updatedAt?: string
-    completed: boolean
-    userId: string
   };
 }
 
@@ -61,10 +57,6 @@ export interface UpdateTaskVariables {
     title: string
     color: string
     fontColor: string
-    createdAt?: string
-    updatedAt?: string
-    completed?: boolean
-    userId?: string
   };
 }
 

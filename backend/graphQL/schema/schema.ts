@@ -73,7 +73,9 @@ const mutationType = new GraphQLObjectType({
       args: {
         task: { type: taskInput },
       },
-      resolve: (_, { task }) => createTask(task),
+      resolve: (_, { task }, context: {
+        [key: string]: string;
+      }) => createTask(task, context),
     },
     updateTask: {
       type: taskType,
