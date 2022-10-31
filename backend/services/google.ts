@@ -1,7 +1,8 @@
-import {calendar_v3, google} from 'googleapis';
+import {calendar_v3, google, GoogleApis} from 'googleapis';
 import { generateAccessToken, GOOGLE_CONFIG, UserModel } from '../utils';
 import userService from "../services/users"
 import { Credentials, GoogleAuthResponse } from '../graphQL/types/google';
+import { GoogleEventInput } from '../graphQL/types/events';
 
 const scopes = [
     'https://www.googleapis.com/auth/calendar',
@@ -26,7 +27,7 @@ type GoogleService = {
     getAuthUrl: () => Promise<string>,
     getTokens: (code: string) => Promise<GoogleAuthResponse>,
     checkGoogleCalendar: (tokens: Credentials, jwt: string) => Promise<string>
-    addTaskToCalendar: () => void,
+    addTaskToCalendar: (tokens: Credentials, event: GoogleEventInput, jwt: string) =>  Promise<calendar_v3.Schema$Event | undefined>,
     getTasksFromCalendar: (tokens: Credentials, jwt: string) => Promise<calendar_v3.Schema$Event[] | undefined>,
 }
 
@@ -107,13 +108,12 @@ const googleService: GoogleService =  {
         const calendars = (await GOOGLE_CALENDAR.calendarList.list()).data.items;
         const current_user = await userService.getUserByToken(jwt);
         if(!current_user) throw new Error("User not found");
-
+        const calendarId = current_user.calendarId;
         if(calendars){ //calendars exists
-            const calendarId = current_user.calendarId;
             if(calendarId){ // calendar that we have must exist in google
                 const calendar = calendars.find(calendar => calendar.id === calendarId);
                 if(!calendar){
-                     GOOGLE_CALENDAR.calendars.insert(calendarTemplate).then(({data}) => {
+                    GOOGLE_CALENDAR.calendars.insert(calendarTemplate).then(({data}) => {
                         if(data && data.id){
                             current_user.calendarId = data.id;
                             current_user.save();
@@ -135,29 +135,57 @@ const googleService: GoogleService =  {
         if(!current_user.calendarId) throw new Error("Calendar not found");
         return current_user.calendarId;
     },
-    addTaskToCalendar: async() => {
-        
-    },
-    getTasksFromCalendar: async(tokens: Credentials, jwt: string) => {
-        console.log('getTasksFromCalendar');
-        console.log(tokens);
+    addTaskToCalendar: async(tokens, event, jwt) => {
         try{
             oauth2Client.setCredentials({access_token: tokens.access_token})
         }
         catch(err){
-            console.log("E")
+            console.log("tokens error")
         }
 
         const GOOGLE_CALENDAR = google.calendar({version: 'v3', auth: oauth2Client});
         const current_user = await userService.getUserByToken(jwt);
-        console.log(current_user);
+
+        if(!current_user) throw new Error("User not found");
+
+        const calendarId = current_user.calendarId;
+        if(!calendarId) throw new Error("Calendar not found");
+        const newEvent = await GOOGLE_CALENDAR.events.insert({
+            calendarId,
+            requestBody: {
+                summary: event.summary,
+                description: event.description,
+                creator: {
+                    displayName: current_user.googleEmail,
+                    email: current_user.googleEmail,
+                },
+                organizer: {
+                    displayName: current_user.googleEmail,
+                    email: current_user.googleEmail
+                },
+                start:event.start,
+                end:event.end
+            }
+        });
+
+        return newEvent.data;
+    },
+    getTasksFromCalendar: async(tokens: Credentials, jwt: string) => {
+        try{
+            oauth2Client.setCredentials({access_token: tokens.access_token})
+        }
+        catch(err){
+            console.log("tokens error")
+        }
+
+        const GOOGLE_CALENDAR = google.calendar({version: 'v3', auth: oauth2Client});
+        const current_user = await userService.getUserByToken(jwt);
         if(!current_user) throw new Error("User does not exist!");
 
         const {googleEmail, calendarId} = current_user;
 
         if(!googleEmail) throw new Error("User does not have connected Google Account");
         if(!calendarId) throw new Error("User does not have available calendar")
-        console.log('sss')
         const events = await GOOGLE_CALENDAR.events.list({
             calendarId: calendarId,
             timeMin: (new Date()).toISOString(),

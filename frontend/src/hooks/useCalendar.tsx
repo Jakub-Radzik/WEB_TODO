@@ -1,16 +1,19 @@
 import { useLazyQuery, useMutation } from '@apollo/client';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   CheckCaledarResponse,
   CheckCaledarVariables,
   CHECK_CALENDAR,
+  CreateEventResponse,
+  CreateEventVariables,
+  CREATE_EVENT,
 } from '../graphQL/mutations/google';
 import {
   GetCalendarTasksResponse,
   GetCalendarTasksVariables,
   GET_CALENDAR_TASKS,
 } from '../graphQL/queries/google';
-import { GoogleEvent } from '../graphQL/types/event';
+import { GoogleEvent, GoogleEventInput } from '../graphQL/types/event';
 
 export const useCalendar = () => {
   const [checkCalendar] = useMutation<
@@ -23,6 +26,7 @@ export const useCalendar = () => {
     const access_token = localStorage.getItem('access_token');
     if (!localStorage.getItem('calendar')) {
       if (access_token) {
+        console.log("check calendar with: " + access_token)
         checkCalendar({
           variables: {
             input: {
@@ -43,7 +47,6 @@ export const useCalendar = () => {
   }, [
     localStorage.getItem('access_token'),
     localStorage.getItem('calendar'),
-    localStorage.getItem('refresh_token'),
   ]);
 
   const [refetchCalendarTasks] = useLazyQuery<
@@ -66,7 +69,21 @@ export const useCalendar = () => {
     }
   }, [localStorage.getItem('calendar'), localStorage.getItem('access_token')]);
 
+  const [refetchCreateEvent] = useMutation<CreateEventResponse, CreateEventVariables>(CREATE_EVENT);
+  const createEvent = useCallback(async (formData: GoogleEventInput)=>{
+    const access_token = localStorage.getItem("access_token");
+    if(access_token){
+      refetchCreateEvent({variables: {
+        input: {
+          access_token,
+        },
+        event: formData
+      }});
+    }
+  },[localStorage.getItem("access_token")])
+
   return {
     events,
+    createEvent
   };
 };

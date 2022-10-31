@@ -1,4 +1,4 @@
-import { GraphQLBoolean, GraphQLObjectType, GraphQLString } from "graphql";
+import { GraphQLBoolean, GraphQLInputObjectType, GraphQLObjectType, GraphQLString } from "graphql";
 
 const eventCreatorType = new GraphQLObjectType({
     name: 'GoogleEventCreator',
@@ -42,5 +42,40 @@ export const googleEventType = new GraphQLObjectType({
         organizer: { type: eventOrganizerType},
         start: { type: eventTimeType},
         end: {type: eventTimeType}
+    },
+  });
+
+
+  export interface GoogleEventInput {
+    summary: string
+    description: string
+    start: {
+        date?: string
+        dateTime?: string
+        timeZone?: string
+    },
+    end: {
+        date?: string
+        dateTime?: string
+        timeZone?: string
+    }
+  }
+
+  const eventInputTimeType = new GraphQLInputObjectType({
+    name: 'GoogleInputEventTime',
+    fields: {
+        dateTime: { type: GraphQLString },
+        timeZone: {type: GraphQLString},
+        date: {type: GraphQLString},
+    }
+})
+
+  export const googleInputEventType = new GraphQLInputObjectType({
+    name: 'GoogleInputEvent',
+    fields: {
+        summary: { type: GraphQLString },
+        description: { type: GraphQLString },
+        start: { type: eventInputTimeType},
+        end: { type: eventInputTimeType},
     },
   });

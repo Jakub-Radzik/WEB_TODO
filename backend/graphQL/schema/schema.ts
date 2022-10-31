@@ -4,7 +4,7 @@ import {
   GraphQLSchema,
   GraphQLString,
 } from 'graphql'
-import { checkGoogleCalendar, getAuthUrl, getGoogleTokens, getTasksFromCalendar } from '../resolvers/google'
+import { addTaskToCalendar, checkGoogleCalendar, getAuthUrl, getGoogleTokens, getTasksFromCalendar } from '../resolvers/google'
 import {
   createTask,
   deleteTask,
@@ -15,7 +15,7 @@ import {
   updateTask,
 } from '../resolvers/tasks'
 import { getUser, login, register } from '../resolvers/users'
-import { googleEventType } from '../types/events'
+import { googleEventType, googleInputEventType } from '../types/events'
 import { googleAuthResponseType, GoogleTokensInputType } from '../types/google'
 import { taskInput, taskType } from '../types/task'
 import { loginInput, loginResponseType, registerInput, registerResponseType, userType } from '../types/user'
@@ -129,6 +129,16 @@ const mutationType = new GraphQLObjectType({
       resolve: (_, {tokens}, context: {
         [key: string]: string;
       }) => checkGoogleCalendar(tokens, context)
+    },
+    createEvent: {
+      type: googleEventType,
+      args: {
+        tokens: { type: GoogleTokensInputType },
+        event: { type: googleInputEventType },
+      },
+      resolve: (_, {tokens, event}, context: {
+        [key: string]: string;
+      }) => addTaskToCalendar(tokens, event, context)
     },
   },
 })
