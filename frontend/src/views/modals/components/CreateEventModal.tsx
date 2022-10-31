@@ -20,7 +20,6 @@ const CreateEventModal: FC<ModalWrapperProps> = ({
   const {
     register,
     handleSubmit,
-    formState: { errors },
     setValue,
   } = useForm<GoogleEventInput>({
     defaultValues: {

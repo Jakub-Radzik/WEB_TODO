@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import React, { FC, useCallback, useEffect } from 'react';
+import React, { FC, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   LOGIN,

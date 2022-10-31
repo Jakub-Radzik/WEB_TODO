@@ -1,5 +1,5 @@
-import { FC, useCallback, useState, useEffect } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { LoginView } from '../components/LoginView';
 import { useAuth } from '../context/AuthContext';
 import { GRAY, MAXIMUM_RED_PURPLE } from '../design/colors';

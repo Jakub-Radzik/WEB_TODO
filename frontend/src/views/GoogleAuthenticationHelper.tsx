@@ -1,4 +1,4 @@
-import { useLazyQuery, useQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../elements/loader';

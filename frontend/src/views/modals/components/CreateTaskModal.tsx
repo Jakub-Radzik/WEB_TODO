@@ -5,13 +5,12 @@ import { useTask } from '../../../hooks/useTasks';
 import { useForm } from 'react-hook-form';
 import { TaskInput } from '../../../graphQL/types/tasks';
 import {
-  Input,
   StyledColorInput,
   StyledInput,
   StyledLabel,
   StyledTextArea,
 } from '../../../elements/form';
-import TaskCard, {
+import {
   StyledTaskCard,
   StyledTaskHeader,
   TaskContent,
@@ -28,8 +27,6 @@ const CreateTaskModal: FC<ModalWrapperProps & { taskId?: string }> = ({
     register,
     setValue,
     handleSubmit,
-    watch,
-    formState: { errors },
   } = useForm<TaskInput>();
 
   const onSubmit = (data: TaskInput) => {

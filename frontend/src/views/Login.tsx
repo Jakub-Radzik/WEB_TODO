@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GoogleButton } from '../components/GoogleButton';
 import { LoginView } from '../components/LoginView';

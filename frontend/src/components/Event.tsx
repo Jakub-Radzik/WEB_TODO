@@ -31,9 +31,6 @@ const Row: FC<{ text1: string; text2: string }> = ({ text1, text2 }) => {
 };
 
 const Event: FC<{ event: GoogleEvent }> = ({ event }) => {
-  const isAllDay = !!event.start.date;
-  console.log(event);
-
   const renderDate = useCallback(() => {
     if (event.start.date && event.end.date) {
       return formatDate(event.start.date);
