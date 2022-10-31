@@ -167,7 +167,6 @@ const googleService: GoogleService =  {
                 end:event.end
             }
         });
-
         return newEvent.data;
     },
     getTasksFromCalendar: async(tokens: Credentials, jwt: string) => {

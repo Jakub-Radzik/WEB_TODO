@@ -64,6 +64,9 @@ const CreateEventModal: FC<ModalWrapperProps> = ({
 
         formData.start.date= undefined;
         formData.end.date= undefined;
+
+        formData.start.dateTime = new Date(formData.start.dateTime).toISOString();
+        formData.end.dateTime = new Date(formData.end.dateTime).toISOString();
     }
     console.log(formData)
     createEvent(formData);
