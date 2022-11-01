@@ -14,6 +14,7 @@ import {
   GET_CALENDAR_TASKS,
 } from '../graphQL/queries/google';
 import { GoogleEvent, GoogleEventInput } from '../graphQL/types/event';
+import useLocalStorage, { Keys } from './useLocalStorage';
 
 export const useCalendar = () => {
   const [checkCalendar] = useMutation<
@@ -21,10 +22,11 @@ export const useCalendar = () => {
     CheckCaledarVariables
   >(CHECK_CALENDAR);
   const [events, setEvents] = useState<GoogleEvent[] | undefined>([]);
+  const [calendar, setCalendar] = useLocalStorage<string>(Keys.CALENDAR, null);
+  const [access_token,] = useLocalStorage<string>(Keys.ACCESS_TOKEN, null);
 
   useEffect(() => {
-    const access_token = localStorage.getItem('access_token');
-    if (!localStorage.getItem('calendar')) {
+    if (!calendar) {
       if (access_token) {
         console.log("check calendar with: " + access_token)
         checkCalendar({
@@ -36,7 +38,7 @@ export const useCalendar = () => {
         })
           .then(({ data }) => {
             if (data?.checkGoogleCalendar) {
-              localStorage.setItem('calendar', data.checkGoogleCalendar);
+              setCalendar(data.checkGoogleCalendar);
             }
           })
           .catch(e => {
@@ -45,8 +47,8 @@ export const useCalendar = () => {
       }
     }
   }, [
-    localStorage.getItem('access_token'),
-    localStorage.getItem('calendar'),
+    access_token,
+    calendar,
   ]);
 
   const [refetchCalendarTasks] = useLazyQuery<
@@ -55,9 +57,6 @@ export const useCalendar = () => {
   >(GET_CALENDAR_TASKS);
 
   useEffect(() => {
-    const access_token = localStorage.getItem('access_token');
-    const calendar = localStorage.getItem('calendar');
-
     if (calendar && access_token) {
       refetchCalendarTasks({
         variables: {
@@ -67,11 +66,10 @@ export const useCalendar = () => {
         },
       }).then(({ data }) => setEvents(data?.getTasksFromCalendar));
     }
-  }, [localStorage.getItem('calendar'), localStorage.getItem('access_token')]);
+  }, [calendar, access_token]);
 
   const [refetchCreateEvent] = useMutation<CreateEventResponse, CreateEventVariables>(CREATE_EVENT);
   const createEvent = useCallback(async (formData: GoogleEventInput)=>{
-    const access_token = localStorage.getItem("access_token");
     if(access_token){
       refetchCreateEvent({variables: {
         input: {
@@ -80,7 +78,7 @@ export const useCalendar = () => {
         event: formData
       }});
     }
-  },[localStorage.getItem("access_token")])
+  },[access_token])
 
   return {
     events,

@@ -12,6 +12,7 @@ import {
 import { User } from '../graphQL/types/user';
 import { errorToast, successToast } from '../utils/toasts';
 import PATH from '../utils/router/paths';
+import useLocalStorage, { clearLocalStorage, Keys } from '../hooks/useLocalStorage';
 
 type AuthStatus = 'initialising' | 'authenticated' | 'unauthenticated';
 
@@ -50,26 +51,15 @@ type AuthProps = {
 
 const AuthProvider: FC<AuthProps> = ({ children }) => {
   const [status, setStatus] = React.useState<AuthStatus>(
-    localStorage.getItem('token') ? 'authenticated' : 'unauthenticated'
+    localStorage.getItem(Keys.TOKEN) ? 'authenticated' : 'unauthenticated'
   );
 
-  //TODO: use Persistant hook
-  const findUser = () => {
-    const user = localStorage.getItem('user');
-    if (user) return JSON.parse(user);
-    return null;
-  };
+  const [user, setUser] = useLocalStorage<User>(Keys.USER, null);
+  const [token, setToken] = useLocalStorage<string>(Keys.TOKEN, null);
 
-  const [user, setUser] = React.useState<User | null>(findUser());
+  const setUserHandler = (user: User) => setUser(user);
+  const setTokenHandler = (token: string) => setToken(token);
 
-  const setUserHandler = (user: User) => {
-    setUser(user);
-    localStorage.setItem('user', JSON.stringify(user));
-  };
-
-  const [token, setToken] = React.useState<string | null>(
-    localStorage.getItem('token') || null
-  );
   const [isLoading, setIsLoading] = React.useState(false);
   const navigate = useNavigate();
 
@@ -78,13 +68,7 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
     setStatus('unauthenticated');
   };
 
-  const setTokenHandler = (token: string) => {
-    setToken(token);
-    localStorage.setItem('token', token);
-  };
-
   const [refetchLogin] = useMutation<LoginResponse, LoginVariables>(LOGIN);
-
   const login = useCallback((login: string, password: string) => {
     setIsLoading(true);
     refetchLogin({ variables: { input: { login, password } } })
@@ -97,7 +81,6 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
             setStatus('authenticated');
             navigate(PATH.APP);
             setUser(user);
-            localStorage.setItem('user', JSON.stringify(user));
           }
         },
         error => handleError(error)
@@ -114,11 +97,7 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
     setIsLoading(true);
     successToast('You were correctly logged out');
     setToken(null);
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    localStorage.removeItem('refresh_token');
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('calendar');
+    clearLocalStorage();
     setStatus('unauthenticated');
     setUser(null);
     navigate(PATH.LOGIN);
@@ -160,7 +139,6 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
               successToast(`You were correctly registered ${user.login}.`);
               setTokenHandler(token);
               setStatus('authenticated');
-              localStorage.setItem('user', JSON.stringify(user));
               setUser(user);
             }
           },

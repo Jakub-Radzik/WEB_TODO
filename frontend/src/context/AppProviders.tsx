@@ -10,11 +10,12 @@ import {
 } from '@apollo/client';
 import { API_URL } from '../config/config';
 import { BrowserRouter } from 'react-router-dom';
+import { Keys } from '../hooks/useLocalStorage';
 
 const httpLink = new HttpLink({ uri: API_URL });
 
 const authMiddleware = new ApolloLink((operation, forward) => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem(Keys.TOKEN);
   operation.setContext({
     headers: {
       authorization: token ? token : '',

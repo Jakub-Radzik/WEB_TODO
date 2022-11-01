@@ -11,6 +11,7 @@ import {
 import { errorToast, successToast } from '../utils/toasts';
 import PATH from '../utils/router/paths';
 import { useAuth } from '../context/AuthContext';
+import useLocalStorage, { Keys } from '../hooks/useLocalStorage';
 
 export const GoogleAuthenticationHelper = () => {
   const [refetchTokens] = useLazyQuery<
@@ -19,6 +20,10 @@ export const GoogleAuthenticationHelper = () => {
   >(GET_GOOGLE_TOKENS);
   const navigate = useNavigate();
   const { setUserHandler } = useAuth();
+
+  const [access_token, setAccessToken] = useLocalStorage<string>(Keys.ACCESS_TOKEN, null);
+  const [token, setToken] = useLocalStorage<string>(Keys.TOKEN, null);
+  const [refresh_token, setRefreshToken] = useLocalStorage<string>(Keys.REFRESH_TOKEN, null);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -32,9 +37,9 @@ export const GoogleAuthenticationHelper = () => {
             const { token } = res.data.googleTokens;
             const { user } = res.data.googleTokens;
 
-            localStorage.setItem('access_token', access_token);
-            localStorage.setItem('refresh_token', refresh_token);
-            localStorage.setItem('token', token);
+            setAccessToken(access_token);
+            setRefreshToken(refresh_token);
+            setToken(token);
             setUserHandler(user);
 
             successToast('Authentication Successful');
