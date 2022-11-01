@@ -170,7 +170,6 @@ const googleService: GoogleService =  {
             }
         });
         if(!newEvent) throw new Error("Event not found");
-        console.log(event)
         if(event.isGoogleMeet){
             const response = await GOOGLE_CALENDAR.events.patch({
                 calendarId: calendarId,
@@ -210,7 +209,6 @@ const googleService: GoogleService =  {
             singleEvents: true,
             orderBy: 'startTime',
         });
-        console.log(events.data.items);
         return events.data.items;
     }
 }

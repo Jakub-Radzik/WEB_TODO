@@ -71,7 +71,6 @@ const CreateEventModal: FC<ModalWrapperProps> = ({
         formData.end.dateTime = new Date(formData.end.dateTime).toISOString();
     }
     formData.isGoogleMeet = isGoogleMeet;
-    console.log(formData)
     createEvent(formData);
   },[isOneDayEvent, isGoogleMeet]);
 

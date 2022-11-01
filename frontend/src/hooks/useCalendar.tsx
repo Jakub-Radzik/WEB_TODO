@@ -28,7 +28,6 @@ export const useCalendar = () => {
   useEffect(() => {
     if (!calendar) {
       if (access_token) {
-        console.log("check calendar with: " + access_token)
         checkCalendar({
           variables: {
             input: {
