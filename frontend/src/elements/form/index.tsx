@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { GRAY } from '../../design/colors';
 import { RAJDHANI } from '../../design/fonts';
 
-const StyledInput = styled.input`
+export const StyledInput = styled.input`
   font-family: ${RAJDHANI};
   font-size: large;
   width: 100%;
@@ -14,11 +14,48 @@ const StyledInput = styled.input`
   outline: none;
 `;
 
-const StyledTextArea = styled.textarea`
+
+export const StyledRadioBox = styled.input`
+  width: 20px;
+  height: 20px;
+  border-radius: 10;
+  background-color: red;
+  box-sizing: border-box;
+  appearance: none;
+  border-radius: 30px;
+  :checked{
+    outline: 2px solid black !important;
+  }
+`
+
+export const StyledColorInput = styled.input`
+  width: 50px;
+  height: 50px;
+  box-sizing: border-box;
+  border: 2px solid ${GRAY};
+  outline: none;
+  background: transparent;
+  border-radius: 25px;
+  ::-webkit-color-swatch {
+    border-radius: 25px;
+    border: none;
+  }
+  ::-moz-color-swatch {
+    border-radius: 25px;
+    border: none;
+  }
+`;
+
+export const StyledLabel = styled.label`
+  font-family: ${RAJDHANI};
+  font-size: large;
+`;
+
+export const StyledTextArea = styled.textarea`
   font-family: ${RAJDHANI};
   font-size: large;
   width: 100%;
-  height: 50px;
+  height: 100px;
   box-sizing: border-box;
   border-radius: 5px;
   border: 1px solid ${GRAY};

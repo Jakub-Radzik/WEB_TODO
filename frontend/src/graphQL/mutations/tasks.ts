@@ -6,49 +6,44 @@ import { gql } from '@apollo/client';
 // Variables
 export interface CreateTaskVariables {
   input: {
-    content: string
-    title: string
-    color: string
-    fontColor: string
-    createdAt: string
-    updatedAt?: string
-    completed: boolean
-    userId: string
+    content: string;
+    title: string;
+    color: string;
+    fontColor: string;
   };
 }
 
 // Response
-export interface CreateTaskResponse{
-    createTask: {
-        _id: string
-        content: string
-        title: string
-        color: string
-        fontColor: string
-        createdAt: string
-        updatedAt: string
-        completed: boolean
-        userId: string
+export interface CreateTaskResponse {
+  createTask: {
+    _id: string;
+    content: string;
+    title: string;
+    color: string;
+    fontColor: string;
+    createdAt: string;
+    updatedAt: string;
+    completed: boolean;
+    userId: string;
   };
 }
 
 // Mutation
 export const CREATE_TASK = gql`
-    mutation createTask($input: TaskInput){
-    createTask(task: $input){
-        _id
-        content
-        title
-        color
-        fontColor
-        createdAt
-        updatedAt
-        completed
-        userId
+  mutation createTask($input: TaskInput) {
+    createTask(task: $input) {
+      _id
+      content
+      title
+      color
+      fontColor
+      createdAt
+      updatedAt
+      completed
+      userId
     }
-    }
+  }
 `;
-
 
 // -----------------------------------
 //                Update Task Mutation
@@ -57,45 +52,41 @@ export const CREATE_TASK = gql`
 export interface UpdateTaskVariables {
   taskId: string;
   input: {
-    content: string
-    title: string
-    color: string
-    fontColor: string
-    createdAt?: string
-    updatedAt?: string
-    completed?: boolean
-    userId?: string
+    content: string;
+    title: string;
+    color: string;
+    fontColor: string;
   };
 }
 
 // Response
-export interface UpdateTaskResponse{
-    updateTask: {
-        _id: string
-        content: string
-        title: string
-        color: string
-        fontColor: string
-        createdAt: string
-        updatedAt: string
-        completed: boolean
-        userId: string
+export interface UpdateTaskResponse {
+  updateTask: {
+    _id: string;
+    content: string;
+    title: string;
+    color: string;
+    fontColor: string;
+    createdAt: string;
+    updatedAt: string;
+    completed: boolean;
+    userId: string;
   };
 }
 
 // Mutation
 export const UPDATE_TASK = gql`
-  mutation updateTask($input: TaskInput, $taskId: String){
-    updateTask(task:$input, taskId: $taskId){
-        _id
-        content
-        title
-        color
-        fontColor
-        createdAt
-        updatedAt
-        completed
-        userId
+  mutation updateTask($input: TaskInput, $taskId: String) {
+    updateTask(task: $input, taskId: $taskId) {
+      _id
+      content
+      title
+      color
+      fontColor
+      createdAt
+      updatedAt
+      completed
+      userId
     }
   }
 `;
@@ -105,39 +96,39 @@ export const UPDATE_TASK = gql`
 // -----------------------------------
 // Variables
 export interface DuplicateTaskVariables {
-  taskId: string
+  taskId: string;
 }
 
 // Response
-export interface DuplicateTaskResponse{
-    task: {
-        _id: string
-        content: string
-        title: string
-        color: string
-        fontColor: string
-        createdAt: string
-        updatedAt: string
-        completed: boolean
-        userId: string
+export interface DuplicateTaskResponse {
+  task: {
+    _id: string;
+    content: string;
+    title: string;
+    color: string;
+    fontColor: string;
+    createdAt: string;
+    updatedAt: string;
+    completed: boolean;
+    userId: string;
   };
 }
 
 // Mutation
 export const DUPLICATE_TASK = gql`
-    mutation duplicateTask($taskId: String){
-      duplicateTask(taskId: $taskId){
-        _id
-        content
-        title
-        color
-        fontColor
-        createdAt
-        updatedAt
-        completed
-        userId
+  mutation duplicateTask($taskId: String) {
+    duplicateTask(taskId: $taskId) {
+      _id
+      content
+      title
+      color
+      fontColor
+      createdAt
+      updatedAt
+      completed
+      userId
     }
-    }
+  }
 `;
 
 // -----------------------------------
@@ -145,37 +136,77 @@ export const DUPLICATE_TASK = gql`
 // -----------------------------------
 // Variables
 export interface DeleteTaskVariables {
-  taskId: string
+  taskId: string;
 }
 
 // Response
-export interface DeleteTaskResponse{
-    deleteTask: {
-        _id: string
-        content: string
-        title: string
-        color: string
-        fontColor: string
-        createdAt: string
-        updatedAt: string
-        completed: boolean
-        userId: string
+export interface DeleteTaskResponse {
+  deleteTask: {
+    _id: string;
+    content: string;
+    title: string;
+    color: string;
+    fontColor: string;
+    createdAt: string;
+    updatedAt: string;
+    completed: boolean;
+    userId: string;
   };
 }
 
 // Mutation
 export const DELETE_TASK = gql`
-    mutation deleteTask($taskId: String){
-      deleteTask(taskId: $taskId){
-        _id
-        content
-        title
-        color
-        fontColor
-        createdAt
-        updatedAt
-        completed
-        userId
+  mutation deleteTask($taskId: String) {
+    deleteTask(taskId: $taskId) {
+      _id
+      content
+      title
+      color
+      fontColor
+      createdAt
+      updatedAt
+      completed
+      userId
     }
+  }
+`;
+
+// -----------------------------------
+//       Toggle Complete Task Mutation
+// -----------------------------------
+// Variables
+export interface ToggleCompletedVariables {
+  taskId: string;
+}
+
+// Response
+export interface ToggleCompletedResponse {
+  toggleCompleted: {
+    _id: string;
+    content: string;
+    title: string;
+    color: string;
+    fontColor: string;
+    createdAt: string;
+    updatedAt: string;
+    completed: boolean;
+    userId: string;
+  };
+}
+
+// Mutation
+export const TOGGLE_COMPLETED = gql`
+  mutation toggleCompleted($taskId: String) {
+    toggleCompleted(taskId: $taskId) {
+      _id
+      content
+      title
+      color
+      fontColor
+      createdAt
+      updatedAt
+      completed
+      userId
     }
+  }
 `;

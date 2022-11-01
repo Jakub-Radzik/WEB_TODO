@@ -3,31 +3,26 @@ import './App.css';
 import Header from './components/Header';
 import Login from './views/Login';
 import 'react-toastify/dist/ReactToastify.css';
-import { useAuth } from './context/AuthContext';
 import Register from './views/Register';
-import { useState } from 'react';
 import AuthenticatedApp from './views/AuthenticatedApp';
-
+import { Route, Routes, Navigate } from 'react-router-dom';
+import { GoogleAuthenticationHelper } from './views/GoogleAuthenticationHelper';
+import PATH from './utils/router/paths';
 function App() {
-  const { user, status } = useAuth();
-  const [view, setView] = useState<'login' | 'register'>('login');
-
   return (
     <>
       <div className="App">
         <Header />
-
-        {status === 'unauthenticated' && (
-          <div className="innerApp">
-            {!user && view === 'login' && (
-              <Login switchView={() => setView('register')} />
-            )}
-            {!user && view === 'register' && (
-              <Register switchView={() => setView('login')} />
-            )}
-          </div>
-        )}
-        {status === 'authenticated' && <AuthenticatedApp />}
+        <Routes>
+          <Route path={PATH.HOME} element={<Navigate to={PATH.LOGIN} />} />
+          <Route path={PATH.LOGIN} element={<Login />} />
+          <Route path={PATH.REGISTER} element={<Register />} />
+          <Route path={PATH.APP} element={<AuthenticatedApp />} />
+          <Route
+            path={PATH.GOOGLE_AUTH}
+            element={<GoogleAuthenticationHelper />}
+          />
+        </Routes>
       </div>
       <ToastContainer
         style={{ top: 110 }}

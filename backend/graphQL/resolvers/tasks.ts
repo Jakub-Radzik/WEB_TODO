@@ -9,14 +9,14 @@ export const getTask = (id: string) => {
 export const getUserTasks = async (context: {
   [key: string]: string;
 }) => {
-  // TODO: MOVE IT TO SERVICES
   const user = await userService.getUserByToken(context.authorization);
-  console.log(user)
   return taskService.getUserTasks(user?.id);
 }
 
-export const createTask = (task: TaskInput) => {
-  return taskService.createTask(task)
+export const createTask = (task: TaskInput, context: {
+  [key: string]: string;
+}) => {
+  return taskService.createTask(task, context.authorization)
 }
 
 export const updateTask = (taskId: string, task: TaskInput) => {
@@ -29,4 +29,8 @@ export const deleteTask = (taskId: string) => {
 
 export const duplicateTask = (taskId: string) => {
   return taskService.duplicateTask(taskId)
+}
+
+export const toggleCompleted = (taskId: string) => {
+  return taskService.toggleCompleted(taskId)
 }

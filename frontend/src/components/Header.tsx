@@ -22,15 +22,12 @@ const Header: FC<{}> = () => {
         </HeaderBox>
         <HeaderBox horizontal="flex-end">
           {user && (
-            <>
-              <PrimaryText color={WHITE}>Welcome {user?.login}</PrimaryText>
-              <IconButton
-                icon={LogOut}
-                onClick={() => {
-                  logout();
-                }}
-              />
-            </>
+            <IconButton
+              icon={LogOut}
+              onClick={() => {
+                logout();
+              }}
+            />
           )}
         </HeaderBox>
       </HeaderContainer>
