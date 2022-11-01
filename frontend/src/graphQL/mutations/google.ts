@@ -52,6 +52,7 @@ export const CREATE_EVENT = gql`
       summary
       description
       hangoutLink
+      colorId
       creator {
         email
       }

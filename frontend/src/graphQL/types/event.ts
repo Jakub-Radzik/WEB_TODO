@@ -8,6 +8,7 @@ export interface GoogleEvent {
   summary: string;
   description?: string;
   hangoutLink?: string;
+  colorId: string;
   creator: {
     email: string;
   };
@@ -31,6 +32,8 @@ export interface GoogleEvent {
 export interface GoogleEventInput {
   summary: string;
   description: string;
+  colorId: string;
+  isGoogleMeet: boolean;
   start: {
     date?: string;
     dateTime?: string;

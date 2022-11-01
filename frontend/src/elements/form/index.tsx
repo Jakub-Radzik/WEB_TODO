@@ -14,6 +14,20 @@ export const StyledInput = styled.input`
   outline: none;
 `;
 
+
+export const StyledRadioBox = styled.input`
+  width: 20px;
+  height: 20px;
+  border-radius: 10;
+  background-color: red;
+  box-sizing: border-box;
+  appearance: none;
+  border-radius: 30px;
+  :checked{
+    outline: 2px solid black !important;
+  }
+`
+
 export const StyledColorInput = styled.input`
   width: 50px;
   height: 50px;

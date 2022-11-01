@@ -2,6 +2,7 @@ import { FC, useCallback } from 'react';
 import { PrimaryText } from '../elements/text';
 import { GoogleEvent } from '../graphQL/types/event';
 import { formatDate, formatTime } from '../utils/date';
+import { getEventColor } from '../utils/googleColors';
 import { GoogleEventButton } from './GoogleEventButton';
 import { StyledTaskCard, StyledTaskHeader, TaskContent } from './TaskCard';
 
@@ -63,7 +64,7 @@ const Event: FC<{ event: GoogleEvent }> = ({ event }) => {
 
   return (
     <StyledTaskCard>
-      <StyledTaskHeader color="#f00">
+      <StyledTaskHeader color={getEventColor(event.colorId)}>
         <div
           style={{
             display: 'flex',

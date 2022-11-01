@@ -33,6 +33,7 @@ export const googleEventType = new GraphQLObjectType({
         kind: { type: GraphQLString },
         id: { type: GraphQLString },
         status: { type: GraphQLString },
+        colorId: { type: GraphQLString },
         htmlLink: { type: GraphQLString },
         created: { type: GraphQLString },
         updated: { type: GraphQLString },
@@ -59,6 +60,8 @@ export const googleEventType = new GraphQLObjectType({
         dateTime?: string
         timeZone?: string
     }
+    colorId: string
+    isGoogleMeet: boolean
   }
 
   const eventInputTimeType = new GraphQLInputObjectType({
@@ -77,5 +80,7 @@ export const googleEventType = new GraphQLObjectType({
         description: { type: GraphQLString },
         start: { type: eventInputTimeType},
         end: { type: eventInputTimeType},
+        colorId: { type: GraphQLString },
+        isGoogleMeet: { type: GraphQLBoolean },
     },
   });

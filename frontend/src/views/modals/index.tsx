@@ -10,6 +10,7 @@ export type ModalWrapperProps = {
   isOpen: boolean;
   onRequestClose: () => void;
   title: string;
+  color?: string;
 };
 
 const customStyles = {
@@ -53,6 +54,7 @@ const ModalWrapper: FC<ModalWrapperProps> = ({
   isOpen,
   title,
   onRequestClose,
+  color
 }) => {
   return (
     <Modal
@@ -61,7 +63,7 @@ const ModalWrapper: FC<ModalWrapperProps> = ({
       shouldCloseOnOverlayClick={false}
       ariaHideApp={false}
     >
-      <ModalHeader>
+      <ModalHeader style={{background: color || '#fff'}}>
         <TaskTitle>{title}</TaskTitle>
         <IconButton icon={Close} onClick={() => onRequestClose()} />
       </ModalHeader>

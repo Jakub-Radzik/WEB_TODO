@@ -94,6 +94,7 @@ export const GET_CALENDAR_TASKS = gql`
       summary
       description
       hangoutLink
+      colorId
       creator {
         email
       }

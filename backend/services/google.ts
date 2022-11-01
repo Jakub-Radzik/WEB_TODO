@@ -1,9 +1,10 @@
-import {calendar_v3, google, GoogleApis} from 'googleapis';
+import {calendar_v3, google} from 'googleapis';
 import { generateAccessToken, GOOGLE_CONFIG, UserModel } from '../utils';
 import userService from "../services/users"
 import { Credentials, GoogleAuthResponse } from '../graphQL/types/google';
 import { GoogleEventInput } from '../graphQL/types/events';
-
+import { v4 as uuidv4 } from 'uuid';
+import moment from 'moment';
 const scopes = [
     'https://www.googleapis.com/auth/calendar',
     "https://www.googleapis.com/auth/userinfo.email"
@@ -164,9 +165,27 @@ const googleService: GoogleService =  {
                     email: current_user.googleEmail
                 },
                 start:event.start,
-                end:event.end
+                end:event.end,
+                colorId: event.colorId,
             }
         });
+        if(!newEvent) throw new Error("Event not found");
+        console.log(event)
+        if(event.isGoogleMeet){
+            const response = await GOOGLE_CALENDAR.events.patch({
+                calendarId: calendarId,
+                eventId: newEvent.data.id!,
+                conferenceDataVersion: 1,
+                requestBody: {
+                    conferenceData: {
+                        createRequest: { requestId: uuidv4() },
+                    },
+                }
+             });
+             if(!response) return newEvent.data;
+             return response.data;
+        }
+
         return newEvent.data;
     },
     getTasksFromCalendar: async(tokens: Credentials, jwt: string) => {
@@ -180,19 +199,18 @@ const googleService: GoogleService =  {
         const GOOGLE_CALENDAR = google.calendar({version: 'v3', auth: oauth2Client});
         const current_user = await userService.getUserByToken(jwt);
         if(!current_user) throw new Error("User does not exist!");
-
         const {googleEmail, calendarId} = current_user;
 
         if(!googleEmail) throw new Error("User does not have connected Google Account");
         if(!calendarId) throw new Error("User does not have available calendar")
         const events = await GOOGLE_CALENDAR.events.list({
             calendarId: calendarId,
-            timeMin: (new Date()).toISOString(),
+            timeMin: (moment().subtract(1, 'days')).toISOString(),
             maxResults: 100,
             singleEvents: true,
             orderBy: 'startTime',
         });
-        console.log(events.data.items)
+        console.log(events.data.items);
         return events.data.items;
     }
 }

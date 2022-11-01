@@ -2,7 +2,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import ModalWrapper, { ModalWrapperProps } from '..';
 import { useForm } from 'react-hook-form';
 import {
-  StyledInput, StyledLabel,
+  StyledInput, StyledLabel, StyledRadioBox,
 } from '../../../elements/form';
 import { useCalendar } from '../../../hooks/useCalendar';
 import Switch from "react-switch";
@@ -10,6 +10,7 @@ import { PrimaryText } from '../../../elements/text';
 import moment from 'moment-timezone';
 import { errorToast } from '../../../utils/toasts';
 import { GoogleEventInput } from '../../../graphQL/types/event';
+import { eventColors } from '../../../utils/googleColors';
 
 const CreateEventModal: FC<ModalWrapperProps> = ({
   isOpen,
@@ -29,15 +30,17 @@ const CreateEventModal: FC<ModalWrapperProps> = ({
         },
         end:{
             dateTime: moment().add(1, 'hour').toISOString().substring(0,16)
-        }
+        },
+        colorId: '1',
+        isGoogleMeet: false
     }
   });
   
   const [isOneDayEvent, setIsOneDayEvent] = useState(true);
+  const [isGoogleMeet, setIsGoogleMeet] = useState(false);
 
   const onSubmit = useCallback(async (data: GoogleEventInput) => {
     const formData = {...data};
-
     if(isOneDayEvent){
         if(!formData.start.date) {
             errorToast('Please provide start date');
@@ -67,13 +70,10 @@ const CreateEventModal: FC<ModalWrapperProps> = ({
         formData.start.dateTime = new Date(formData.start.dateTime).toISOString();
         formData.end.dateTime = new Date(formData.end.dateTime).toISOString();
     }
+    formData.isGoogleMeet = isGoogleMeet;
     console.log(formData)
     createEvent(formData);
-  },[isOneDayEvent]);
-
-  const toggleSwitch = () => {
-    setIsOneDayEvent(!isOneDayEvent);
-  }
+  },[isOneDayEvent, isGoogleMeet]);
 
   useEffect(() => {
     const tz = moment.tz.guess();
@@ -81,13 +81,34 @@ const CreateEventModal: FC<ModalWrapperProps> = ({
     setValue('end.timeZone', tz)
   }, [])
 
+  const [color, setColor] = useState('#a4bdfc');
+
   return (
     <ModalWrapper
       isOpen={isOpen}
       onRequestClose={() => onRequestClose()}
       title={title}
+      color={color}
     >
       <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
+        <StyledLabel>Color: </StyledLabel>
+        <div>
+          {eventColors.map((color)=> {
+            return (
+                <StyledRadioBox
+                  type="radio"
+                  value={color.id}
+                  {...register('colorId')}
+                  onChange={() => setColor(color.background)}
+                  key={color.id}
+                  style={{
+                    backgroundColor: color.background,
+                    border: `1px solid ${color.foreground}`,
+                  }}
+                />
+            )
+          })}
+        </div>
         <StyledLabel>Summary: </StyledLabel>
         <StyledInput type="text" {...register('summary', { required: "Please enter summary." })} placeholder={"Summary"}/>
         <StyledLabel>Description: </StyledLabel>
@@ -99,7 +120,8 @@ const CreateEventModal: FC<ModalWrapperProps> = ({
             alignItems: 'center'
         }}>
             <PrimaryText color='#000' style={{fontSize: 20, width: 150, textAlign: 'center'}}>Defined hours</PrimaryText>
-            <Switch checked={isOneDayEvent} onChange={toggleSwitch}/>
+            <Switch checked={isOneDayEvent} onChange={() => {
+    setIsOneDayEvent(!isOneDayEvent)}}/>
             <PrimaryText color='#000' style={{fontSize: 20, width: 150, textAlign: 'center'}}>All day</PrimaryText>
         </div>
 
@@ -121,7 +143,15 @@ const CreateEventModal: FC<ModalWrapperProps> = ({
     }
 
 
-
+      <div style={{
+            display: 'flex',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            margin: '10px 0 0 0'
+        }}>
+      <StyledLabel style={{paddingRight:10}}>Google Meet:</StyledLabel>
+      <Switch checked={isGoogleMeet} onChange={() => { setIsGoogleMeet(!isGoogleMeet)}} />
+      </div>
 
 
 
