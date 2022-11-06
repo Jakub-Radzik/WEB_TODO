@@ -26,9 +26,11 @@ function useLocalStorage<T>(key: Keys, initialValue: T | null){
     });
 
     useEffect(() => {
-        if(key === Keys.USER)
+        if(key === Keys.USER){
             localStorage.setItem(key, JSON.stringify(storedValue));
-        localStorage.setItem(key, storedValue); 
+        }else{
+            localStorage.setItem(key, storedValue); 
+        }
     }, [key, storedValue]);
 
     return [
