@@ -70,7 +70,7 @@ export const useCalendar = () => {
   const [refetchCreateEvent] = useMutation<CreateEventResponse, CreateEventVariables>(CREATE_EVENT);
   const createEvent = useCallback(async (formData: GoogleEventInput)=>{
     if(access_token){
-      refetchCreateEvent({variables: {
+      return refetchCreateEvent({variables: {
         input: {
           access_token,
         },

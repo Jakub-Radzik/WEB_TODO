@@ -12,6 +12,12 @@ export const StyledInput = styled.input`
   border-radius: 5px;
   border: 1px solid ${GRAY};
   outline: none;
+  :disabled{
+    cursor: auto;
+  }
+  :hover{
+    cursor: pointer;
+  }
 `;
 
 

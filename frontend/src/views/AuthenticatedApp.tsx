@@ -1,6 +1,6 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 import { ButtonOutline } from '../elements/button';
+import useLocalStorage, { Keys } from '../hooks/useLocalStorage';
 import Events from './Events';
 import { Tasks } from './Tasks';
 
@@ -14,19 +14,19 @@ const App = styled.div`
 `;
 
 const AuthenticatedApp = () => {
-  const [showTasks, setShowTasks] = useState(true);
-  const toggleView = () => setShowTasks(!showTasks);
+  const [view, setView] = useLocalStorage<'tasks' | 'events'>(Keys.VIEW, 'tasks');
+  const toggleView = () => view === 'tasks' ? setView('events') : setView('tasks');
 
   return (
     <App>
       <div>
         <ButtonOutline
-          label={`Go to: ${showTasks ? 'Events' : 'Tasks'}`}
+          label={`Go to: ${view=='events' ? 'Events' : 'Tasks'}`}
           onClick={toggleView}
         />
       </div>
-      {showTasks && <Tasks />}
-      {!showTasks && <Events />}
+      {view == 'tasks' && <Tasks />}
+      {view == 'events' && <Events />}
     </App>
   );
 };
