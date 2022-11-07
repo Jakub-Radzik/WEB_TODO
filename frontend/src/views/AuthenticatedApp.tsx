@@ -21,7 +21,7 @@ const AuthenticatedApp = () => {
     <App>
       <div>
         <ButtonOutline
-          label={`Go to: ${view=='events' ? 'Events' : 'Tasks'}`}
+          label={`Go to: ${view=='tasks' ? 'Events' : 'Tasks'}`}
           onClick={toggleView}
         />
       </div>
