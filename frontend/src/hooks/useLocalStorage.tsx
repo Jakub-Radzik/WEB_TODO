@@ -6,6 +6,7 @@ export enum Keys {
     TOKEN = "token",
     CALENDAR = "calendar",
     USER = "user",
+    VIEW = "view",
 }
 
 export const clearLocalStorage = () => {

@@ -8,7 +8,7 @@ import { useCalendar } from '../../../hooks/useCalendar';
 import Switch from "react-switch";
 import { PrimaryText } from '../../../elements/text';
 import moment from 'moment-timezone';
-import { errorToast } from '../../../utils/toasts';
+import { errorToast, successToast } from '../../../utils/toasts';
 import { GoogleEventInput } from '../../../graphQL/types/event';
 import { eventColors } from '../../../utils/googleColors';
 
@@ -38,8 +38,10 @@ const CreateEventModal: FC<ModalWrapperProps> = ({
   
   const [isOneDayEvent, setIsOneDayEvent] = useState(true);
   const [isGoogleMeet, setIsGoogleMeet] = useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const onSubmit = useCallback(async (data: GoogleEventInput) => {
+    setButtonDisabled(true);
     const formData = {...data};
     if(isOneDayEvent){
         if(!formData.start.date) {
@@ -71,7 +73,19 @@ const CreateEventModal: FC<ModalWrapperProps> = ({
         formData.end.dateTime = new Date(formData.end.dateTime).toISOString();
     }
     formData.isGoogleMeet = isGoogleMeet;
-    createEvent(formData);
+    createEvent(formData).then(()=>{
+      successToast('Event created successfully');
+      setTimeout(()=>{
+        window.location.reload();
+      }, 1000);
+    })
+    .catch((err)=>{
+      errorToast(err.message);
+      setButtonDisabled(false);
+    })
+    .finally(()=>{
+      setButtonDisabled(false);
+    });
   },[isOneDayEvent, isGoogleMeet]);
 
   useEffect(() => {
@@ -154,7 +168,7 @@ const CreateEventModal: FC<ModalWrapperProps> = ({
 
 
 
-        <StyledInput type="submit" value="Submit" style={{ marginTop: 100 }} />
+        <StyledInput type="submit" value="Submit" style={{ marginTop: 100 }} disabled={buttonDisabled}/>
       </form>
 
     </ModalWrapper>
