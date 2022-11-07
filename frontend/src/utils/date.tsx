@@ -10,7 +10,7 @@ export const formatDate = (date: string): string => {
 export const formatTime = (date: string): string => {
   const dateObj = new Date(date);
   const hours = dateObj.getHours();
-  const minutes = dateObj.getMinutes();
+  const minutes = dateObj.getMinutes().toString().padStart(2, '0');
 
   return `${hours}:${minutes}`;
 };
