@@ -1,6 +1,6 @@
 # WEB_TODO
 
-# Todo App React-GraphQL-Express-MongoDB
+# Web Development Laboratory Project
+### TypeScript + React + MongoDB + GraphQL + Google Calendar
 
-### Web Development Laboratory Project
 ### And PHP Exercises
